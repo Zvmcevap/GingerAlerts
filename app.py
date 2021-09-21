@@ -1,8 +1,9 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime, timedelta
-import random
+from datetime import datetime
+from twilio.rest import Client
 
+#
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gingeralert.db'
@@ -65,50 +66,23 @@ def query_clients(current_user):
     return q_clients
 
 
-def query_todays_appointments():
+def query_todays_appointments(current_user):
     today = datetime.now().date()
-    todays_apps = Appointment.query.filter(db.func.DATE(Appointment.time_of_appointment) == today)
-    return todays_apps
+    todays_appointments = Appointment.query\
+        .filter((db.func.DATE(Appointment.time_of_appointment) == today) & (user == current_user))
+    return todays_appointments
 
 
-# Client list for testing
-client_list = {
-    'Beno Zupanc': '041932204',
-    'Nika Lemut': '0038631759981',
-    'Matic Kavas Kavko': '+38640756449'
-}
-
-todays_apps = query_todays_appointments()
-
-for a in todays_apps:
-    print(a.client.name, a.time_of_appointment)
-
-# User shenanigans for testing
+# User placdržač
 user = new_user('Beno', 'prdeno')
 if not user:
     user = User.query.filter_by(name='Beno').first()
     print(user.name)
 
 
-# Add the list for testing
-"""
-for client in client_list:
-    new_client(client, client_list[client], user)
-"""
-
-# Query client list for testing
-clients = query_clients(user)
-for c in clients:
-    print(c.id, c.name, c.phone, c.user.name)
-
-"""
-# Make random appointments for testing
-now = datetime.now()
-for c in clients:
-    app_time = now + timedelta(days=random.randint(0, 10))
-    new_appointment(c, app_time)
-"""
-
+todaysapps = query_todays_appointments(user)
+for a in todaysapps:
+    print(a.client.name, a.time_of_appointment)
 
 
 # Flask Application
