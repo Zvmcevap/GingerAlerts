@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timedelta
+import random
 
 
 app = Flask(__name__)
@@ -37,12 +38,12 @@ db.create_all()
 
 # Database Functions
 def new_user(name, password):
-    nwuser = User.query.filter_by(name=name).first()
-    if not nwuser:
-        nwuser = User(name=name, password=password)
-        db.session.add(user)
+    nw_user = User.query.filter_by(name=name).first()
+    if not nw_user:
+        nw_user = User(name=name, password=password)
+        db.session.add(nw_user)
         db.session.commit()
-        return nwuser
+        return nw_user
     else:
         print('User Name Taken')
 
@@ -53,25 +54,66 @@ def new_client(name, phone, c_user):
     db.session.commit()
 
 
-# Start of app
+def new_appointment(client_model, dateandtime):
+    appointment = Appointment(client=client_model, time_of_appointment=dateandtime)
+    db.session.add(appointment)
+    db.session.commit()
+
+
+def query_clients(current_user):
+    q_clients = Client.query.filter_by(user=current_user).all()
+    return q_clients
+
+
+def query_todays_appointments():
+    today = datetime.now().date()
+    todays_apps = Appointment.query.filter(db.func.DATE(Appointment.time_of_appointment) == today)
+    return todays_apps
+
+
+# Client list for testing
 client_list = {
     'Beno Zupanc': '041932204',
     'Nika Lemut': '0038631759981',
     'Matic Kavas Kavko': '+38640756449'
 }
+
+todays_apps = query_todays_appointments()
+
+for a in todays_apps:
+    print(a.client.name, a.time_of_appointment)
+
+# User shenanigans for testing
 user = new_user('Beno', 'prdeno')
 if not user:
     user = User.query.filter_by(name='Beno').first()
-    print(user)
+    print(user.name)
 
 
+# Add the list for testing
+"""
 for client in client_list:
     new_client(client, client_list[client], user)
+"""
+
+# Query client list for testing
+clients = query_clients(user)
+for c in clients:
+    print(c.id, c.name, c.phone, c.user.name)
+
+"""
+# Make random appointments for testing
+now = datetime.now()
+for c in clients:
+    app_time = now + timedelta(days=random.randint(0, 10))
+    new_appointment(c, app_time)
+"""
+
 
 
 # Flask Application
 @app.route('/')
-def index():  # put application's code here
+def index():
     return render_template('index.html')
 
 
