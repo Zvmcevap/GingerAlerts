@@ -1,17 +1,15 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-
+from config import Config
 
 db = SQLAlchemy()
 
 
-def create_app():
+def create_app(config_class=Config):
     app = Flask(__name__)
 
-    app.config['SECRET_KEY'] = 'SecretKeyPlaceholder'  # Change this
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gingeralerts.db'
+    app.config.from_object(config_class)
 
     db.init_app(app)
     from .models import User, Client, Appointment  # Statement IS used, it's where the db gets its tables
@@ -31,6 +29,3 @@ def create_app():
     app.register_blueprint(main_blueprint)
 
     return app
-
-
-db.create_all(app=create_app())
