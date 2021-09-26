@@ -9,8 +9,8 @@ def new_client(name, phone, c_user):
     db.session.commit()
 
 
-def delete_from_database(id):
-    db.session.remove(id)
+def delete_from_database(data_entry_id):
+    db.session.remove(data_entry_id)
     db.session.commit()
 
 
