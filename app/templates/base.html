@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Flask Auth Example</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"/>
-    <link rel="stylesheet" href="/static/base.css">
+    <link rel="stylesheet" href="/app/static/base.css">
 </head>
 
 <body>
@@ -31,27 +31,27 @@
                 <div class="navbar-start">
                     {% if current_user.is_authenticated %}
                         <div class="navbar-item">
-                            <a href="{{ url_for('main.appointments') }}" class="button">Naročila</a>
+                            <a href="{{ url_for('home_bp.appointments') }}" class="button">Naročila</a>
                         </div>
                         <div class="navbar-item">
-                            <a href="{{ url_for('main.calendar') }}" class="button">Koledar</a>
+                            <a href="{{ url_for('calendar_bp.calendar') }}" class="button">Koledar</a>
                         </div>
                         <div class="navbar-item">
-                            <a href="{{ url_for('main.clients') }}" class="button">Stranke</a>
+                            <a href="{{ url_for('clients_bp.clients') }}" class="button">Stranke</a>
                         </div>
                     {% endif %}
                 </div>
                 <div class="navbar-end">
                     {% if not current_user.is_authenticated %}
-                        <a href="{{ url_for('auth.login') }}" class="navbar-item">
+                        <a href="{{ url_for('auth_bp.login') }}" class="navbar-item">
                             Login
                         </a>
-                        <a href="{{ url_for('auth.signup') }}" class="navbar-item">
+                        <a href="{{ url_for('auth_bp.signup') }}" class="navbar-item">
                             Sign Up
                         </a>
                     {% endif %}
                     {% if current_user.is_authenticated %}
-                        <a href="{{ url_for('auth.logout') }}" class="navbar-item">
+                        <a href="{{ url_for('auth_bp.logout') }}" class="navbar-item">
                             Logout
                         </a>
                     {% endif %}
@@ -69,5 +69,5 @@
     </div>
 </section>
 </body>
-<script src="/static/navbar.js"></script>
+<script src="/app/static/navbar.js"></script>
 </html>
