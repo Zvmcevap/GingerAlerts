@@ -10,7 +10,6 @@ def create_app():
     app = Flask(__name__, instance_relative_config=False, static_url_path='/app/static/')
 
     app.config.from_object(config.Config)
-    db.init_app(app)
 
     with app.app_context():
         # Create database from models

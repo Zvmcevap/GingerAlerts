@@ -4,6 +4,8 @@ from flask_login import UserMixin
 
 
 class User(UserMixin, db.Model):
+    __tablename__ = 'users'
+
     id = db.Column(db.Integer, primary_key=True, index=True)
     name = db.Column(db.String(100), unique=True, nullable=False, index=True)
     password = db.Column(db.String(100), nullable=False)
@@ -12,13 +14,17 @@ class User(UserMixin, db.Model):
     send_SMS = db.Column(db.Boolean, default=False)
     admin = db.Column(db.Boolean, default=False)
 
+    clients = db.relationship('Client', backref='user')
+
     def __repr__(self):
         return f'User: id:{self.id} name:{self.name} email:{self.email} registered{self.created_at} SMS-able{self.send_SMS} '
 
 
 class Client(db.Model):
+    __tablename__ = 'clients'
+
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     name = db.Column(db.String(100), nullable=False, index=True)
     phone = db.Column(db.String(20), index=True)
     receive_today_SMS = db.Column(db.Boolean, default=False)
@@ -31,8 +37,10 @@ class Client(db.Model):
 
 
 class Appointment(db.Model):
+    __tablename__ = 'appointments'
+
     id = db.Column(db.Integer, primary_key=True)
-    client_id = db.Column(db.Integer, db.ForeignKey('client.id'), nullable=False)
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'), nullable=False)
     time_of_appointment = db.Column(db.DateTime, nullable=False, default=datetime.now(), index=True)
 
     def __repr__(self):

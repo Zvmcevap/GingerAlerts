@@ -1,38 +1,52 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="column is-4 is-offset-4">
-    <h3 class="title has-text-centered">Login</h3>
-    <div class="box">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="notification is-danger">
-                {{ messages[0] }}
-            </div>
-        {% endif %}
-        {% endwith %}
-        <form method="POST" action="/login">
-            <div class="field">
-                <label class="label">Name or Email</label>
-                <div class="control">
-                    <input class="input" type="name" name="name" placeholder="Your Name or Email here" autofocus="" minlength="3" required>
-                </div>
-            </div>
+    <div class="column is-4 is-offset-4">
+        <h3 class="title has-text-centered">Login</h3>
+        <div class="box">
+            {% with messages = get_flashed_messages(category_filter=['invalid_login_details']) %}
+                {% if messages %}
+                    <div class="notification is-danger">
+                        {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="/login">
+                {{ login_form.hidden_tag() }}
+                <div class="field">
+                    {{ login_form.name_email.label(class="label") }}
+                    <div class="control">
+                        {% if login_form.name_email.errors %}
+                            {{ login_form.name_email(class="input is-danger") }}
+                            {% for error in login_form.name_email.errors %}
+                                <p class="help is-danger">{{ error }}</p>
+                            {% endfor %}
+                        {% else %}
+                            {{ login_form.name_email(class="input") }}
 
-            <div class="field">
-                <label class="label has-text-grey">Password</label>
-                <div class="control">
-                    <input class="input" type="password" name="password" placeholder="Your Password" minlength="8" required>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-            <div class="field">
-                <label class="checkbox">
-                    <input type="checkbox">
-                    Remember me
-                </label>
-            </div>
-            <button class="button is-block is-info is-large is-fullwidth">Login</button>
-        </form>
+
+                <div class="field">
+                    {{ login_form.password.label(class="label") }}
+                    <div class="control">
+                        {% if login_form.password.errors %}
+                            {{ login_form.password(class="input is-danger") }}
+                            {% for error in login_form.password.errors %}
+                                <p class="help is-danger">{{ error }}</p>
+                            {% endfor %}
+                        {% else %}
+                            {{ login_form.password(class="input") }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="field">
+                    {{ login_form.remember.label(class="checkbox") }}
+                    {{ login_form.remember(class="checkbox") }}
+                </div>
+                {{ login_form.submit(class="button is-block is-info is-large is-fullwidth") }}
+            </form>
+        </div>
     </div>
-</div>
 {% endblock %}
