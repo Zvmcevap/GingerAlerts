@@ -14,61 +14,53 @@
 <section class="hero">
 
     <div class="hero-head">
-        <nav class="navbar" role="navigation">
+        <nav class="navbar is-mobile" role="navigation">
             <div class="navbar-brand">
                 <a class="navbar-item" href="{{ url_for('home_bp.index') }}">
                     <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
                 </a>
-
-                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
-                   data-target="navbarBasicExample">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </a>
             </div>
-            <div id="navbarBasicExample" class="navbar-menu">
-                <div class="navbar-start">
-                    {% if current_user.is_authenticated %}
-                        <div class="navbar-item">
-                            <a href="{{ url_for('appointments_bp.appointments') }}" class="button">Naročila</a>
-                        </div>
-                        <div class="navbar-item">
-                            <a href="{{ url_for('calendar_bp.calendar') }}" class="button">Koledar</a>
-                        </div>
-                        <div class="navbar-item">
-                            <a href="{{ url_for('clients_bp.clients') }}" class="button">Stranke</a>
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="navbar-end">
-                    {% if not current_user.is_authenticated %}
-                        <a href="{{ url_for('auth_bp.login') }}" class="navbar-item">
-                            Login
-                        </a>
-                        <a href="{{ url_for('auth_bp.signup') }}" class="navbar-item">
-                            Sign Up
-                        </a>
-                    {% endif %}
-                    {% if current_user.is_authenticated %}
-                        <a class="navbar-item">{{ current_user.name }}</a>
-                        <a href="{{ url_for('auth_bp.logout') }}" class="navbar-item">
-                            Logout
-                        </a>
-                    {% endif %}
-
-                </div>
+            <div class="navbar-end is-active is-mobile">
+                {% if not current_user.is_authenticated %}
+                    <a href="{{ url_for('auth_bp.login') }}" class="navbar-item">
+                        Prijava
+                    </a>
+                    <a href="{{ url_for('auth_bp.signup') }}" class="navbar-item">
+                        Registracija
+                    </a>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                    <a class="navbar-item">{{ current_user.name }}</a>
+                    <a href="{{ url_for('auth_bp.logout') }}" class="navbar-item">
+                        Odjava
+                    </a>
+                {% endif %}
             </div>
         </nav>
     </div>
 
     <div class="hero-body">
+        {% if current_user.is_authenticated %}
+            <div class="buttons are-medium gumbi-navigacija">
+                <a href="{{ url_for('appointments_bp.appointments') }}"
+                   class="button is-danger is-outlined is-rounded">Naročila</a>
+                <a href="{{ url_for('calendar_bp.calendar') }}"
+                   class="button is-danger is-outlined is-rounded">Koledar</a>
+                <a href="{{ url_for('clients_bp.clients') }}"
+                   class="button is-danger is-outlined is-rounded">Stranke</a>
+            </div>
+        {% endif %}
         <div class="container">
             {% block content %}
             {% endblock %}
         </div>
+        {% if current_user.is_authenticated %}
+            <div class="buttons has-addons is-right is-bottom dodaj">
+                <button class="button is-danger is-rounded">Dodaj naročilo</button>
+                <button class="button is-danger is-rounded">Dodaj stranko</button>
+            </div>
+        {% endif %}
     </div>
 </section>
 </body>
-<script src="/app/static/navbar.js"></script>
 </html>

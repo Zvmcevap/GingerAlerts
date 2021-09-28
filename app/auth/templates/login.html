@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {% from "_input_text.html" import input_text %}
+
     <div class="column is-4 is-offset-4">
         <h3 class="title has-text-centered">Login</h3>
         <div class="box">
@@ -14,32 +16,10 @@
             <form method="POST" action="/login">
                 {{ login_form.hidden_tag() }}
                 <div class="field">
-                    {{ login_form.name_email.label(class="label") }}
-                    <div class="control">
-                        {% if login_form.name_email.errors %}
-                            {{ login_form.name_email(class="input is-danger") }}
-                            {% for error in login_form.name_email.errors %}
-                                <p class="help is-danger">{{ error }}</p>
-                            {% endfor %}
-                        {% else %}
-                            {{ login_form.name_email(class="input") }}
-
-                        {% endif %}
-                    </div>
+                    {{ input_text(login_form.name_email) }}
                 </div>
-
                 <div class="field">
-                    {{ login_form.password.label(class="label") }}
-                    <div class="control">
-                        {% if login_form.password.errors %}
-                            {{ login_form.password(class="input is-danger") }}
-                            {% for error in login_form.password.errors %}
-                                <p class="help is-danger">{{ error }}</p>
-                            {% endfor %}
-                        {% else %}
-                            {{ login_form.password(class="input") }}
-                        {% endif %}
-                    </div>
+                    {{ input_text(login_form.password) }}
                 </div>
                 <div class="field">
                     {{ login_form.remember.label(class="checkbox") }}

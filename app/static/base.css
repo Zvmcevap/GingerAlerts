@@ -1,14 +1,22 @@
-
-.button {
-    border-radius: 300px;
-    background-color: #ea7511;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
+.dodaj {
+    position: fixed;
+    bottom: 3rem;
+    right: 5rem;
 }
 
-.button:hover {
-    background-color: #c96510;
-    color: white;
+.navbar, .navbar-end, .navbar-menu, .navbar-start {
+    align-items: stretch;
+    display: flex;
 }
 
+.navbar-end {
+    display: flex;
+    justify-content: flex-end;
+    margin-left: auto;
+}
+
+.gumbi-navigacija {
+    justify-content: space-evenly;
+    max-width: 35rem;
+    margin: auto;
+}

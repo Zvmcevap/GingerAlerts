@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
 from app import db
@@ -39,7 +39,7 @@ def login_post():
             flash('Incorrect login information', 'invalid_login_details')
             return redirect(url_for('auth_bp.login', login_form=login_form))
 
-        if check_password_hash(user.password, password):
+        if not check_password_hash(user.password, password):
             flash('Incorrect login information', 'invalid_login_details')
             return redirect(url_for('auth_bp.login', login_form=login_form))
 
@@ -63,7 +63,7 @@ def signup_post():
 
     email = register_form.email.data
     name = register_form.name.data
-    password = register_form.name.data
+    password = register_form.password.data
     remember = register_form.remember.data
 
     if register_form.validate_on_submit():
@@ -89,7 +89,6 @@ def signup_post():
 
     # If there is invalid input from user render this
     return render_template('signup.html', register_form=register_form)
-
 
 
 @auth_bp.route('/logout')

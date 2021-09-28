@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {% from "_input_text.html" import input_text %}
     <div class="column is-4 is-offset-4">
         <h3 class="title has-text-centered">Sign Up</h3>
         <div class="box">
@@ -14,45 +15,13 @@
             <form action="/signup" method="POST">
                 {{ register_form.hidden_tag() }}
                 <div class="field">
-                    {{ register_form.email.label(class="label") }}
-                    <div class="control">
-                        {% if register_form.email.errors %}
-                            {{ register_form.email(class="input is-danger") }}
-                            {% for error in register_form.email.errors %}
-                                <p class="help is-danger">{{ error }}</p>
-                            {% endfor %}
-                        {% else %}
-                            {{ register_form.email(class="input") }}
-
-                        {% endif %}
-                    </div>
+                    {{ input_text(register_form.email) }}
                 </div>
                 <div class="field">
-                    {{ register_form.name.label(class="label") }}
-                    <div class="control">
-                        {% if register_form.name.errors %}
-                            {{ register_form.name(class="input is-danger") }}
-                            {% for error in register_form.name.errors %}
-                                <p class="help is-danger">{{ error }}</p>
-                            {% endfor %}
-                        {% else %}
-                            {{ register_form.name(class="input") }}
-                        {% endif %}
-                    </div>
+                    {{ input_text(register_form.name) }}
                 </div>
-
                 <div class="field">
-                    {{ register_form.password.label(class="label") }}
-                    <div class="control">
-                        {% if register_form.password.errors %}
-                            {{ register_form.password(class="input is-danger") }}
-                            {% for error in register_form.password.errors %}
-                                <p class="help is-danger">{{ error }}</p>
-                            {% endfor %}
-                        {% else %}
-                            {{ register_form.password(class="input") }}
-                        {% endif %}
-                    </div>
+                    {{ input_text(register_form.password) }}
                 </div>
                 <div class="field">
                     {{ register_form.remember.label(class="checkbox") }}
