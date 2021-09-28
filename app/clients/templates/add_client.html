@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+    {% from "_input_text.html" import input_text %}
+
+    <div class="column is-4 is-offset-4">
+        <div class="box">
+            <h3 class="title has-text-centered">Shrani Stranko</h3>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="notification is-danger">
+                        {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="/add_client">
+                {{ client_form.hidden_tag() }}
+                <div class="field">
+                    {{ input_text(client_form.name) }}
+                </div>
+                <div class="field">
+                    {{ client_form.phone.label(class="label") }}
+                    <div class="control">
+                        <div class="field has-addons">
+                            <p class="control">
+                                <a class="button is-static">+386</a>
+                            </p>
+                            {% if client_form.phone.errors %}
+                                {{ client_form.phone(class="input is-danger") }}
+                            {% else %}
+                                {{ client_form.phone(class="input") }}
+                            {% endif %}
+                        </div>
+                        {% if client_form.phone.errors %}
+                            {% for error in client_form.phone.errors %}
+                                <p class="help is-danger">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="field">
+                    {{ client_form.same_day_sms(class="checkbox") }}
+                    {{ client_form.same_day_sms.label(class="checkbox") }}
+                </div>
+                <div class="field">
+                    {{ client_form.day_before_sms(class="checkbox") }}
+                    {{ client_form.day_before_sms.label(class="checkbox") }}
+                </div>
+                {{ client_form.submit(class="button is-success is-large") }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -4,8 +4,8 @@
     {% from "_input_text.html" import input_text %}
 
     <div class="column is-4 is-offset-4">
-        <h3 class="title has-text-centered">Login</h3>
         <div class="box">
+            <h3 class="title has-text-centered">Vpis</h3>
             {% with messages = get_flashed_messages(category_filter=['invalid_login_details']) %}
                 {% if messages %}
                     <div class="notification is-danger">
@@ -22,8 +22,8 @@
                     {{ input_text(login_form.password) }}
                 </div>
                 <div class="field">
-                    {{ login_form.remember.label(class="checkbox") }}
                     {{ login_form.remember(class="checkbox") }}
+                    {{ login_form.remember.label(class="checkbox") }}
                 </div>
                 {{ login_form.submit(class="button is-block is-info is-large is-fullwidth") }}
             </form>

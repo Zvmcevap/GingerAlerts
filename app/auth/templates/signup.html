@@ -3,8 +3,8 @@
 {% block content %}
     {% from "_input_text.html" import input_text %}
     <div class="column is-4 is-offset-4">
-        <h3 class="title has-text-centered">Sign Up</h3>
         <div class="box">
+            <h3 class="title has-text-centered">Registracija</h3>
             {% with messages = get_flashed_messages(category_filter=['name_not_unique']) %}
                 {% if messages %}
                     <div class="notification is-danger">
@@ -24,8 +24,8 @@
                     {{ input_text(register_form.password) }}
                 </div>
                 <div class="field">
-                    {{ register_form.remember.label(class="checkbox") }}
                     {{ register_form.remember(class="checkbox") }}
+                    {{ register_form.remember.label(class="checkbox") }}
                 </div>
                 {{ register_form.recaptcha }}
                 {{ register_form.submit(class="button is-block is-info is-large is-fullwidth") }}

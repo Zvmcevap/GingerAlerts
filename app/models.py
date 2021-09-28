@@ -27,8 +27,8 @@ class Client(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     name = db.Column(db.String(100), nullable=False, index=True)
     phone = db.Column(db.String(20), index=True)
-    receive_today_SMS = db.Column(db.Boolean, default=False)
-    receive_tomorrow_SMS = db.Column(db.Boolean, default=False)
+    same_day_sms = db.Column(db.Boolean, default=False)
+    day_before_sms = db.Column(db.Boolean, default=False)
 
     appointments = db.relationship('Appointment', backref='client')
 

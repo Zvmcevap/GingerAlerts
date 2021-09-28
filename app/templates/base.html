@@ -56,8 +56,8 @@
         </div>
         {% if current_user.is_authenticated %}
             <div class="buttons has-addons is-right is-bottom dodaj">
-                <button class="button is-danger is-rounded">Dodaj naročilo</button>
-                <button class="button is-danger is-rounded">Dodaj stranko</button>
+                <a class="button is-danger is-rounded">Dodaj naročilo</a>
+                <a class="button is-danger is-rounded" href="{{ url_for('clients_bp.add_client') }}">Dodaj stranko</a>
             </div>
         {% endif %}
     </div>
