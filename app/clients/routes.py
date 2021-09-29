@@ -5,9 +5,10 @@ from app.models import Client
 from app.forms import AddClientForm
 
 clients_bp = Blueprint('clients_bp', __name__,
-                    template_folder='templates',
-                    static_folder='static'
-                    )
+                       template_folder='templates',
+                       static_folder='static',
+                       static_url_path='/clients/static/'
+                       )
 
 
 @clients_bp.route('/clients')
@@ -33,7 +34,6 @@ def add_client_post():
     client_phone = client_form.phone.data
     client_same_day_sms = client_form.same_day_sms.data
     client_day_before_sms = client_form.day_before_sms.data
-
 
     if client_form.validate_on_submit():
         client = Client.query.filter((Client.name == client_name) | (Client.phone == client_phone)).first()

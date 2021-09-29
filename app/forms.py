@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, Form, SelectField
 from wtforms.validators import InputRequired, Email, Length, Regexp
-from wtforms.fields.html5 import TelField
+from wtforms.fields.html5 import TelField, DateField, TimeField, SearchField
+from datetime import datetime
 
 
 # Python Classes to create html forms with Flask-WTF
@@ -44,5 +45,13 @@ class AddClientForm(FlaskForm):
                      )
     same_day_sms = BooleanField('SMS obvestilo isti dan', default=False)
     day_before_sms = BooleanField('SMS obvestilo dan prej', default=False)
+
+    submit = SubmitField('Shrani')
+
+
+class AddAppointmentForm(FlaskForm):
+    client_name = SearchField('Stranka', id="autocomplete", validators=[InputRequired()])
+    date_of_appointment = DateField('Datum', format='%Y-%m-%d', default=datetime.today())
+    time_of_appointment = TimeField('Čas', format='%H:%M', default=datetime.now().time())
 
     submit = SubmitField('Shrani')

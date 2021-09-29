@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ url_for('.static', filename='clients.css') }}">
+{% endblock %}
+
 {% block content %}
     {% from "_input_text.html" import input_text %}
 
@@ -45,7 +50,14 @@
                     {{ client_form.day_before_sms(class="checkbox") }}
                     {{ client_form.day_before_sms.label(class="checkbox") }}
                 </div>
-                {{ client_form.submit(class="button is-success is-large") }}
+                <div class="field is-grouped">
+                    <div class="control is-expanded">
+                        {{ client_form.submit(class="button is-success is-fullwidth") }}
+                    </div>
+                    <div class="control">
+                        <a class="button">Prekliči</a>
+                    </div>
+                </div>
             </form>
         </div>
     </div>

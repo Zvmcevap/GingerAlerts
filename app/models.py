@@ -14,7 +14,7 @@ class User(UserMixin, db.Model):
     send_SMS = db.Column(db.Boolean, default=False)
     admin = db.Column(db.Boolean, default=False)
 
-    clients = db.relationship('Client', backref='user')
+    clients = db.relationship('Client', back_populates='user')
 
     def __repr__(self):
         return f'User: id:{self.id} name:{self.name} email:{self.email} registered{self.created_at} SMS-able{self.send_SMS} '
@@ -30,7 +30,8 @@ class Client(db.Model):
     same_day_sms = db.Column(db.Boolean, default=False)
     day_before_sms = db.Column(db.Boolean, default=False)
 
-    appointments = db.relationship('Appointment', backref='client')
+    user = db.relationship('User', back_populates='clients')
+    appointments = db.relationship('Appointment', back_populates='client')
 
     def __repr__(self):
         return f'Stranka: ime:{self.name} telefonska:{self.phone}'
@@ -42,6 +43,8 @@ class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'), nullable=False)
     time_of_appointment = db.Column(db.DateTime, nullable=False, default=datetime.now(), index=True)
+
+    client = db.relationship('Client', back_populates='appointments')
 
     def __repr__(self):
         return f'Naročila: stranka:{self.client.name} čas:{self.time_of_appointment}'

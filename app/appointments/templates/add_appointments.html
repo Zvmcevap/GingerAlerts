@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ url_for('.static', filename='appointments.css') }}">
+    <link rel="stylesheet" href="/app/static/autocomplete.css">
+{% endblock %}
+
+{% block content %}
+    {% from "_input_text.html" import input_text %}
+    <div class="column is-4 is-offset-4">
+        <div class="box">
+            <h3 class="title has-text-centered">Shrani Termin</h3>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="notification is-danger">
+                        {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="/add_appointment" autocomplete="off">
+                {{ appointment_form.hidden_tag() }}
+                <div class="field">
+                    <div class="control">
+                        {{ appointment_form.client_name.label }}
+                        {{ appointment_form.client_name(class="input", value=client.name) }}
+                    </div>
+                </div>
+                <div class="field has-addons datetimefield">
+                    <div class="control">
+                        {{ appointment_form.date_of_appointment.label }}
+                        {{ appointment_form.date_of_appointment(class="input date is-medium") }}
+                    </div>
+                    <div class="control">
+                        {{ appointment_form.time_of_appointment.label }}
+                        {{ appointment_form.time_of_appointment(class="input datetime is-medium") }}
+                    </div>
+                </div>
+                <div class="field is-grouped">
+                    <div class="control is-expanded">
+                        {{ appointment_form.submit(class="button is-success is-fullwidth") }}
+                    </div>
+                    <div class="control">
+                        <a class="button">Prekliči</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">let search_array = JSON.parse({{ client_names | tojson }})</script>
+    <script src="/app/static/autocomplete.js"></script>
+{% endblock %}

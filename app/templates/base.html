@@ -8,6 +8,8 @@
     <title>Flask Auth Example</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"/>
     <link rel="stylesheet" href="/app/static/base.css">
+    {% block stylesheet %}
+    {% endblock %}
 </head>
 
 <body>
@@ -56,11 +58,13 @@
         </div>
         {% if current_user.is_authenticated %}
             <div class="buttons has-addons is-right is-bottom dodaj">
-                <a class="button is-danger is-rounded">Dodaj naročilo</a>
+                <a class="button is-danger is-rounded" href="{{ url_for('appointments_bp.add_appointment') }}">Dodaj naročilo</a>
                 <a class="button is-danger is-rounded" href="{{ url_for('clients_bp.add_client') }}">Dodaj stranko</a>
             </div>
         {% endif %}
     </div>
 </section>
 </body>
+{% block scripts %}
+{% endblock %}
 </html>

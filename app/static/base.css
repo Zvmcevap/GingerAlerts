@@ -20,12 +20,3 @@
     max-width: 35rem;
     margin: auto;
 }
-
-.table {
-    margin: auto;
-}
-
-tbody {
-    max-height: 5rem;
-    overflow-y: scroll;
-}
