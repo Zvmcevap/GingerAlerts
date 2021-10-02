@@ -14,7 +14,7 @@ clients_bp = Blueprint('clients_bp', __name__,
 @clients_bp.route('/clients')
 @login_required
 def clients():
-    client_list = Client.query.filter(Client.user == current_user).all()
+    client_list = db.session.query(Client).filter(Client.user == current_user).order_by(Client.name).all()
     return render_template('clients.html', client_list=client_list)
 
 
@@ -43,7 +43,7 @@ def add_client_post():
 
         new_client = Client(
             name=client_name,
-            phone=client_phone,
+            phone="+386" + client_phone,
             same_day_sms=client_same_day_sms,
             day_before_sms=client_day_before_sms,
             user=current_user

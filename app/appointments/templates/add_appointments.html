@@ -2,7 +2,7 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ url_for('.static', filename='appointments.css') }}">
-    <link rel="stylesheet" href="/app/static/autocomplete.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block content %}
@@ -20,27 +20,39 @@
             <form method="POST" action="/add_appointment" autocomplete="off">
                 {{ appointment_form.hidden_tag() }}
                 <div class="field">
+                    {{ appointment_form.client_name.label(class="label") }}
                     <div class="control">
-                        {{ appointment_form.client_name.label }}
-                        {{ appointment_form.client_name(class="input", value=client.name) }}
+                        {{ appointment_form.client_name(class="input selectbox") }}
                     </div>
                 </div>
                 <div class="field has-addons datetimefield">
                     <div class="control">
-                        {{ appointment_form.date_of_appointment.label }}
+                        {{ appointment_form.date_of_appointment.label(class="label") }}
                         {{ appointment_form.date_of_appointment(class="input date is-medium") }}
                     </div>
                     <div class="control">
-                        {{ appointment_form.time_of_appointment.label }}
+                        {{ appointment_form.time_of_appointment.label(class="label") }}
                         {{ appointment_form.time_of_appointment(class="input datetime is-medium") }}
                     </div>
+                </div>
+                <div class="field">
+                    {{ appointment_form.now_sms(class="checkbox") }}
+                    {{ appointment_form.now_sms.label(class="checkbox") }}
+                </div>
+                <div class="field">
+                    {{ appointment_form.same_day_sms(class="checkbox") }}
+                    {{ appointment_form.same_day_sms.label(class="checkbox") }}
+                </div>
+                <div class="field">
+                    {{ appointment_form.day_before_sms(class="checkbox") }}
+                    {{ appointment_form.day_before_sms.label(class="checkbox") }}
                 </div>
                 <div class="field is-grouped">
                     <div class="control is-expanded">
                         {{ appointment_form.submit(class="button is-success is-fullwidth") }}
                     </div>
                     <div class="control">
-                        <a class="button">Prekliči</a>
+                        <a class="button" href="{{ url_for('appointments_bp.appointments') }}">Prekliči</a>
                     </div>
                 </div>
             </form>
@@ -48,6 +60,10 @@
     </div>
 {% endblock %}
 {% block scripts %}
-    <script type="text/javascript">let search_array = JSON.parse({{ client_names | tojson }})</script>
-    <script src="/app/static/autocomplete.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="/app/static/selectboxAutocomplete.js"></script>
+
 {% endblock %}

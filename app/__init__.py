@@ -13,12 +13,12 @@ def create_app():
 
     with app.app_context():
         # Create database from models
-        from .models import User
+        from .models import User, SmsType
         db.init_app(app)
 
         # set up LoginManager to manage ..erm.. logins
         login_manager = LoginManager()
-        login_manager.login_view = 'auth.login'  # Redirects to auth.login whenever someone isn't authenticated
+        login_manager.login_view = 'auth_bp.login'  # Redirects to auth.login whenever someone isn't authenticated
         login_manager.init_app(app)
 
         @login_manager.user_loader  # Associate the cookie with the User
@@ -43,5 +43,15 @@ def create_app():
 
         # Create database
         db.create_all()
+
+        # Add the 3 types of SMS to the smstypes table
+        if not SmsType.query.all():
+            now_sms = SmsType(name='now_sms')
+            same_day_sms = SmsType(name='same_day_sms')
+            yesterday_sms = SmsType(name='yesterday_sms')
+            db.session.add(now_sms)
+            db.session.add(same_day_sms)
+            db.session.add(yesterday_sms)
+            db.session.commit()
 
         return app

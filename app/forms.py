@@ -1,8 +1,12 @@
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, Form, SelectField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectMultipleField
 from wtforms.validators import InputRequired, Email, Length, Regexp
-from wtforms.fields.html5 import TelField, DateField, TimeField, SearchField
+from wtforms.fields.html5 import TelField, DateField, TimeField
 from datetime import datetime
+from . import db
+from app.models import Client
+from flask_login import current_user
+from sqlalchemy import func
 
 
 # Python Classes to create html forms with Flask-WTF
@@ -39,10 +43,12 @@ class AddClientForm(FlaskForm):
     name = StringField('Ime stranke', validators=[InputRequired(), Length(3, 50, message='Med 3 in 50 črk.')])
     phone = TelField('Telefonska številka',
                      validators=[InputRequired(message='Potreben vnos.'),
-                                 Length(8, 8, message='Točno 8 mest mora biti dolga telefonska številka. A la "41333222".'),
+                                 Length(8, 8,
+                                        message='Točno 8 mest mora biti dolga telefonska številka. A la "41333222".'),
                                  Regexp(message='Telefonska številka je.. ŠTEVILKA..', regex='^[0-9]*$')
                                  ]
                      )
+    now_sms = BooleanField('SMS obvestilo takoj ob naročilu termina', default=False)
     same_day_sms = BooleanField('SMS obvestilo isti dan', default=False)
     day_before_sms = BooleanField('SMS obvestilo dan prej', default=False)
 
@@ -50,8 +56,17 @@ class AddClientForm(FlaskForm):
 
 
 class AddAppointmentForm(FlaskForm):
-    client_name = SearchField('Stranka', id="autocomplete", validators=[InputRequired()])
-    date_of_appointment = DateField('Datum', format='%Y-%m-%d', default=datetime.today())
-    time_of_appointment = TimeField('Čas', format='%H:%M', default=datetime.now().time())
+    client_name = SelectMultipleField('Stranka',
+                                      id="select",
+                                      choices=[],
+                                      validators=[InputRequired()],
+                                      coerce=int
+                                      )
+    date_of_appointment = DateField('Datum', format='%Y-%m-%d', default=datetime.today(), validators=[InputRequired()])
+    time_of_appointment = TimeField('Čas', format='%H:%M', default=datetime.now().time(), validators=[InputRequired()])
+
+    now_sms = BooleanField('SMS obvestilo takoj ob naročilu termina', default=False)
+    same_day_sms = BooleanField('SMS obvestilo isti dan', default=False)
+    day_before_sms = BooleanField('SMS obvestilo dan prej', default=False)
 
     submit = SubmitField('Shrani')

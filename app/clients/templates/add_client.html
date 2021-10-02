@@ -43,6 +43,10 @@
                     </div>
                 </div>
                 <div class="field">
+                    {{ client_form.now_sms(class="checkbox") }}
+                    {{ client_form.now_sms.label(class="checkbox") }}
+                </div>
+                <div class="field">
                     {{ client_form.same_day_sms(class="checkbox") }}
                     {{ client_form.same_day_sms.label(class="checkbox") }}
                 </div>
@@ -55,7 +59,7 @@
                         {{ client_form.submit(class="button is-success is-fullwidth") }}
                     </div>
                     <div class="control">
-                        <a class="button">Prekliči</a>
+                        <a class="button"{{ url_for('clients_bp.clients') }} href="">Prekliči</a>
                     </div>
                 </div>
             </form>
