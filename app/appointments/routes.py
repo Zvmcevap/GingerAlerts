@@ -22,9 +22,10 @@ def appointments():
     return render_template('appointments.html', appointment_list=appointment_list)
 
 
-@appointments_bp.route('/add_appointment/<client>', defaults={'client': None}, methods=['GET'])
+@appointments_bp.route('/add_appointment', defaults={'client_id': None}, methods=['GET'])
+@appointments_bp.route('/add_appointment/<client_id>', methods=['GET'])
 @login_required
-def add_appointment(client):
+def add_appointment(client_id):
     # Make the appointment form and add choices
     appointment_form = AddAppointmentForm()
     appointment_form.client_name.choices = db.session.query(
@@ -34,25 +35,30 @@ def add_appointment(client):
     ).order_by(func.lower(Client.name)).all()
 
     # If a client is passed in add it as the default option
-    if client:
-        appointment_form.client_name.default = [client.id]
+    if client_id:
+        appointment_form.client_name.data = [int(client_id)]
 
     return render_template('add_appointments.html',
                            appointment_form=appointment_form,
-                           client=client
+                           client=client_id
                            )
 
 
-@appointments_bp.route('/add_appointment', methods=['POST'])
+@appointments_bp.route('/add_appointment', defaults={'client_id': None}, methods=['POST'])
+@appointments_bp.route('/add_appointment/<client_id>', methods=['POST'])
 @login_required
-def add_appointment_post():
+def add_appointment_post(client_id):
     # Make the appointment form and create client list of choices
     appointment_form = AddAppointmentForm()
+
     appointment_form.client_name.choices = db.session.query(
         Client.id,
         Client.name + " " + Client.phone).filter(
         Client.user == current_user
     ).order_by(func.lower(Client.name)).all()
+
+    if client_id:
+        appointment_form.client_name.data = [int(client_id)]
 
     # Get the form data
     client_id = appointment_form.client_name.data[0]
@@ -88,7 +94,6 @@ def add_appointment_post():
             new_yesterday_sms = UnsentSms(appointment=new_appointment, sms_type_id=3)
             db.session.add(new_yesterday_sms)
         db.session.commit()
-
 
         return redirect(url_for('appointments_bp.appointments'))
 

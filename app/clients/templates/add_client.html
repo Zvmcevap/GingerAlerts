@@ -9,7 +9,11 @@
 
     <div class="column is-4 is-offset-4">
         <div class="box">
+        {% if client %}
+        <h3 class="title has-text-centered">Uredi Stranko: {{ client.name }}</h3>
+        {% else %}
             <h3 class="title has-text-centered">Shrani Stranko</h3>
+        {% endif %}
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     <div class="notification is-danger">
@@ -17,7 +21,7 @@
                     </div>
                 {% endif %}
             {% endwith %}
-            <form method="POST" action="/add_client">
+            <form method="POST" action="{% if client %}/update_client/{{ client.id }}{% else %}/add_client{% endif %}">
                 {{ client_form.hidden_tag() }}
                 <div class="field">
                     {{ input_text(client_form.name) }}
@@ -59,7 +63,7 @@
                         {{ client_form.submit(class="button is-success is-fullwidth") }}
                     </div>
                     <div class="control">
-                        <a class="button"{{ url_for('clients_bp.clients') }} href="">Prekliči</a>
+                        <a class="button" href="{{ url_for('clients_bp.clients') }}">Prekliči</a>
                     </div>
                 </div>
             </form>

@@ -5,39 +5,12 @@
 {% endblock %}
 
 {% block content %}
+    {% from "_client_list_item.html" import client_list_item %}
     <h1 class="title has-text-centered">Stranke</h1>
-    <div class="table-container">
-        <table class="table is-hoverable is-scrollable">
-            <thead>
-            <tr>
-                <th>Ime Stranke</th>
-                <th>Telefonska Številka</th>
-                <th>SMS Isti Dan</th>
-                <th>SMS Dan Prej</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for client in client_list %}
-                <tr>
-                    <td>{{ client.name }}</td>
-                    <td>{{ client.phone }}</td>
-                    <td>
-                        {% if client.same_day_sms %}
-                            <h2 style="color: green">Da</h2>
-                        {% else %}
-                            <h2 style="color: red">Ne</h2>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if client.day_before_sms %}
-                            <h2 style="color: green">Da</h2>
-                        {% else %}
-                            <h2 style="color: red">Ne</h2>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    <div class="container is-max-desktop">
+        <hr>
+        {% for client in client_list %}
+            {{ client_list_item(client) }}
+        {% endfor %}
     </div>
 {% endblock %}

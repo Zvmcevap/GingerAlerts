@@ -15,6 +15,7 @@ clients_bp = Blueprint('clients_bp', __name__,
 @login_required
 def clients():
     client_list = db.session.query(Client).filter(Client.user == current_user).order_by(Client.name).all()
+
     return render_template('clients.html', client_list=client_list)
 
 
@@ -32,6 +33,7 @@ def add_client_post():
 
     client_name = client_form.name.data
     client_phone = client_form.phone.data
+    client_now_sms = client_form.now_sms.data
     client_same_day_sms = client_form.same_day_sms.data
     client_day_before_sms = client_form.day_before_sms.data
 
@@ -44,6 +46,7 @@ def add_client_post():
         new_client = Client(
             name=client_name,
             phone="+386" + client_phone,
+            now_sms=client_now_sms,
             same_day_sms=client_same_day_sms,
             day_before_sms=client_day_before_sms,
             user=current_user
@@ -54,3 +57,57 @@ def add_client_post():
         return redirect(url_for('clients_bp.clients'))
 
     return render_template('add_client.html', client_form=client_form)
+
+
+@clients_bp.route('/delete_client/<client_id>')
+@login_required
+def delete_client(client_id):
+    Client.query.filter(Client.id == int(client_id)).delete()
+    db.session.commit()
+    return redirect(url_for('clients_bp.clients'))
+
+
+@clients_bp.route('/update_client/<client_id>', methods=['GET'])
+@login_required
+def update_client(client_id):
+    client = Client.query.filter(Client.id == int(client_id)).first()
+    client_form = AddClientForm()
+
+    client_form.name.data = client.name
+    client_form.phone.data = client.phone[4:]
+    client_form.now_sms.data = client.now_sms
+    client_form.same_day_sms.data = client.same_day_sms
+    client_form.day_before_sms.data = client.day_before_sms
+
+    return render_template('add_client.html', client_form=client_form, client=client)
+
+
+@clients_bp.route('/update_client/<client_id>', methods=['POST'])
+@login_required
+def update_client_post(client_id):
+    client_form = AddClientForm()
+
+    client_name = client_form.name.data
+    client_phone = client_form.phone.data
+    client_now_sms = client_form.now_sms.data
+    client_same_day_sms = client_form.same_day_sms.data
+    client_day_before_sms = client_form.day_before_sms.data
+
+    if client_form.validate_on_submit():
+        client = Client.query.filter((Client.name == client_name) | (Client.phone == client_phone)).first()
+
+        if client and client.id != int(client_id):
+            flash('Ime ali telefonska zasedena pri drugi stranki!')
+            return redirect(url_for('clients_bp.update_client'))
+
+        updated_client = Client.query.filter(Client.id == int(client_id)).first()
+
+        updated_client.name = client_name
+        updated_client.phone = "+386" + client_phone
+        updated_client.now_sms = client_now_sms
+        updated_client.same_day_sms = client_same_day_sms
+        updated_client.day_before_sms = client_day_before_sms
+
+        db.session.commit()
+
+        return redirect(url_for('clients_bp.clients'))

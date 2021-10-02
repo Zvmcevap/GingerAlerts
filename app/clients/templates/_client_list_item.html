@@ -1,0 +1,65 @@
+{% macro client_list_item(client) %}
+    <div class="field has-addons">
+        <div class="control is-expanded is-overlay control-name-and-tel">
+            <a class="button is-info is-rounded is-outlined is-fullwidth is-small control-name-and-tel"
+               href="{{ url_for('appointments_bp.add_appointment', client_id=client.id) }}">
+                <span class="icon"><i class="fas fa-user"></i></span>
+                <span>{{ client.name }} {{ client.phone }}</span>
+            </a>
+        </div>
+        <div class="control tooltip">
+            {% if client.now_sms %}
+                <button class="button is-rounded is-small" style="color: green" data-tooltip="SMS isti dan">
+                    <span class="icon"><i class="fas fa-check"></i></span>
+                </button>
+            {% else %}
+                <a class="button is-rounded is-small" style="color: red">
+                    <span class="icon"><i class="fas fa-times"></i></span>
+                </a>
+            {% endif %}
+            <span class="tooltiptext">Ali dobi sms takoj.</span>
+        </div>
+        <div class="control tooltip">
+            {% if client.same_day_sms %}
+                <button class="button is-rounded is-small" style="color: green" data-tooltip="SMS isti dan">
+                    <span class="icon"><i class="fas fa-check"></i></span>
+                </button>
+            {% else %}
+                <a class="button is-rounded is-small" style="color: red">
+                    <span class="icon"><i class="fas fa-times"></i></span>
+                </a>
+            {% endif %}
+            <span class="tooltiptext">Ali dobi sms isti dan.</span>
+        </div>
+        <div class="control tooltip">
+            {% if client.day_before_sms %}
+                <a class="button is-rounded is-small" style="color: green">
+                    <span class="icon"><i class="fas fa-check"></i></span>
+                </a>
+            {% else %}
+                <a class="button is-rounded is-small" style="color: red">
+                    <span class="icon"><i class="fas fa-times"></i></span>
+                </a>
+            {% endif %}
+            <span class="tooltiptext">Ali dobi sms dan prej.</span>
+        </div>
+        <div class="control">
+            <a class="button is-success is-rounded is-outlined is-small"
+               href="{{ url_for('clients_bp.update_client', client_id=client.id) }}">
+          <span class="icon is-small">
+            <i class="fas fa-edit"></i>
+          </span>
+                <span>Uredi</span>
+            </a>
+        </div>
+        <div class="control">
+            <a class="button is-danger is-rounded is-small"
+               href="{{ url_for('clients_bp.delete_client', client_id=client.id) }}"
+               onclick="return confirm('As zihr?');">
+          <span class="icon is-small">
+            <i class="far fa-trash-alt"></i>
+          </span>
+            </a>
+        </div>
+    </div>
+{% endmacro %}
