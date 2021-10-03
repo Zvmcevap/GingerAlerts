@@ -18,8 +18,43 @@ appointments_bp = Blueprint('appointments_bp', __name__,
 def appointments():
     appointment_list = db.session.query(Appointment).join(Client).filter(Client.user == current_user).order_by(
         Appointment.time_of_appointment).all()
+ 
+    # Sorting appointment dates into groups of years, months and days
+    appointment_years = set()
+    appointment_months = set()
+    appointment_days = set()
+    schedule = {}
 
-    return render_template('appointments.html', appointment_list=appointment_list)
+    for appointment in appointment_list:
+        appointment_years.add(appointment.time_of_appointment.year)
+        appointment_days.add(appointment.time_of_appointment.day)
+        appointment_months.add(appointment.time_of_appointment.month)
+    
+    # Yo dawg, heard you like for loops... will hopefully find some other way to do this... eventually
+    for year in sorted(appointment_years):
+        m = {}
+        for month in sorted(appointment_months):
+            d = []
+            for day in sorted(appointment_days):
+                for appointment in appointment_list:
+                    if appointment.time_of_appointment.year == year and appointment.time_of_appointment.month == month \
+                            and appointment.time_of_appointment.day == day:
+                        if year not in schedule.keys() or month not in m.keys() or day not in d:
+                            d.append(day)
+                            m[month] = d.copy()
+                            schedule[year] = m
+
+
+    for year in schedule:
+        for month, days in schedule[year].items():
+            print(schedule[year])
+
+
+
+    return render_template('appointments.html',
+                           appointment_list=appointment_list,
+                           schedule=schedule
+                           )
 
 
 @appointments_bp.route('/add_appointment', defaults={'client_id': None}, methods=['GET'])

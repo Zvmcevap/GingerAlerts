@@ -68,7 +68,7 @@ class UnsentSms(db.Model):
     type = db.relationship('SmsType', back_populates='unsent')
 
     def __repr__(self):
-        return f'Neposlan Sms: stranka:{self.id} čas:{self.appointment_id}'
+        return f'Neposlan Sms: id:{self.id}  id_termina:{self.appointment_id}'
 
 
 class SentSms(db.Model):
@@ -82,7 +82,7 @@ class SentSms(db.Model):
 
 
     def __repr__(self):
-        return f'Poslan Sms: stranka:{self.appointment.client.name} čas:{self.appointment_id}'
+        return f'Poslan Sms: id:{self.id} id termina:{self.appointment_id}'
 
 
 class SmsType(db.Model):
