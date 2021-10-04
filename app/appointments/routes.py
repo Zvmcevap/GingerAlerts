@@ -5,6 +5,7 @@ from sqlalchemy import func
 from app.forms import AddAppointmentForm
 from app.models import Appointment, Client, UnsentSms, SentSms
 from datetime import datetime
+import calendar
 
 appointments_bp = Blueprint('appointments_bp', __name__,
                             template_folder='templates',
@@ -20,7 +21,20 @@ def appointments():
         Appointment.time_of_appointment).all()
  
     # Sorting appointment dates into groups of years, months and days
+
     appointment_years = set()
+
+    test_dict = {}
+    for app in appointment_list:
+        date = app.time_of_appointment
+        year = date.year
+        month = date.month
+        day = date.day
+        if year not in test_dict:
+            test_dict[year] = []
+        test_dict[year].append([month, day])
+
+
     appointment_months = set()
     appointment_days = set()
     schedule = {}
@@ -34,23 +48,16 @@ def appointments():
     for year in sorted(appointment_years):
         m = {}
         for month in sorted(appointment_months):
-            d = []
+            d = set()
             for day in sorted(appointment_days):
                 for appointment in appointment_list:
                     if appointment.time_of_appointment.year == year and appointment.time_of_appointment.month == month \
                             and appointment.time_of_appointment.day == day:
                         if year not in schedule.keys() or month not in m.keys() or day not in d:
-                            d.append(day)
-                            m[month] = d.copy()
+                            d.add(day)
+                            m[calendar.month_name[month]] = sorted(d)
                             schedule[year] = m
-
-
-    for year in schedule:
-        for month, days in schedule[year].items():
-            print(schedule[year])
-
-
-
+    print(schedule)
     return render_template('appointments.html',
                            appointment_list=appointment_list,
                            schedule=schedule

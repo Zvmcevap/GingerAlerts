@@ -6,3 +6,8 @@
 .is-success {
     font-weight: bold;
 }
+
+.control-name-and-tel {
+    max-width: 18rem;
+    justify-content: left;
+}

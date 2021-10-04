@@ -24,7 +24,6 @@
 @media only screen and (max-width: 1000px) {
     .control-name-and-tel {
         width: 5rem;
-        justify-content: left;
     }
 }
 

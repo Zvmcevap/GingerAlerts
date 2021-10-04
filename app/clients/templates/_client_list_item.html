@@ -1,5 +1,5 @@
 {% macro client_list_item(client) %}
-    <div class="field has-addons">
+    <div class="field has-addons has-addons-centered">
         <div class="control is-expanded is-overlay control-name-and-tel">
             <a class="button is-info is-rounded is-outlined is-fullwidth is-small control-name-and-tel"
                href="{{ url_for('appointments_bp.add_appointment', client_id=client.id) }}">
