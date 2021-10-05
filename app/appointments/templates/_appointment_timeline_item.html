@@ -1,0 +1,36 @@
+{% macro appointment_timeline_item(appointment) %}
+    <div class="field has-addons has-addons-centered">
+        <div class="control is-expanded is-overlay control-name-and-tel">
+            <a class="button is-info is-rounded is-outlined is-fullwidth is-small control-name-and-tel"
+               href="{{ url_for('appointments_bp.add_appointment') }}">
+                <span class="icon"><i class="fas fa-user"></i></span>
+                <span>{{ appointment.client.name }} {{ appointment.client.phone }}</span>
+            </a>
+        </div>
+        <div class="control is-expanded is-overlay control-name-and-tel">
+            <a class="button is-info is-rounded is-outlined is-fullwidth is-small control-name-and-tel"
+               href="{{ url_for('appointments_bp.add_appointment') }}">
+                <span class="icon"><i class="fas fa-clock"></i></span>
+                <span>Čas termina: {{ appointment.time_of_appointment.strftime('%H:%M') }}</span>
+            </a>
+        </div>
+        <div class="control">
+            <a class="button is-success is-rounded is-outlined is-small"
+               href="{{ url_for('clients_bp.clients') }}">
+          <span class="icon is-small">
+            <i class="fas fa-edit"></i>
+          </span>
+                <span>Uredi</span>
+            </a>
+        </div>
+        <div class="control">
+            <a class="button is-danger is-rounded is-small"
+               href="{{ url_for('clients_bp.clients') }}"
+               onclick="return confirm('As zihr?');">
+          <span class="icon is-small">
+            <i class="far fa-trash-alt"></i>
+          </span>
+            </a>
+        </div>
+    </div>
+{% endmacro %}

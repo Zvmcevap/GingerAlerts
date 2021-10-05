@@ -28,12 +28,8 @@ def login_post():
         password = login_form.password.data
         remember = login_form.remember.data
 
-        print(name_email, password)
-
         # When a valid form is submitted check the data against the database
         user = User.query.filter((User.name == name_email) | (User.email == name_email)).first()
-
-        print(user)
 
         if not user:
             flash('Incorrect login information', 'invalid_login_details')

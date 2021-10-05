@@ -22,6 +22,9 @@
 }
 
 @media only screen and (max-width: 1000px) {
+    .hero-body{
+        padding: 10px;
+    }
     .control-name-and-tel {
         width: 5rem;
     }

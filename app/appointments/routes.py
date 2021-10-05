@@ -58,7 +58,7 @@ def appointments():
                             m[calendar.month_name[month]] = sorted(d)
                             schedule[year] = m
     print(schedule)
-    return render_template('appointments.html',
+    return render_template('timeline.html',
                            appointment_list=appointment_list,
                            schedule=schedule
                            )

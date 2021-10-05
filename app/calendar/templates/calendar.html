@@ -1,5 +1,25 @@
 {% extends "base.html" %}
 
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ url_for('.static', filename='calendar.css') }}">
+    {% assets "scss_all" %}
+    <link href="{{ url_for('.static', filename='weekly_calendar.scss') }}">
+    {% endassets %}
+{% endblock %}
+
 {% block content %}
+    {% from "_weekly_calendar.html" import weekly_calendar %}
     <h1 class="title has-text-centered">Koledarčić</h1>
+    <hr>
+    <div id="calendar"></div>
+
+
+    {{ weekly_calendar(appointment_list) }}
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+    <script src="{{ url_for('.static', filename='calendar.js') }}"></script>
 {% endblock %}
