@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, jsonify, url_for
 from flask_login import login_required, current_user
 
 from app import db
@@ -15,5 +15,15 @@ calendar_bp = Blueprint('calendar_bp', __name__,
 @login_required
 def calendar():
     appointments = db.session.query(Appointment).join(Client).filter(Client.user == current_user).all()
+    calendar_appointments = []
+    for app in appointments:
+        app_dict = {
+            'start': app.time_of_appointment.strftime('%Y-%m-%dT%H:%M:%S'),
+            'end': app.time_of_appointment.strftime('%Y-%m-%dT%H:%M:%S'),
+            'name': app.client.name,
+            'url': url_for('appointments_bp.an_appointment', appointment_id=app.id)
+        }
+        calendar_appointments.append(app_dict)
 
-    return render_template('calendar.html', appointment_list=appointments)
+    return render_template('calendar.html', appointment_list=appointments,
+                           calendar_appointments=calendar_appointments)

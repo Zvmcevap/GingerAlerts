@@ -83,3 +83,7 @@
 #show-texts:focus ~ .dropdown-menu {
   display: block;
 }
+
+.table {
+    margin: auto;
+}

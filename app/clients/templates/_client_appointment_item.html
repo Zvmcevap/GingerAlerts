@@ -62,7 +62,6 @@
         </div>
         <div class="control tooltip">
             {% if appointment.day_before_sms %}
-                {% if any(unsent_sms.sms_type_id == 3 for ) %}
                 {% for unsent_sms in appointment.unsent_texts %}
                     {% if unsent_sms.sms_type_id == 3 %}
                         <a class="button is-rounded is-small" style="color: red" data-tooltip="SMS isti dan">

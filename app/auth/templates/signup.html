@@ -12,7 +12,7 @@
                     </div>
                 {% endif %}
             {% endwith %}
-            <form action="/signup" method="POST">
+            <form action="{% if update %}/update_profile{% else %}/signup{% endif %}" method="POST">
                 {{ register_form.hidden_tag() }}
                 <div class="field">
                     {{ input_text(register_form.email) }}
@@ -20,15 +20,27 @@
                 <div class="field">
                     {{ input_text(register_form.name) }}
                 </div>
+
                 <div class="field">
                     {{ input_text(register_form.password) }}
                 </div>
-                <div class="field">
-                    {{ register_form.remember(class="checkbox") }}
-                    {{ register_form.remember.label(class="checkbox") }}
-                </div>
-                {{ register_form.recaptcha }}
-                {{ register_form.submit(class="button is-block is-info is-large is-fullwidth") }}
+                {% if not update %}
+                    <div class="field">
+                        {{ register_form.remember(class="checkbox") }}
+                        {{ register_form.remember.label(class="checkbox") }}
+                    </div>
+                    {{ register_form.recaptcha }}
+                    {{ register_form.submit(class="button is-block is-info is-large is-fullwidth") }}
+                {% else %}
+                    <div class="field is-grouped">
+                        <div class="control is-expanded">
+                            {{ register_form.submit(class="button is-success is-fullwidth") }}
+                        </div>
+                        <div class="control">
+                            <a class="button" href="{{ url_for('auth_bp.profile') }}">Prekliči</a>
+                        </div>
+                    </div>
+                {% endif %}
             </form>
         </div>
     </div>

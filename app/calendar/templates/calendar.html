@@ -2,6 +2,9 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ url_for('.static', filename='calendar.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/color-calendar/dist/css/theme-basic.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/color-calendar/dist/css/theme-glass.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/color-calendar/dist/bundle.min.js"></script>
 {% endblock %}
 {% block navigation %}
     {% if current_user.is_authenticated %}
@@ -16,15 +19,13 @@
     {% endif %}
 {% endblock %}
 {% block content %}
-    {% from "_weekly_calendar.html" import weekly_calendar %}
-    <div id="calendar"></div>
-
-
-
-
+    <div class="calendar" id="color-calendar"></div>
+    <div class="calendar events-display" id="events-display"></div>
 {% endblock %}
 
 {% block scripts %}
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+    <script>
+    const myEvents = {{ calendar_appointments | safe }}
+    </script>
     <script src="{{ url_for('.static', filename='calendar.js') }}"></script>
 {% endblock %}

@@ -122,7 +122,7 @@ def add_appointment_post(client_id):
 
         # add appointment to the unsent sms table
         if now_sms:  # This one is placeholder until the sms implementation!!!!
-            new_now_sms = SentSms(appointment=new_appointment, sms_type_id=1)
+            new_now_sms = UnsentSms(appointment=new_appointment, sms_type_id=1)
             db.session.add(new_now_sms)
         if same_day_sms:
             new_same_day_sms = UnsentSms(appointment=new_appointment, sms_type_id=2)

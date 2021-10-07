@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block navigation %}
+    {% if current_user.is_authenticated %}
+        <div class="buttons are-medium gumbi-navigacija mb-5">
+            <a href="{{ url_for('appointments_bp.appointments') }}"
+               class="button is-link is-outlined is-rounded">Termini</a>
+            <a href="{{ url_for('calendar_bp.calendar') }}"
+               class="button is-link is-outlined is-rounded">Koledar</a>
+            <a href="{{ url_for('clients_bp.clients') }}"
+               class="button is-link is-outlined is-rounded">Stranke</a>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="column is-4 is-offset-4">
+        <div class="box">
+            <h3 class="title has-text-centered">Profil</h3>
+            <div class="field">
+                <label class="label">Ime:</label>
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth">
+                        <span class="icon"><i class="fas fa-user"></i></span>
+                        <span>{{ current_user.name }}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Email:</label>
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth">
+                        <span class="icon"><i class="fas fa-user"></i></span>
+                        <span>{{ current_user.email }}</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Možnost pošiljanja SMSa strankam:</label>
+                <div class="control is-expanded">
+                    {% if current_user.send_SMS %}
+                        <a class="button is-fullwidth is-success is-outlined">
+                            <span class="icon"><i class="fas fa-check"></i></span>
+                            <span>Ti lahk</span>
+                        </a>
+                    {% else %}
+                        <a class="button is-fullwidth is-danger is-outlined">
+                            <span class="icon"><i class="fas fa-times"></i></span>
+                            <span>Noup!</span>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="field is-grouped">
+                <div class="control is-expanded">
+                    <a class="button is-success is-fullwidth"
+                       href="{{ url_for('auth_bp.update_profile') }}">
+                        <span>Uredi Profil</span>
+                        <span class="icon">
+                            <i class="fas fa-edit"></i>
+                        </span></a>
+                </div>
+                <div class="control">
+                    <a class="button is-danger"
+                       href="{{ url_for('auth_bp.delete_profile') }}"
+                       onclick="return confirm(
+                           'Če se izbrišeš bodo izbrisani tudi vsi tvoji podatki, nismo mi fejsbuk alo. Si šur?');">
+                        <span>Izbriši Profil</span>
+                        <span class="icon"><i class="far fa-trash-alt"></i></span>
+                    </a>
+                </div>
+            </div>
+{% endblock %}

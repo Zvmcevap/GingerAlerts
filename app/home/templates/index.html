@@ -12,10 +12,43 @@
     {% endif %}
 {% endblock %}
 {% block content %}
-<h1 class="title has-text-centered">
-  Ginger Alerts
-</h1>
-<h2 class="subtitle has-text-centered">
-  An SMS alert site in the making.
-</h2>
+    <h1 class="title has-text-centered">
+        Ginger Alerts
+    </h1>
+    <h2 class="subtitle has-text-centered">
+        An SMS alert site in the making.
+    </h2>
+    {% if user %}
+        {% if user.admin %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>username</th>
+                    <th>email</th>
+                    <th>SMS enabled</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users_list %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        {% if user.send_SMS %}
+                            <td><a class="is-success is-outlined" href="{{ url_for('auth_bp.disapprove_sms', user_id = user.id) }}"><span class="icon"><i
+                                    class="fas fa-check"></i>
+                            </span><span>DA</span></a></td>
+                        {% else %}
+                            <td><a class="is-warning is-outlined" href="{{ url_for('auth_bp.approve_sms', user_id = user.id) }}"><span class="icon"><i
+                                    class="fas fa-times"></i>
+                            </span><span>NE</span></a></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    {% endif %}
+
 {% endblock %}

@@ -35,7 +35,7 @@
                     </a>
                 {% endif %}
                 {% if current_user.is_authenticated %}
-                    <a class="navbar-item">{{ current_user.name }}</a>
+                    <a class="navbar-item" href="{{ url_for('auth_bp.profile') }}">{{ current_user.name }}</a>
                     <a href="{{ url_for('auth_bp.logout') }}" class="navbar-item">
                         Odjava
                     </a>
@@ -45,23 +45,40 @@
     </div>
 
     <div class="hero-body">
-    {% block navigation %}
-    {% endblock %}
+        {% block navigation %}
+        {% endblock %}
         <div class="container">
             {% block content %}
             {% endblock %}
         </div>
         {% if current_user.is_authenticated %}
             <div class="buttons has-addons is-right is-bottom dodaj">
-                <a class="button is-link is-rounded" href="{{ url_for('appointments_bp.add_appointment') }}">Dodaj
-                    termin</a>
-                <a class="button is-link is-rounded" href="{{ url_for('clients_bp.add_client') }}">Dodaj stranko</a>
+                <a class="button is-link is-rounded is-outlined"
+                   href="{{ url_for('appointments_bp.add_appointment') }}">
+                    <span class="icon"><i class="fas fa-clock"></i></span>
+                    <span class="icon"><i class="fas fa-plus"></i></span>
+                </a>
+                <a class="button is-link is-rounded is-outlined" href="{{ url_for('clients_bp.add_client') }}">
+                    <span class="icon"><i class="fas fa-plus"></i></span>
+                    <span class="icon"><i class="fas fa-user"></i></span>
+                </a>
             </div>
         {% endif %}
     </div>
 </section>
 </body>
-<script src="/app/static/base.js"></script>
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>
+            <strong>Ginger Alerts</strong> by <a href="https://www.instagram.com/beno.zupanc/">Beno Zupanc</a>. An sms
+            alerts system made for 2 people for fun and learning.</p>
+
+        <p> The <a href="https://github.com/Zvmcevap/GingerAlerts">source code</a> is licensed by no one anywhere, but
+            some parts are under the <a href="http://opensource.org/licenses/mit-license.php">MIT</a> license.</p>
+        <p>P.S. Think of everything as still under construction. As I am not pleased with anything :/</p>
+    </div>
+</footer>
 {% block scripts %}
+    <script src="/app/static/base.js"></script>
 {% endblock %}
 </html>
