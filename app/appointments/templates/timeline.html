@@ -2,28 +2,33 @@
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ url_for('.static', filename='timeline.css') }}">
 {% endblock %}
-
+{% block navigation %}
+    {% if current_user.is_authenticated %}
+        <div class="buttons are-medium gumbi-navigacija mb-5">
+            <a href="{{ url_for('appointments_bp.appointments') }}"
+               class="button is-link is-rounded">Termini</a>
+            <a href="{{ url_for('calendar_bp.calendar') }}"
+               class="button is-link is-outlined is-rounded">Koledar</a>
+            <a href="{{ url_for('clients_bp.clients') }}"
+               class="button is-link is-outlined is-rounded">Stranke</a>
+        </div>
+    {% endif %}
+{% endblock %}
 {% block content %}
-    {% from "_appointment_list_item.html" import appointment_list_item %}
     {% from "_appointment_timeline_item.html" import appointment_timeline_item %}
-
-    <h1 class="title has-text-centered">
-        Termini
-    </h1>
     <div class="container is-max-desktop">
-        <hr>
         <div class="timeline">
             {% for year in schedule %}
                 <header class="timeline-header">
-                    <span class="tag is-large is-info">{{ year }}</span>
+                    <span class="tag is-large is-link">{{ year }}</span>
                 </header>
                 {% for month in schedule[year] %}
                     <header class="timeline-header">
-                        <span class="tag is-primary">{{ month }}</span>
+                        <span class="tag is-danger">{{ month }}</span>
                     </header>
                     {% for day in schedule[year][month] %}
                         <div class="timeline-item">
-                            <div class="timeline-marker is-primary"></div>
+                            <div class="timeline-marker is-link"></div>
                             <div class="timeline-content">
                                 <p class="heading">{{ day }}. {{ month }}</p>
                                 {% for appointment in appointment_list %}

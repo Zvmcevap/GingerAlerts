@@ -2,19 +2,24 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ url_for('.static', filename='calendar.css') }}">
-    {% assets "scss_all" %}
-    <link href="{{ url_for('.static', filename='weekly_calendar.scss') }}">
-    {% endassets %}
 {% endblock %}
-
+{% block navigation %}
+    {% if current_user.is_authenticated %}
+        <div class="buttons are-medium gumbi-navigacija mb-5">
+            <a href="{{ url_for('appointments_bp.appointments') }}"
+               class="button is-link is-outlined is-rounded">Termini</a>
+            <a href="{{ url_for('calendar_bp.calendar') }}"
+               class="button is-link is-rounded">Koledar</a>
+            <a href="{{ url_for('clients_bp.clients') }}"
+               class="button is-link is-outlined is-rounded">Stranke</a>
+        </div>
+    {% endif %}
+{% endblock %}
 {% block content %}
     {% from "_weekly_calendar.html" import weekly_calendar %}
-    <h1 class="title has-text-centered">Koledarčić</h1>
-    <hr>
     <div id="calendar"></div>
 
 
-    {{ weekly_calendar(appointment_list) }}
 
 
 {% endblock %}

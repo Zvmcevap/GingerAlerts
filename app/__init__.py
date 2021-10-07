@@ -1,9 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_migrate import Migrate
+
 import config
 
 db = SQLAlchemy()
+migrate = Migrate()
 
 
 def create_app():
@@ -15,6 +18,7 @@ def create_app():
         # Create database from models
         from .models import User, SmsType
         db.init_app(app)
+        migrate.init_app(app, db)
 
         # set up LoginManager to manage ..erm.. logins
         login_manager = LoginManager()
@@ -46,9 +50,9 @@ def create_app():
 
         # Add the 3 types of SMS to the smstypes table
         if not SmsType.query.all():
-            now_sms = SmsType(name='now_sms')
-            same_day_sms = SmsType(name='same_day_sms')
-            yesterday_sms = SmsType(name='yesterday_sms')
+            now_sms = SmsType(name='Takojšnje SMS obvestilo:')
+            same_day_sms = SmsType(name='SMS obvestilo na isti dan:')
+            yesterday_sms = SmsType(name='SMS obvestilo dan prej:')
             db.session.add(now_sms)
             db.session.add(same_day_sms)
             db.session.add(yesterday_sms)

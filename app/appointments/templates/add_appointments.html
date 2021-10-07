@@ -9,7 +9,11 @@
     {% from "_input_text.html" import input_text %}
     <div class="column is-4 is-offset-4">
         <div class="box">
-            <h3 class="title has-text-centered">Shrani Termin</h3>
+            {% if appointment %}
+                <h3 class="title has-text-centered">Uredi Termin</h3>
+            {% else %}
+                <h3 class="title has-text-centered">Nov Termin</h3>
+            {% endif %}
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     <div class="notification is-danger">
@@ -17,7 +21,8 @@
                     </div>
                 {% endif %}
             {% endwith %}
-            <form method="POST" action="/add_appointment" autocomplete="off">
+            <form method="POST" action="{% if appointment %}/update_appointment/
+                {{ appointment.id }}{% else %}/add_appointment{% endif %}" autocomplete="off">
                 {{ appointment_form.hidden_tag() }}
                 <div class="field">
                     {{ appointment_form.client_name.label(class="label") }}
@@ -65,5 +70,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="/app/static/selectboxAutocomplete.js"></script>
-
 {% endblock %}

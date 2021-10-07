@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_required, current_user
 from app import db
-from app.models import Client
+from app.models import Client, Appointment, SentSms, UnsentSms
 from app.forms import AddClientForm
 
 clients_bp = Blueprint('clients_bp', __name__,
@@ -111,3 +111,15 @@ def update_client_post(client_id):
         db.session.commit()
 
         return redirect(url_for('clients_bp.clients'))
+
+
+@clients_bp.route('/a_client/<client_id>', methods=['GET'])
+@login_required
+def a_client(client_id):
+    client = Client.query.filter(Client.id == client_id).first()
+    appointment_list = Appointment.query.filter(Appointment.client == client).order_by(
+        Appointment.time_of_appointment).all()
+
+    sent_texts = db.session.query(SentSms).join(Appointment).filter(Appointment.client == client).all()
+
+    return render_template('a_client.html', client=client, appointment_list=appointment_list, sent_texts=sent_texts)

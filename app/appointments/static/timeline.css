@@ -22,7 +22,9 @@
 
 .timeline {
     display: flex;
-    flex-direction: column
+    flex-direction: column;
+    max-width: min-content;
+    margin: auto
 }
 
 .timeline .timeline-header {
@@ -695,4 +697,16 @@
 
 .timeline.no-headers .timeline-item.is-last::before {
     height: 1.2rem
+}
+.button {
+    overflow-x: hidden;
+    justify-content: left;
+}
+.timeline-content {
+    min-width: 23rem;
+    width: 100%;
+}
+
+.button.is-dark {
+    background-color: dimgrey;
 }

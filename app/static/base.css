@@ -76,3 +76,10 @@
   visibility: visible;
   opacity: 1;
 }
+
+.span3:focus ~ .dropdown-menu {
+  display: none;
+}
+#show-texts:focus ~ .dropdown-menu {
+  display: block;
+}

@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ url_for('.static', filename='clients.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    {% from "_client_appointment_item.html" import client_appointment_item %}
+    {% from "_sent_text_item.html" import sent_text_item %}
+    <div class="column is-4 is-offset-4">
+        <div class="box">
+            <h3 class="title has-text-centered">Stranka</h3>
+            <div class="field">
+                <label class="label">Ime stranke:</label>
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth">
+                        <span class="icon"><i class="fas fa-user"></i></span>
+                        <span>{{ client.name }}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Telefonska številka:</label>
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth">
+                        <span class="icon"><i class="fas fa-phone"></i></span>
+                        <span>{{ client.phone }}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Stranka dobi SMS takoj:</label>
+                <div class="control is-expanded">
+                    {% if client.now_sms %}
+                        <a class="button is-fullwidth is-success is-outlined">
+                            <span class="icon"><i class="fas fa-check"></i></span>
+                            <span>Da</span>
+                        </a>
+                    {% else %}
+                        <a class="button is-fullwidth is-danger is-outlined">
+                            <span class="icon"><i class="fas fa-times"></i></span>
+                            <span>Ne</span>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Stranka dobi SMS na dan termina:</label>
+                <div class="control is-expanded">
+                    {% if client.same_day_sms %}
+                        <a class="button is-fullwidth is-success is-outlined">
+                            <span class="icon"><i class="fas fa-check"></i></span>
+                            <span>Da</span>
+                        </a>
+                    {% else %}
+                        <a class="button is-fullwidth is-danger is-outlined">
+                            <span class="icon"><i class="fas fa-times"></i></span>
+                            <span>Ne</span>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Stranka dobi SMS 1 dan pred terminom:</label>
+                <div class="control is-expanded">
+                    {% if client.day_before_sms %}
+                        <a class="button is-fullwidth is-success is-outlined">
+                            <span class="icon"><i class="fas fa-check"></i></span>
+                            <span>Da</span>
+                        </a>
+                    {% else %}
+                        <a class="button is-fullwidth is-danger is-outlined">
+                            <span class="icon"><i class="fas fa-times"></i></span>
+                            <span>Ne</span>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="field is-grouped">
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth"
+                       href="{{ url_for('appointments_bp.add_appointment', client_id=client.id) }}">Naroči Termin</a>
+                </div>
+                <div class="control">
+                    <a class="button is-success"
+                       href="{{ url_for('clients_bp.update_client', client_id=client.id) }}">
+                        <span class="icon is-small">
+                            <i class="fas fa-edit"></i>
+                        </span></a>
+                </div>
+                <div class="control">
+                    <a class="button is-danger"
+                       href="{{ url_for('clients_bp.delete_client', client_id=client.id) }}"
+                       onclick="return confirm(
+                           'Če zbrišeš stranko, bodo izbrisani tudi vsi njeni termini. Je to oki doki, smoki?'
+                           );"><span
+                            class="icon">
+                        <i class="far fa-trash-alt"></i></span>
+                    </a>
+                </div>
+                <div class="control">
+                    <a class="button" href="{{ url_for('clients_bp.clients') }}">Nazaj</a>
+                </div>
+            </div>
+            {% if appointment_list %}
+                <div class="dropdown is-expanded">
+                    <div class="dropdown-trigger is-expanded">
+                        <button class="button is-fullwidth" aria-haspopup="true" aria-controls="dropdown-menu">
+                            <span>Termini</span>
+                            <span class="icon is-small"><i class="fas fa-angle-down" aria-hidden="true"></i></span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                        <div class="dropdown-content">
+                            <hr class="dropdown-divider">
+                        </div>
+                        <div class="dropdown-content">
+                            {% for appointment in appointment_list %}
+                                {{ client_appointment_item(appointment) }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if sent_texts %}
+                <div class="dropdown is-expanded dropdown-texts">
+                    <div class="dropdown-trigger is-expanded">
+                        <button class="button is-fullwidth" id="show-texts" aria-haspopup="true" aria-controls="dropdown-menu">
+                            <span>Poslani SMSi</span>
+                            <span class="icon is-small"><i class="fas fa-angle-down" aria-hidden="true"></i></span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                        <div class="dropdown-content">
+                            <hr class="dropdown-divider">
+                        </div>
+                        <div class="dropdown-content">
+                            {% for sent_text in sent_texts %}
+                                {{ sent_text_item(sent_text) }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

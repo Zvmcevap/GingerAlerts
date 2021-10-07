@@ -3,12 +3,21 @@
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ url_for('.static', filename='clients.css') }}">
 {% endblock %}
-
+{% block navigation %}
+    {% if current_user.is_authenticated %}
+        <div class="buttons are-medium gumbi-navigacija mb-5">
+            <a href="{{ url_for('appointments_bp.appointments') }}"
+               class="button is-link is-outlined is-rounded">Termini</a>
+            <a href="{{ url_for('calendar_bp.calendar') }}"
+               class="button is-link is-outlined is-rounded">Koledar</a>
+            <a href="{{ url_for('clients_bp.clients') }}"
+               class="button is-link is-rounded">Stranke</a>
+        </div>
+    {% endif %}
+{% endblock %}
 {% block content %}
     {% from "_client_list_item.html" import client_list_item %}
-    <h1 class="title has-text-centered">Stranke</h1>
-    <div class="container is-max-desktop is-centered">
-        <hr>
+    <div class="container is-max-desktop">
         {% for client in client_list %}
             {{ client_list_item(client) }}
         {% endfor %}

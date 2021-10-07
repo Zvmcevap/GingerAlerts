@@ -1,5 +1,16 @@
 {% extends "base.html" %}
-
+{% block navigation %}
+    {% if current_user.is_authenticated %}
+        <div class="buttons are-medium gumbi-navigacija mb-5">
+            <a href="{{ url_for('appointments_bp.appointments') }}"
+               class="button is-link is-outlined is-rounded">Termini</a>
+            <a href="{{ url_for('calendar_bp.calendar') }}"
+               class="button is-link is-outlined is-rounded">Koledar</a>
+            <a href="{{ url_for('clients_bp.clients') }}"
+               class="button is-link is-outlined is-rounded">Stranke</a>
+        </div>
+    {% endif %}
+{% endblock %}
 {% block content %}
 <h1 class="title has-text-centered">
   Ginger Alerts

@@ -45,30 +45,23 @@
     </div>
 
     <div class="hero-body">
-        {% if current_user.is_authenticated %}
-            <div class="buttons are-medium gumbi-navigacija">
-                <a href="{{ url_for('appointments_bp.appointments') }}"
-                   class="button is-danger is-outlined is-rounded">Termini</a>
-                <a href="{{ url_for('calendar_bp.calendar') }}"
-                   class="button is-danger is-outlined is-rounded">Koledar</a>
-                <a href="{{ url_for('clients_bp.clients') }}"
-                   class="button is-danger is-outlined is-rounded">Stranke</a>
-            </div>
-        {% endif %}
+    {% block navigation %}
+    {% endblock %}
         <div class="container">
             {% block content %}
             {% endblock %}
         </div>
         {% if current_user.is_authenticated %}
             <div class="buttons has-addons is-right is-bottom dodaj">
-                <a class="button is-danger is-rounded" href="{{ url_for('appointments_bp.add_appointment') }}">Dodaj
+                <a class="button is-link is-rounded" href="{{ url_for('appointments_bp.add_appointment') }}">Dodaj
                     termin</a>
-                <a class="button is-danger is-rounded" href="{{ url_for('clients_bp.add_client') }}">Dodaj stranko</a>
+                <a class="button is-link is-rounded" href="{{ url_for('clients_bp.add_client') }}">Dodaj stranko</a>
             </div>
         {% endif %}
     </div>
 </section>
 </body>
+<script src="/app/static/base.js"></script>
 {% block scripts %}
 {% endblock %}
 </html>

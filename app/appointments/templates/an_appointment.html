@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ url_for('.static', filename='appointments.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    <div class="column is-4 is-offset-4">
+        <div class="box">
+            <h3 class="title has-text-centered">Termin</h3>
+            <div class="field">
+                <label class="label">Ime stranke:</label>
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth"
+                       href="{{ url_for('clients_bp.a_client',client_id = appointment.client.id) }}">
+                        <span class="icon"><i class="fas fa-user"></i></span>
+                        <span>{{ appointment.client.name }}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Čas termina:</label>
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth">
+                        <span class="icon"><i class="fas fa-calendar"></i></span>
+                        <span>{{ appointment.time_of_appointment.strftime('%d/%m/%Y') }}</span>
+                        <span class="icon"><i class="fas fa-clock"></i></span>
+                        <span>{{ appointment.time_of_appointment.strftime('%H:%M') }}</span>
+                    </a>
+                </div>
+            </div>
+            {% if sent_sms %}
+                {% for ss in sent_sms %}
+                    <div class="field">
+                        <label class="label">{{ ss.type.name }}</label>
+                        <div class="control is-expanded">
+                            <a class="button is-fullwidth is-success is-outlined">
+                                <span class="icon"><i class="fas fa-check"></i></span>
+                                <span>Sporočilo je bilo poslano</span>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if unsent_sms %}
+                {% for us in unsent_sms %}
+                    <div class="field">
+                        <label class="label">{{ us.type.name }}</label>
+                        <div class="control is-expanded">
+                            <a class="button is-fullwidth is-danger is-outlined">
+                                <span class="icon"><i class="fas fa-times"></i></span>
+                                <span>Sporočilo še ni poslano</span>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <div class="field is-grouped">
+                <div class="control is-expanded">
+                    <a class="button is-success is-fullwidth"
+                       href="{{ url_for('appointments_bp.update_appointment', appointment_id=appointment.id) }}">Uredi
+                        Termin</a>
+                </div>
+                <div class="control">
+                    <a class="button is-danger"
+                       href="{{ url_for('appointments_bp.delete_appointment', appointment_id=appointment.id) }}"
+                       onclick="return confirm('As zihr?');">
+                        <span class="icon"><i class="far fa-trash-alt"></i></span></a>
+                </div>
+                <div class="control">
+                    <a class="button" href="{{ url_for('appointments_bp.appointments') }}">Nazaj</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
