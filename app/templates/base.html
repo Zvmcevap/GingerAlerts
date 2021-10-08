@@ -52,14 +52,16 @@
             {% endblock %}
         </div>
         {% if current_user.is_authenticated %}
-            <div class="buttons has-addons is-right is-bottom dodaj">
-                <a class="button is-link is-rounded is-outlined"
+            <div class="buttons has-addons is-bottom dodaj">
+                <a class="button is-link is-rounded"
                    href="{{ url_for('appointments_bp.add_appointment') }}">
                     <span class="icon"><i class="fas fa-clock"></i></span>
+                    <span>Nov Termin</span>
                     <span class="icon"><i class="fas fa-plus"></i></span>
                 </a>
-                <a class="button is-link is-rounded is-outlined" href="{{ url_for('clients_bp.add_client') }}">
+                <a class="button is-link is-rounded" href="{{ url_for('clients_bp.add_client') }}">
                     <span class="icon"><i class="fas fa-plus"></i></span>
+                    <span>Nova Stranka</span>
                     <span class="icon"><i class="fas fa-user"></i></span>
                 </a>
             </div>
@@ -68,14 +70,56 @@
 </section>
 </body>
 <footer class="footer">
+    <hr>
     <div class="content has-text-centered">
-        <p>
-            <strong>Ginger Alerts</strong> by <a href="https://www.instagram.com/beno.zupanc/">Beno Zupanc</a>. An sms
-            alerts system made for 2 people for fun and learning.</p>
-
-        <p> The <a href="https://github.com/Zvmcevap/GingerAlerts">source code</a> is licensed by no one anywhere, but
-            some parts are under the <a href="http://opensource.org/licenses/mit-license.php">MIT</a> license.</p>
-        <p>P.S. Think of everything as still under construction. As I am not pleased with anything :/</p>
+        <h1>Ginger Alerts</h1>
+        <div class="columns">
+            <div class="column">
+                <h6>Zakaj to obstaja</h6>
+                <p class="has-text-center">
+                    Spletna stran je bila narejena za 2 človeka, da ne bosta potrebovala več ročno pošiljati sporočil
+                    svojim strankam. Narejena je bila, da se spotoma, ponesreči, mogoče, naučim tudi kaj o izdelovanju
+                    in postavljanju spletnih aplikacij na vsesplet.
+                </p>
+            </div>
+            <div class="column has-text-left ml-6">
+                <h6>Različni Kontakti</h6>
+                <ul>
+                    <li><a href="https://github.com/Zvmcevap">
+                        <span class="icon"><i class="fab fa-github"></i></span>
+                        <span>Github Account</span>
+                    </a></li>
+                    <li><a href="https://steamcommunity.com/id/bnzpnc">
+                        <span class="icon"><i class="fab fa-steam"></i></span>
+                        <span>Most Active Account</span>
+                    </a></li>
+                    <li><a href="https://www.instagram.com/beno.zupanc/">
+                        <span class="icon"><i class="fab fa-instagram"></i></span>
+                        <span>Instagram Account</span>
+                    </a></li>
+                    <li><a href="https://www.facebook.com/beno.zupanc/">
+                        <span class="icon"><i class="fab fa-facebook-f"></i></span>
+                        <span>"Facebooks"</span>
+                    </a></li>
+                </ul>
+            </div>
+            <div class="column">
+                <h6>Želje in prošnje</h6>
+                <p class="has-text-center">
+                    Vse pritožbe in pohvale lahko oddaš na enega od kontaktnih linkov ali <a>direktno v kontaktni
+                    obrazec</a>
+                    V slučaju, da hočeš tudi TI pošiljati sms-e iz te spletne strani, mi javi pa če bom takrat dosti pod
+                    gasom verjetno odobrim.
+                </p>
+            </div>
+            <div class="column ml-6">
+                <div class="control mr-6">
+                    <a class="navbar-item" href="{{ url_for('home_bp.index') }}">
+                        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </footer>
 {% block scripts %}

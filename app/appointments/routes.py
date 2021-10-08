@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_required, current_user
 from app import db
-from sqlalchemy import func
+from sqlalchemy import func, desc
 from app.forms import AddAppointmentForm
 from app.models import Appointment, Client, UnsentSms, SentSms
 from datetime import datetime
@@ -23,12 +23,26 @@ def appointments():
     ).order_by(
         Appointment.time_of_appointment).all()
 
+    past_appointment_list = db.session.query(Appointment).join(Client).filter(
+        (Client.user == current_user) & (func.date(Appointment.time_of_appointment) < datetime.now().date())
+    ).order_by(desc(Appointment.time_of_appointment)).all()
+
     # Sorting appointment dates into groups of years, months and days
 
     appointment_years = set()
+    past_years = set()
     appointment_months = set()
+    past_months = set()
     appointment_days = set()
+    past_days = set()
     schedule = {}
+    past_schedule = {}
+
+    for appointment in past_appointment_list:
+        past_years.add(appointment.time_of_appointment.year)
+        past_days.add(appointment.time_of_appointment.day)
+        past_months.add(appointment.time_of_appointment.month)
+    print(sorted(past_days, reverse=True))
 
     for appointment in appointment_list:
         appointment_years.add(appointment.time_of_appointment.year)
@@ -49,9 +63,26 @@ def appointments():
                             m[calendar.month_name[month]] = sorted(d)
                             schedule[year] = m
 
+    for year in sorted(past_years, reverse=True):
+        print(year)
+        m = {}
+        for month in sorted(past_months, reverse=True):
+            print(month)
+            d = set()
+            for day in sorted(past_days, reverse=True):
+                for appointment in past_appointment_list:
+                    if appointment.time_of_appointment.year == year and appointment.time_of_appointment.month == month \
+                            and appointment.time_of_appointment.day == day:
+                        if year not in schedule.keys() or month not in m.keys() or day not in d:
+                            d.add(day)
+                            m[calendar.month_name[month]] = reversed(list(d))
+                            past_schedule[year] = m
+
     return render_template('timeline.html',
                            appointment_list=appointment_list,
-                           schedule=schedule
+                           past_appointment_list=past_appointment_list,
+                           schedule=schedule,
+                           past_schedule=past_schedule
                            )
 
 

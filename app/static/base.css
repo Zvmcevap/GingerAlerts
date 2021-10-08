@@ -1,7 +1,7 @@
 .dodaj {
     position: fixed;
     bottom: 3rem;
-    right: 5rem;
+    right: 3rem;
 }
 
 .navbar, .navbar-end, .navbar-menu, .navbar-start {
@@ -77,9 +77,6 @@
   opacity: 1;
 }
 
-.span3:focus ~ .dropdown-menu {
-  display: none;
-}
 #show-texts:focus ~ .dropdown-menu {
   display: block;
 }

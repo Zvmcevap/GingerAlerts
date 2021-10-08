@@ -710,3 +710,16 @@
 .button.is-dark {
     background-color: dimgrey;
 }
+
+.tabs {
+    max-width: 30rem;
+    margin: auto;
+}
+
+#tab-content .timeline {
+  display: none;
+}
+
+#tab-content .timeline.is-active {
+  display: block;
+}
