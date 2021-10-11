@@ -6,6 +6,9 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash
 from flask_twilio import Twilio
 import config
+import os
+import logging
+from logging.handlers import RotatingFileHandler
 
 
 db = SQLAlchemy()
@@ -69,7 +72,7 @@ def create_app():
                 email='zupanc.beno@gmail.com',
                 name='Beno',
                 created_at=time_of_creation,
-                password=generate_password_hash('Kajmak19', method='sha256'),
+                password=generate_password_hash('TermeCatez', method='sha256'),
                 admin=True,
                 send_SMS=True
             )
@@ -94,5 +97,26 @@ def create_app():
             db.session.add(same_day_sms)
             db.session.add(yesterday_sms)
             db.session.commit()
+
+        if not app.debug and not app.testing:
+            # ...
+
+            if app.config['LOG_TO_STDOUT']:
+                stream_handler = logging.StreamHandler()
+                stream_handler.setLevel(logging.INFO)
+                app.logger.addHandler(stream_handler)
+            else:
+                if not os.path.exists('logs'):
+                    os.mkdir('logs')
+                file_handler = RotatingFileHandler('logs/ginger-alerts.log',
+                                                   maxBytes=10240, backupCount=10)
+                file_handler.setFormatter(logging.Formatter(
+                    '%(asctime)s %(levelname)s: %(message)s '
+                    '[in %(pathname)s:%(lineno)d]'))
+                file_handler.setLevel(logging.INFO)
+                app.logger.addHandler(file_handler)
+
+            app.logger.setLevel(logging.INFO)
+            app.logger.info('Ginger Alerts')
 
         return app
