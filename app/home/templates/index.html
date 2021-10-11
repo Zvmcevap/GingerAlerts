@@ -22,7 +22,7 @@
 
 
     {% if user %}
-        {% if user.send_SMS %}
+        {% if not user.send_SMS %}
             <article class="message is-warning">
                 <div class="message-header">
                     <p><span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
