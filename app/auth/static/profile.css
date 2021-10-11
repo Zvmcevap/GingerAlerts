@@ -1,20 +1,3 @@
-.control-name-and-tel {
-    max-width: 18rem;
-    justify-content: left;
-}
-
-.dropdown {
-    width: 100%;
-}
-
-.dropdown-trigger {
-    width: 100%
-}
-
-.dropdown-menu {
-    width: 100%;
-}
-
 .button.is-multiline {
   min-height: 2.25em;
   white-space: unset;
@@ -25,9 +8,4 @@
 /** This isn't the actual suggested CSS - but it is just a quick fix to replicate the functionality**/
 .button.is-multiline .icon {
   margin: 0! important;
-}
-
-.block {
-    text-align: center;
-    min-width: 29rem;
 }

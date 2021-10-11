@@ -4,10 +4,14 @@
     {% from "_input_text.html" import input_text %}
     <div class="column is-4 is-offset-4">
         <div class="box">
-            <h3 class="title has-text-centered">Registracija</h3>
+            {% if update %}
+                <h3 class="title has-text-centered">Spremeni ime ali email</h3>
+            {% else %}
+                <h3 class="title has-text-centered">Registracija</h3>
+            {% endif %}
             {% with messages = get_flashed_messages(category_filter=['name_not_unique']) %}
                 {% if messages %}
-                    <div class="notification is-danger">
+                    <div class="notification is-link">
                         {{ messages[0] }} Go to <a href="{{ url_for('auth_bp.login') }}">Login instead?</a>.
                     </div>
                 {% endif %}
@@ -20,11 +24,10 @@
                 <div class="field">
                     {{ input_text(register_form.name) }}
                 </div>
-
-                <div class="field">
-                    {{ input_text(register_form.password) }}
-                </div>
                 {% if not update %}
+                    <div class="field">
+                        {{ input_text(register_form.password) }}
+                    </div>
                     <div class="field">
                         {{ register_form.remember(class="checkbox") }}
                         {{ register_form.remember.label(class="checkbox") }}

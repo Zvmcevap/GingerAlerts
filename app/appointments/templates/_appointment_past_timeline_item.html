@@ -16,80 +16,85 @@
             </a>
         </div>
         <div class="control tooltip">
-            {% if appointment.now_sms %}
-                {% for sent_sms in appointment.sent_texts %}
-                    {% if sent_sms.sms_type_id == 1 %}
-                        <a class="button  is-small" style="color: green" data-tooltip="SMS isti dan">
-                            <span class="icon"><i class="fas fa-check"></i></span>
-                        </a>
-                        <span class="tooltiptext">Takojšnji SMS prejet.</span>
-                    {% endif %}
-                {% endfor %}
-                {% for unsent_sms in appointment.unsent_texts %}
-                    {% if unsent_sms.sms_type_id == 1 %}
-                        <a class="button  is-small" style="color: red" data-tooltip="SMS isti dan">
-                            <span class="icon"><i class="fas fa-times"></i></span>
-                        </a>
-                        <span class="tooltiptext">Takojšnji SMS ni bil prejet.</span>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                <a class="button  is-small" style="color: grey">
-                    <span class="icon"><i class="fas fa-circle"></i></span>
-                </a>
-                <span class="tooltiptext">Takojšnjega smsa se ne pošilja.</span>
-            {% endif %}
-        </div>
-        <div class="control tooltip">
-            {% if appointment.same_day_sms %}
-                {% for sent_sms in appointment.sent_texts %}
-                    {% if sent_sms.sms_type_id == 2 %}
-                        <a class="button  is-small" style="color: green" data-tooltip="SMS isti dan">
-                            <span class="icon"><i class="fas fa-check"></i></span>
-                        </a>
-                        <span class="tooltiptext">SMS na dan termina prejet.</span>
-                    {% endif %}
-                {% endfor %}
-                {% for unsent_sms in appointment.unsent_texts %}
-                    {% if unsent_sms.sms_type_id == 2 %}
-                        <a class="button  is-small" style="color: red" data-tooltip="SMS isti dan">
-                            <span class="icon"><i class="fas fa-times"></i></span>
-                        </a>
-                        <span class="tooltiptext">SMS na dan termina ni bil prejet.</span>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                <a class="button  is-small" style="color: grey">
-                    <span class="icon"><i class="fas fa-circle"></i></span>
-                </a>
-                <span class="tooltiptext">SMS na dan termina se ne pošilja.</span>
-            {% endif %}
-        </div>
-        <div class="control tooltip">
-            {% if appointment.day_before_sms %}
-                {% for sent_sms in appointment.sent_texts %}
-                    {% if sent_sms.sms_type_id == 3 %}
-                        <a class="button  is-small" style="color: green" data-tooltip="SMS isti dan">
-                            <span class="icon"><i class="fas fa-check"></i></span>
-                        </a>
-                        <span class="tooltiptext">SMS dan pred terminom prejet.</span>
-                    {% endif %}
-                {% endfor %}
-                {% for unsent_sms in appointment.unsent_texts %}
-                    {% if unsent_sms.sms_type_id == 3 %}
-                        <a class="button  is-small" style="color: red" data-tooltip="SMS isti dan">
-                            <span class="icon"><i class="fas fa-times"></i></span>
-                        </a>
-                        <span class="tooltiptext">SMS dan pred terminom ni bil prejet.</span>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                <a class="button  is-small" style="color: grey">
-                    <span class="icon"><i class="fas fa-circle"></i></span>
-                </a>
-                <span class="tooltiptext">SMS dan pred terminom se ne pošilja.</span>
-            {% endif %}
-        </div>
+            {% if appointment.now_sms == 2 %}
 
+                <a class="button is-success is-outlined is-small" data-tooltip="SMS isti dan">
+                    <span class="icon"><i class="fas fa-check"></i></span>
+                </a>
+                <span class="tooltiptext">Takojšnji SMS prejet.</span>
+            {% elif appointment.now_sms == 1 %}
+
+                <a class="button is-link is-outlined is-small" data-tooltip="SMS isti dan">
+                    <span class="icon"><i class="fas fa-times"></i></span>
+                </a>
+                <span class="tooltiptext">Takojšnji SMS še ni bil prejet.</span>
+            {% elif appointment.now_sms == 0 %}
+
+                <a class="button  is-small" style="color: grey">
+                    <span class="icon"><i class="fas fa-circle"></i></span>
+                </a>
+                <span class="tooltiptext">Takojšnjega smsa ne dobi.</span>
+            {% endif %}
+
+        </div>
+        <div class="control tooltip">
+            {% if appointment.same_day_sms == 2 %}
+
+                <a class="button is-success is-outlined is-small" data-tooltip="SMS isti dan">
+                    <span class="icon"><i class="fas fa-check"></i></span>
+                </a>
+                <span class="tooltiptext">SMS na dan termina prejet.</span>
+            {% elif appointment.same_day_sms == 1 %}
+
+                <a class="button is-link is-outlined is-small" data-tooltip="SMS isti dan">
+                    <span class="icon"><i class="fas fa-times"></i></span>
+                </a>
+                <span class="tooltiptext">SMS na dan termina še ni prejet.</span>
+            {% elif appointment.same_day_sms == 0 %}
+
+                <a class="button  is-small" style="color: grey">
+                    <span class="icon"><i class="fas fa-circle"></i></span>
+                </a>
+                <span class="tooltiptext">SMS na dan termina ne bo poslan.</span>
+            {% endif %}
+
+        </div>
+        <div class="control tooltip">
+            {% if appointment.day_before_sms == 2 %}
+                <a class="button is-outlined is-success is-small" data-tooltip="SMS isti dan">
+                    <span class="icon"><i class="fas fa-check"></i></span>
+                </a>
+                <span class="tooltiptext">SMS dan pred terminom prejet.</span>
+            {% elif appointment.day_before_sms == 1 %}
+
+                <a class="button is-link is-outlined is-small" data-tooltip="SMS isti dan">
+                    <span class="icon"><i class="fas fa-times"></i></span>
+                </a>
+                <span class="tooltiptext">SMS dan pred terminom še ni prejet.</span>
+
+            {% elif appointment.day_before_sms == 0 %}
+                <a class="button  is-small" style="color: grey">
+                    <span class="icon"><i class="fas fa-circle"></i></span>
+                </a>
+                <span class="tooltiptext">SMS dan pred terminom ne bo poslan.</span>
+            {% endif %}
+        </div>
+        <div class="control">
+            <a class="button is-success is-rounded is-outlined is-small"
+               href="{{ url_for('appointments_bp.update_appointment', appointment_id = appointment.id) }}">
+          <span class="icon is-small">
+            <i class="fas fa-edit"></i>
+          </span>
+            </a>
+        </div>
+        <div class="control">
+            <a class="button is-link is-rounded is-small"
+               href="{{ url_for('appointments_bp.delete_appointment', appointment_id = appointment.id) }}"
+               onclick="return confirm('As zihr?');">
+          <span class="icon is-small">
+            <i class="far fa-trash-alt"></i>
+          </span>
+            </a>
+        </div>
     </div>
 {% endmacro %}

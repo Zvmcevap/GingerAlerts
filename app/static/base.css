@@ -84,3 +84,14 @@
 .table {
     margin: auto;
 }
+
+.is-main-color {
+    background-color: #ae1635;
+}
+
+.card-header {
+    background-color: #446878;
+}
+.card-header-title{
+    color: white;
+}

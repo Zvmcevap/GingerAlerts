@@ -13,26 +13,30 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True)
     send_SMS = db.Column(db.Boolean, default=False)
     admin = db.Column(db.Boolean, default=False)
+    sms_template_id = db.Column(db.ForeignKey('smstemplates.id'), nullable=False, default=1)
 
     clients = db.relationship('Client', back_populates='user')
+    sms_template = db.relationship('SmsTemplate', back_populates='users')
 
     def __repr__(self):
-        return f'User: id:{self.id} name:{self.name} email:{self.email} registered{self.created_at} SMS-able{self.send_SMS} '
+        return f'User: id:{self.id} name:{self.name} email:{self.email} registered{self.created_at} sending{self.send_SMS} '
 
 
 class Client(db.Model):
     __tablename__ = 'clients'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     name = db.Column(db.String(100), nullable=False, index=True)
     phone = db.Column(db.String(20), index=True)
     now_sms = db.Column(db.Boolean, default=False)
     same_day_sms = db.Column(db.Boolean, default=False)
     day_before_sms = db.Column(db.Boolean, default=False)
+    sms_template_id = db.Column(db.ForeignKey('smstemplates.id'), nullable=True)
 
-    user = db.relationship('User', back_populates='clients', passive_deletes=True)
-    appointments = db.relationship('Appointment', back_populates='client', passive_deletes=True)
+    user = db.relationship('User', back_populates='clients')
+    appointments = db.relationship('Appointment', back_populates='client')
+    sms_template = db.relationship('SmsTemplate', back_populates='clients')
 
     def __repr__(self):
         return f'Stranka: ime:{self.name} telefonska:{self.phone}'
@@ -42,33 +46,19 @@ class Appointment(db.Model):
     __tablename__ = 'appointments'
 
     id = db.Column(db.Integer, primary_key=True)
-    client_id = db.Column(db.Integer, db.ForeignKey('clients.id', ondelete='CASCADE'), nullable=False)
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'), nullable=False)
     time_of_appointment = db.Column(db.DateTime, nullable=False, default=datetime.now(), index=True)
 
-    now_sms = db.Column(db.Boolean, default=False)
-    same_day_sms = db.Column(db.Boolean, default=False)
-    day_before_sms = db.Column(db.Boolean, default=False)
+    now_sms = db.Column(db.Integer, default=0)
+    same_day_sms = db.Column(db.Integer, default=0)
+    day_before_sms = db.Column(db.Integer, default=0)
 
-    client = db.relationship('Client', back_populates='appointments', passive_deletes=True)
+    client = db.relationship('Client', back_populates='appointments')
 
-    unsent_texts = db.relationship('UnsentSms', back_populates='appointment', passive_deletes=True)
     sent_texts = db.relationship('SentSms', back_populates='appointment')
 
     def __repr__(self):
         return f'Termin: stranka:{self.client.name} čas:{self.time_of_appointment}'
-
-
-class UnsentSms(db.Model):
-    __tablename__ = 'unsentsmses'
-    id = db.Column(db.Integer, primary_key=True)
-    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id', ondelete='CASCADE'), nullable=False)
-    sms_type_id = db.Column(db.Integer, db.ForeignKey('smstypes.id'), nullable=False)
-
-    appointment = db.relationship('Appointment', back_populates='unsent_texts', passive_deletes=True)
-    type = db.relationship('SmsType', back_populates='unsent')
-
-    def __repr__(self):
-        return f'Neposlan Sms: id:{self.id}  id_termina:{self.appointment_id}'
 
 
 class SentSms(db.Model):
@@ -77,6 +67,7 @@ class SentSms(db.Model):
     appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False)
     sms_type_id = db.Column(db.Integer, db.ForeignKey('smstypes.id'), nullable=False)
     sent_at_datetime = db.Column(db.DateTime, default=datetime.now(), index=True)
+    sms_text = db.Column(db.Text, nullable=False)
 
     appointment = db.relationship('Appointment', back_populates='sent_texts')
     type = db.relationship('SmsType', back_populates='sent')
@@ -90,5 +81,13 @@ class SmsType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
 
-    unsent = db.relationship('UnsentSms', back_populates='type')
     sent = db.relationship('SentSms', back_populates='type')
+
+
+class SmsTemplate(db.Model):
+    __tablename__ = 'smstemplates'
+    id = db.Column(db.Integer, primary_key=True)
+    template = db.Column(db.Text, nullable=False)
+
+    users = db.relationship('User', back_populates='sms_template')
+    clients = db.relationship('Client', back_populates='sms_template')

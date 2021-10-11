@@ -5,25 +5,22 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Flask Auth Example</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"/>
+    <title>Ginger Alerts</title>
+    <link rel="stylesheet" href="/app/static/bulma.css"/>
     <link rel="stylesheet" href="/app/static/base.css">
     <script src="https://kit.fontawesome.com/b776fe45c0.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/app/static/bulma-list.css">
-
     {% block stylesheet %}
     {% endblock %}
 </head>
 
 <body>
 <section class="hero">
-
     <div class="hero-head">
         <nav class="navbar is-mobile" role="navigation">
             <div class="navbar-brand">
-                <a class="navbar-item" href="{{ url_for('home_bp.index') }}">
-                    <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-                </a>
+                    <a class="logo" href="{{ url_for('home_bp.index') }}">
+                        <img rel="icon" src="/app/static/GALogoLarge.svg" width="200" height="200">
+                    </a>
             </div>
             <div class="navbar-end is-active is-mobile">
                 {% if not current_user.is_authenticated %}
@@ -78,44 +75,46 @@
                 <h6>Zakaj to obstaja</h6>
                 <p class="has-text-center">
                     Spletna stran je bila narejena za 2 človeka, da ne bosta potrebovala več ročno pošiljati sporočil
-                    svojim strankam. Narejena je bila, da se spotoma, ponesreči, mogoče, naučim tudi kaj o izdelovanju
-                    in postavljanju spletnih aplikacij na vsesplet.
+                    svojim strankam, v upanju, da se spotoma, ponesreči, mogoče, tudi jaz naučim kaj o izdelovanju
+                    in postavljanju spletnih aplikacij na erm.. splet.
                 </p>
             </div>
             <div class="column has-text-left ml-6">
                 <h6>Različni Kontakti</h6>
                 <ul>
                     <li><a href="https://github.com/Zvmcevap">
-                        <span class="icon"><i class="fab fa-github"></i></span>
-                        <span>Github Account</span>
+                        <span class="icon has-text-info"><i class="fab fa-github"></i></span>
+                        <span class="has-text-info">Github Račun</span>
                     </a></li>
                     <li><a href="https://steamcommunity.com/id/bnzpnc">
-                        <span class="icon"><i class="fab fa-steam"></i></span>
-                        <span>Most Active Account</span>
+                        <span class="icon has-text-info"><i class="fab fa-steam"></i></span>
+                        <span class="has-text-info">Račun na vodno-paro</span>
                     </a></li>
                     <li><a href="https://www.instagram.com/beno.zupanc/">
-                        <span class="icon"><i class="fab fa-instagram"></i></span>
-                        <span>Instagram Account</span>
+                        <span class="icon has-text-info"><i class="fab fa-instagram"></i></span>
+                        <span class="has-text-info">Instagram Račun</span>
                     </a></li>
                     <li><a href="https://www.facebook.com/beno.zupanc/">
-                        <span class="icon"><i class="fab fa-facebook-f"></i></span>
-                        <span>"Facebooks"</span>
+                        <span class="icon has-text-info"><i class="fab fa-facebook-f"></i></span>
+                        <span class="has-text-info">"Facebooks"</span>
                     </a></li>
                 </ul>
             </div>
             <div class="column">
-                <h6>Želje in prošnje</h6>
+                <h6>Vaše mnenje</h6>
                 <p class="has-text-center">
-                    Vse pritožbe in pohvale lahko oddaš na enega od kontaktnih linkov ali <a>direktno v kontaktni
-                    obrazec</a>
-                    V slučaju, da hočeš tudi TI pošiljati sms-e iz te spletne strani, mi javi pa če bom takrat dosti pod
-                    gasom verjetno odobrim.
+                    Vse pritožbe, pohvale, želje in sanje lahko oddaš na enega od kontaktnih linkov ali <a class="has-text-info">direktno v
+                    kontaktni
+                    obrazec.</a></p>
+                <p>
+                    V slučaju, da hočeš tudi TI pošiljati sms-e iz te spletne strani mi javi, pa če bom takrat dosti pod
+                    gasom ti verjetno odobrim.
                 </p>
             </div>
             <div class="column ml-6">
                 <div class="control mr-6">
-                    <a class="navbar-item" href="{{ url_for('home_bp.index') }}">
-                        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+                    <a class="logo" href="{{ url_for('home_bp.index') }}">
+                        <img src="/app/static/GALogoLarge.svg" width="500" height="500">
                     </a>
                 </div>
             </div>

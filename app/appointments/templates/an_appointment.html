@@ -41,31 +41,98 @@
                     </a>
                 </div>
             </div>
-            {% if sent_sms %}
-                {% for ss in sent_sms %}
-                    <div class="field">
-                        <label class="label">{{ ss.type.name }}</label>
-                        <div class="control is-expanded">
-                            <a class="button is-fullwidth is-success is-outlined">
-                                <span class="icon"><i class="fas fa-check"></i></span>
-                                <span>Sporočilo je bilo poslano</span>
-                            </a>
-                        </div>
+            {% if appointment.now_sms == 2 %}
+                <div class="field">
+                    <label class="label">Takojšnji SMS</label>
+                    <div class="control is-expanded">
+                        <a class="button is-fullwidth is-success is-outlined">
+                            <span class="icon"><i class="fas fa-check"></i></span>
+                            <span>Sporočilo je bilo poslano</span>
+                        </a>
                     </div>
-                {% endfor %}
+                </div>
+            {% elif appointment.now_sms == 1 %}
+                <div class="field">
+                    <label class="label">Takojšnji SMS</label>
+                    <div class="control is-expanded">
+                        <a class="button is-fullwidth is-link is-outlined">
+                            <span class="icon"><i class="fas fa-times"></i></span>
+                            <span>Sporočilo še ni poslano</span>
+                        </a>
+                    </div>
+                </div>
+            {% elif appointment.now_sms == 0 %}
+                <div class="field">
+                    <label class="label">Takojšnji SMS</label>
+                    <div class="control is-expanded">
+                        <a class="button is-fullwidth is-grey is-outlined">
+                            <span class="icon"><i class="fas fa-circle"></i></span>
+                            <span>Sporočilo se ne pošlje</span>
+                        </a>
+                    </div>
+                </div>
             {% endif %}
-            {% if unsent_sms %}
-                {% for us in unsent_sms %}
-                    <div class="field">
-                        <label class="label">{{ us.type.name }}</label>
-                        <div class="control is-expanded">
-                            <a class="button is-fullwidth is-danger is-outlined">
-                                <span class="icon"><i class="fas fa-times"></i></span>
-                                <span>Sporočilo še ni poslano</span>
-                            </a>
-                        </div>
+            {% if appointment.same_day_sms == 2 %}
+                <div class="field">
+                    <label class="label">SMS obvestilo na dan termina</label>
+                    <div class="control is-expanded">
+                        <a class="button is-fullwidth is-success is-outlined">
+                            <span class="icon"><i class="fas fa-check"></i></span>
+                            <span>Sporočilo je bilo poslano</span>
+                        </a>
                     </div>
-                {% endfor %}
+                </div>
+            {% elif appointment.same_day_sms == 1 %}
+                <div class="field">
+                    <label class="label">SMS obvestilo na dan termina</label>
+                    <div class="control is-expanded">
+                        <a class="button is-fullwidth is-link is-outlined">
+                            <span class="icon"><i class="fas fa-times"></i></span>
+                            <span>Sporočilo še ni poslano</span>
+                        </a>
+                    </div>
+                </div>
+            {% elif appointment.same_day_sms == 0 %}
+                <div class="field">
+                    <label class="label">SMS obvestilo na dan termina</label>
+                    <div class="control is-expanded">
+                        <a class="button is-fullwidth is-grey is-outlined">
+                            <span class="icon"><i class="fas fa-circle"></i></span>
+                            <span>Sporočilo se ne pošlje</span>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+            {% if appointment.day_before_sms == 2 %}
+                <div class="field">
+                    <label class="label">SMS obvestilo dan pred terminom</label>
+                    <div class="control is-expanded">
+                        <a class="button is-fullwidth is-success is-outlined">
+                            <span class="icon"><i class="fas fa-check"></i></span>
+                            <span>Sporočilo je bilo poslano</span>
+                        </a>
+                    </div>
+                </div>
+            {% elif appointment.day_before_sms == 1 %}
+                <div class="field">
+                    <label class="label">SMS obvestilo dan pred terminom</label>
+                    <div class="control is-expanded">
+                        <a class="button is-fullwidth is-link is-outlined">
+                            <span class="icon"><i class="fas fa-times"></i></span>
+                            <span>Sporočilo še ni poslano</span>
+                        </a>
+                    </div>
+                </div>
+            {% elif appointment.day_before_sms == 0 %}
+                <div class="field">
+                    <label class="label">SMS obvestilo dan pred terminom</label>
+                    <div class="control is-expanded">
+                        <a class="button is-fullwidth is-grey is-outlined">
+                            <span class="icon"><i class="fas fa-circle"></i></span>
+                            <span>Sporočilo se ne pošlje</span>
+                        </a>
+                    </div>
+                </div>
             {% endif %}
             <div class="field is-grouped">
                 <div class="control is-expanded">
@@ -74,7 +141,7 @@
                         Termin</a>
                 </div>
                 <div class="control">
-                    <a class="button is-danger"
+                    <a class="button is-link"
                        href="{{ url_for('appointments_bp.delete_appointment', appointment_id=appointment.id) }}"
                        onclick="return confirm('As zihr?');">
                         <span class="icon"><i class="far fa-trash-alt"></i></span></a>

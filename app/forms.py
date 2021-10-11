@@ -1,12 +1,9 @@
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectMultipleField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectMultipleField, TextField, SelectField
 from wtforms.validators import InputRequired, Email, Length, Regexp
 from wtforms.fields.html5 import TelField, DateField, TimeField
 from datetime import datetime
-from . import db
-from app.models import Client
-from flask_login import current_user
-from sqlalchemy import func
+from wtforms.widgets import TextArea
 
 
 # Python Classes to create html forms with Flask-WTF
@@ -19,12 +16,11 @@ class RegisterForm(FlaskForm):
                                              ])
     password = PasswordField('Geslo', validators=[InputRequired(),
                                                   Length(6, 50, message='Med 6 in 50 znakov.')
-
                                                   ])
     remember = BooleanField('Zapomni se me', default=False)
     recaptcha = RecaptchaField()
 
-    submit = SubmitField('Vpis')
+    submit = SubmitField('Shrani')
 
 
 class LoginForm(FlaskForm):
@@ -36,7 +32,7 @@ class LoginForm(FlaskForm):
                                                   Length(6, 50, message='Med 6 in 50 znakov.')])
     remember = BooleanField('Zapomni se me', default=False)
 
-    submit = SubmitField('Vpis')
+    submit = SubmitField('Shrani')
 
 
 class AddClientForm(FlaskForm):
@@ -68,5 +64,38 @@ class AddAppointmentForm(FlaskForm):
     now_sms = BooleanField('SMS obvestilo takoj ob naročilu termina', default=False)
     same_day_sms = BooleanField('SMS obvestilo isti dan', default=False)
     day_before_sms = BooleanField('SMS obvestilo dan prej', default=False)
+
+    submit = SubmitField('Shrani')
+
+
+class ChangePasswordForm(FlaskForm):
+    old_password = PasswordField('Staro Geslo', validators=[InputRequired(),
+                                                            Length(6, 50, message='Med 6 in 50 znakov.')
+                                                            ])
+    new_password = PasswordField('Novo Geslo', validators=[InputRequired(),
+                                                           Length(6, 50, message='Med 6 in 50 znakov.')
+                                                           ])
+    submit = SubmitField('Shrani')
+
+
+class ChangeNameEmailForm(FlaskForm):
+    name = StringField('Ime', validators=[InputRequired(message='Potreben vnos.'),
+                                          Length(3, 20, message='Med 3 in 20.')
+                                          ])
+    email = StringField('Email', validators=[InputRequired(message='Potreben vnos.'),
+                                             Email(message='Vsaj podobno emailu.')
+                                             ])
+    submit = SubmitField('Shrani')
+
+
+class SmsTemplateForm(FlaskForm):
+    client = SelectMultipleField('Za koga se uporabi ta SMS: ',
+                                 id="select",
+                                 choices=[],
+                                 coerce=int
+                                 )
+    template = TextField('SMS besedilo',
+                         widget=TextArea(),
+                         validators=[InputRequired(message='Ne more biti prazen SMS, kako bi to zgledal?')])
 
     submit = SubmitField('Shrani')

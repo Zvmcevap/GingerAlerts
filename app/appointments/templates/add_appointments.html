@@ -27,7 +27,7 @@
             {% endif %}
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
-                    <div class="notification is-danger">
+                    <div class="notification is-link">
                         {{ messages[0] }}
                     </div>
                 {% endif %}
@@ -38,7 +38,7 @@
                 <div class="field">
                     {{ appointment_form.client_name.label(class="label") }}
                     <div class="control">
-                        {{ appointment_form.client_name(class="input selectbox") }}
+                        {{ appointment_form.client_name(class="input selectbox", style="width: 100%") }}
                     </div>
                 </div>
                 <div class="field has-addons datetimefield">

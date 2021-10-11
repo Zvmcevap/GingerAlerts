@@ -22,12 +22,13 @@
             <ul>
                 <li class="is-active" data-tab="1">
                     <a>
-                        <span>Prihajajoči</span>
+                        <span class="icon"><i class="fas fa-hourglass-start"></i></span>
+                        <span>Bodoči</span>
                     </a>
                 </li>
                 <li data-tab="2">
                     <a>
-                        <span class="icon is-small"><i class="fa fa-music"></i></span>
+                        <span class="icon"><i class="fas fa-hourglass-end"></i></span>
                         <span>Pretekli</span>
                     </a>
                 </li>
@@ -35,83 +36,113 @@
         </div>
         <div id="tab-content">
             <div class="timeline is-active" data-content="1">
-                <header class="timeline-header">
-                    <span>Zob časa</span>
-                </header>
-                <header class="timeline-header">
-                    <span class="tag is-link is-medium"><i class="fa fa-chevron-down"></i></span>
-                </header>
-
-                <div class="timeline-item">
-                </div>
-                {% for year in schedule %}
+                {% if appointment_list|length > 0 %}
                     <header class="timeline-header">
-                        <span class="tag is-large is-link">{{ year }}</span>
+                        <span>Zob časa</span>
                     </header>
-                    {% for month in schedule[year] %}
+                    <header class="timeline-header">
+                        <span class="tag is-info is-medium"><i class="fa fa-chevron-down"></i></span>
+                    </header>
+
+                    <div class="timeline-item">
+                    </div>
+                    {% for year in schedule %}
                         <header class="timeline-header">
-                            <span class="tag is-danger">{{ month }}</span>
+                            <span class="tag is-large is-info">{{ year }}</span>
                         </header>
-                        {% for day in schedule[year][month] %}
-                            <div class="timeline-item">
-                                <div class="timeline-marker is-link"></div>
-                                <div class="timeline-content">
-                                    <p class="heading">{{ day }}. {{ month }}</p>
-                                    {% for appointment in appointment_list %}
-                                        {% if day == appointment.time_of_appointment.day and month == appointment.time_of_appointment.strftime('%B') and year == appointment.time_of_appointment.year %}
-                                            {{ appointment_timeline_item(appointment) }}
-                                        {% endif %}
-                                    {% endfor %}
+                        {% for month in schedule[year] %}
+                            <header class="timeline-header">
+                                <span class="tag is-success">{{ month }}</span>
+                            </header>
+                            {% for day in schedule[year][month] %}
+                                <div class="timeline-item">
+                                    <div class="timeline-marker is-icon is-info">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <p class="heading">{{ day }}. {{ month }}</p>
+                                        {% for appointment in appointment_list %}
+                                            {% if day == appointment.time_of_appointment.day and month == appointment.time_of_appointment.strftime('%B') and year == appointment.time_of_appointment.year %}
+                                                {{ appointment_timeline_item(appointment) }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
-                            </div>
+                            {% endfor %}
                         {% endfor %}
                     {% endfor %}
-                {% endfor %}
-                <header class="timeline-header">
-                    <span>Zob časa</span>
-                </header>
-                <header class="timeline-header">
-                    <span class="tag is-link is-medium"><i class="fa fa-chevron-down"></i></span>
-                </header>
+                    <header class="timeline-header">
+                        <span>Zob časa</span>
+                    </header>
+                    <header class="timeline-header">
+                        <span class="tag is-info is-medium"><i class="fa fa-chevron-down"></i></span>
+                    </header>
+                {% else %}
+                    <div class="block">
+                        <p><span>Ni jih, kje pa so?</span>
+                            <a class="button is-link is-outlined is-small"
+                               href="{{ url_for('appointments_bp.add_appointment') }}">
+                                <span class="icon"><i class="fas fa-plus"></i></span>
+                                <span>Dodaj nov termin.</span>
+                            </a>
+                        </p>
+                    </div>
+                {% endif %}
             </div>
             <div class="timeline" data-content="2">
-                <header class="timeline-header">
-                    <span class="tag is-dark is-medium"><i class="fa fa-chevron-up"></i></span>
-                </header>
-                <header class="timeline-header">
-                    <span>Zob časa</span>
-                </header>
-                <div class="timeline-item">
-                </div>
-                {% for year in past_schedule %}
+                {% if past_schedule|length > 0 %}
                     <header class="timeline-header">
-                        <span class="tag is-large is-dark">{{ year }}</span>
+                        <span class="tag is-info is-medium"><i class="fa fa-chevron-up"></i></span>
                     </header>
-                    {% for month in past_schedule[year] %}
-                        <header class="timeline-header">
-                            <span class="tag has-background-grey has-text-white">{{ month }}</span>
-                        </header>
-                        {% for day in past_schedule[year][month] %}
-                            <div class="timeline-item">
-                                <div class="timeline-marker has-background-grey has-text-white"></div>
-                                <div class="timeline-content">
-                                    <p class="heading">{{ day }}. {{ month }}</p>
-                                    {% for appointment in past_appointment_list %}
-                                        {% if day == appointment.time_of_appointment.day and month == appointment.time_of_appointment.strftime('%B') and year == appointment.time_of_appointment.year %}
-                                            {{ appointment_past_timeline_item(appointment) }}
-                                        {% endif %}
-                                    {% endfor %}
+                    <header class="timeline-header">
+                        <span>Zob časa</span>
+                    </header>
+                    <div class="timeline-item">
+                    </div>
+                    {% for year in past_schedule %}
+                        {% for month in past_schedule[year] %}
+                            {% for day in past_schedule[year][month] %}
+                                <div class="timeline-item">
+                                    <div class="timeline-marker is-dark is-icon">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <p class="heading">{{ day }}. {{ month }}</p>
+                                        {% for appointment in past_appointment_list %}
+                                            {% if day == appointment.time_of_appointment.day and month == appointment.time_of_appointment.strftime('%B') and year == appointment.time_of_appointment.year %}
+                                                {{ appointment_past_timeline_item(appointment) }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
-                            </div>
+                            {% endfor %}
+                            <header class="timeline-header">
+                                <span class="tag is-success">{{ month }}</span>
+                            </header>
                         {% endfor %}
+                        <header class="timeline-header">
+                            <span class="tag is-large is-info">{{ year }}</span>
+                        </header>
                     {% endfor %}
-                {% endfor %}
-                <header class="timeline-header">
-                    <span class="tag is-dark is-medium"><i class="fa fa-chevron-up"></i></span>
-                </header>
-                <header class="timeline-header">
-                    <span>Zob časa</span>
-                </header>
+                    <div class="timeline-item">
+                    </div>
+                    <header class="timeline-header">
+                        <span class="tag is-info is-medium"><i class="fa fa-chevron-up"></i></span>
+                    </header>
+                    <header class="timeline-header">
+                        <span>Zob časa</span>
+                    </header>
+                {% else %}
+                    <div class="block">
+                        <p><span>Ni jih, kje pa so?</span>
+                            <a class="button is-link is-outlined is-small"
+                               href="{{ url_for('appointments_bp.add_appointment') }}">
+                                <span class="icon"><i class="fas fa-plus"></i></span>
+                                <span>Dodaj nov termin.</span>
+                            </a>
+                        </p>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

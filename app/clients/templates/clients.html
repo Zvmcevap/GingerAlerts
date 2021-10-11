@@ -18,8 +18,20 @@
 {% block content %}
     {% from "_client_list_item.html" import client_list_item %}
     <div class="container is-max-desktop">
-        {% for client in client_list %}
-            {{ client_list_item(client) }}
-        {% endfor %}
+        {% if client_list|length > 0 %}
+            {% for client in client_list %}
+                {{ client_list_item(client) }}
+            {% endfor %}
+        {% else %}
+            <div class="block">
+                <p><span>Niti ene stranke še ni shranjene.</span>
+                    <a class="button is-link is-outlined is-small"
+                       href="{{ url_for('clients_bp.add_client') }}">
+                        <span class="icon"><i class="fas fa-plus"></i></span>
+                        <span>Dodaj prvo stranko.</span>
+                    </a>
+                </p>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

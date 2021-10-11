@@ -117,16 +117,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 24px;
-    width: 24px;
+    height: 12px;
+    width: 12px;
     background: #dbdbdb;
     border: 1px solid #dbdbdb;
     border-radius: 100%;
-    padding: .5rem
 }
 
 .timeline .timeline-item .timeline-marker.is-icon > * {
-    font-size: .75rem !important
+    font-size: 0.75rem !important
 }
 
 .timeline .timeline-item .timeline-marker.is-outlined .image {
@@ -698,10 +697,12 @@
 .timeline.no-headers .timeline-item.is-last::before {
     height: 1.2rem
 }
+
 .button {
     overflow-x: hidden;
     justify-content: left;
 }
+
 .timeline-content {
     min-width: 23rem;
     width: 100%;
@@ -717,9 +718,19 @@
 }
 
 #tab-content .timeline {
-  display: none;
+    display: none;
 }
 
 #tab-content .timeline.is-active {
-  display: block;
+    display: block;
+}
+
+.block {
+    text-align: center;
+    min-width: 29rem;
+}
+
+.tabs.is-toggle li.is-active a {
+    background-color: #13445A;
+    border-color: #13445A;
 }

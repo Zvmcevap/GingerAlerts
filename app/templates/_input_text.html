@@ -2,9 +2,9 @@
     {{ input_name.label(class="label") }}
     <div class="control">
         {% if input_name.errors %}
-            {{ input_name(class="input is-danger") }}
+            {{ input_name(class="input is-link") }}
             {% for error in input_name.errors %}
-                <p class="help is-danger">{{ error }}</p>
+                <p class="help is-link">{{ error }}</p>
             {% endfor %}
         {% else %}
             {{ input_name(class="input") }}

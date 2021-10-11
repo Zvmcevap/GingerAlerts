@@ -12,7 +12,7 @@
         </div>
         <div class="control is-overlay">
             <a class="button is-small is-link is-outlined"
-               href="{{ url_for('appointments_bp.an_appointment', appointment_id = sent_text.appointment_id) }}">
+               href="{{ url_for('home_bp.sent_sms', sms_id = sent_text.id) }}">
                 <span>SMS poslan ob:</span>
                 <span class="icon"><i class="fas fa-calendar"></i></span>
                 <span>{{ sent_text.sent_at_datetime.strftime('%d/%m/%Y') }}</span>

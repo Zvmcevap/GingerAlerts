@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_required, current_user
 from app import db
-from app.models import Client, Appointment, SentSms, UnsentSms
+from app.models import Client, Appointment, SentSms, SmsTemplate, User
 from app.forms import AddClientForm
+from datetime import datetime
 
 clients_bp = Blueprint('clients_bp', __name__,
                        template_folder='templates',
@@ -62,7 +63,13 @@ def add_client_post():
 @clients_bp.route('/delete_client/<client_id>')
 @login_required
 def delete_client(client_id):
-    Client.query.filter(Client.id == int(client_id)).delete()
+    client = Client.query.filter(Client.id == int(client_id)).first()
+
+    appointments = db.session.query(Appointment).filter(Appointment.client == client).all()
+
+    for appointment in appointments:
+        db.session.delete(appointment)
+    db.session.delete(client)
     db.session.commit()
     return redirect(url_for('clients_bp.clients'))
 
@@ -117,9 +124,31 @@ def update_client_post(client_id):
 @login_required
 def a_client(client_id):
     client = Client.query.filter(Client.id == client_id).first()
+    sms_template = db.session.query(SmsTemplate).join(Client).filter(Client.sms_template_id == SmsTemplate.id).first()
+    unique_sms = True
+
+    if not sms_template:
+        unique_sms = False
+        sms_template = db.session.query(SmsTemplate).join(User).filter(
+            current_user.sms_template_id == SmsTemplate.id).first()
+
     appointment_list = Appointment.query.filter(Appointment.client == client).order_by(
         Appointment.time_of_appointment).all()
 
     sent_texts = db.session.query(SentSms).join(Appointment).filter(Appointment.client == client).all()
 
-    return render_template('a_client.html', client=client, appointment_list=appointment_list, sent_texts=sent_texts)
+    return render_template('a_client.html', client=client,
+                           appointment_list=appointment_list,
+                           sent_texts=sent_texts,
+                           sms_template=sms_template,
+                           unique_sms=unique_sms)
+
+
+@clients_bp.route('/update_client_sms_bulls/<client_id>/<sms_type>/<bull>', methods=['GET'])
+@login_required
+def update_client_sms_bulls(client_id, sms_type, bull):
+    client = Client.query.filter(Client.id == int(client_id)).first()
+    setattr(client, sms_type, int(bull))
+    db.session.commit()
+
+    return redirect(url_for('clients_bp.a_client', client_id=client_id))

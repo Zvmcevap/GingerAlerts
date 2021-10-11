@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_required, current_user
-from app import db
+from app import db, twilio
 from sqlalchemy import func, desc
 from app.forms import AddAppointmentForm
-from app.models import Appointment, Client, UnsentSms, SentSms
+from app.models import Appointment, Client, SentSms, User, SmsTemplate
 from datetime import datetime
 import calendar
 
@@ -17,7 +17,6 @@ appointments_bp = Blueprint('appointments_bp', __name__,
 @appointments_bp.route('/appointments')
 @login_required
 def appointments():
-    print(datetime.today())
     appointment_list = db.session.query(Appointment).join(Client).filter(
         (Client.user == current_user) & (func.date(Appointment.time_of_appointment) >= datetime.now().date())
     ).order_by(
@@ -42,7 +41,6 @@ def appointments():
         past_years.add(appointment.time_of_appointment.year)
         past_days.add(appointment.time_of_appointment.day)
         past_months.add(appointment.time_of_appointment.month)
-    print(sorted(past_days, reverse=True))
 
     for appointment in appointment_list:
         appointment_years.add(appointment.time_of_appointment.year)
@@ -64,10 +62,8 @@ def appointments():
                             schedule[year] = m
 
     for year in sorted(past_years, reverse=True):
-        print(year)
         m = {}
         for month in sorted(past_months, reverse=True):
-            print(month)
             d = set()
             for day in sorted(past_days, reverse=True):
                 for appointment in past_appointment_list:
@@ -92,11 +88,20 @@ def appointments():
 def add_appointment(client_id):
     # Make the appointment form and add choices
     appointment_form = AddAppointmentForm()
-    appointment_form.client_name.choices = db.session.query(
+    appointment_form.time_of_appointment.data = datetime.now().time()
+    appointment_form.date_of_appointment.data = datetime.today()
+
+    choices = db.session.query(
         Client.id,
         Client.name + " " + Client.phone).filter(
         Client.user == current_user
     ).order_by(func.lower(Client.name)).all()
+
+    if not choices:
+        flash(message='Prvo moraš dodati vsaj eno stranko!')
+        return redirect(url_for('clients_bp.add_client'))
+
+    appointment_form.client_name.choices = choices
 
     # If a client is passed in add it as the default option
     if client_id:
@@ -151,16 +156,28 @@ def add_appointment_post(client_id):
                                       )
         db.session.add(new_appointment)
 
-        # add appointment to the unsent sms table
-        if now_sms:  # This one is placeholder until the sms implementation!!!!
-            new_now_sms = UnsentSms(appointment=new_appointment, sms_type_id=1)
-            db.session.add(new_now_sms)
-        if same_day_sms:
-            new_same_day_sms = UnsentSms(appointment=new_appointment, sms_type_id=2)
-            db.session.add(new_same_day_sms)
-        if yesterday_sms:
-            new_yesterday_sms = UnsentSms(appointment=new_appointment, sms_type_id=3)
-            db.session.add(new_yesterday_sms)
+        if new_appointment.now_sms:
+            user = User.query.filter(User.id == current_user.id).first()
+            client = Client.query.filter(Client.id == new_appointment.client_id).first()
+            if client.sms_template:
+                sms_template = SmsTemplate.query.filter(SmsTemplate.id == client.sms_template_id).first()
+            else:
+                sms_template = SmsTemplate.query.filter(SmsTemplate.id == user.sms_template_id).first()
+
+            sms_text = sms_template.template.replace('{ime_stranke}', client.name)
+            sms_text = sms_text.replace('{čas_termina}',
+                                        new_appointment.time_of_appointment.strftime('%d/%m/%Y ob: %H:%M'))
+            twilio.message(sms_text, to=client.phone)
+
+            new_sent_sms = SentSms(
+                appointment_id=new_appointment.id,
+                sms_type_id=1,
+                sms_text=sms_text,
+                sent_at_datetime=datetime.now()
+            )
+            db.session.add(new_sent_sms)
+            new_appointment.now_sms = 2
+
         db.session.commit()
 
         return redirect(url_for('appointments_bp.appointments'))
@@ -228,31 +245,28 @@ def update_appointment_post(appointment_id):
         updated_appointment.same_day_sms = same_day_sms
         updated_appointment.day_before_sms = yesterday_sms
 
-        # check and update appointment in the unsent sms table
-        unsent_now_sms = UnsentSms.query.filter(
-            (UnsentSms.appointment_id == updated_appointment.id) & (UnsentSms.sms_type_id == 1)).first()
-        unsent_same_day_sms = UnsentSms.query.filter(
-            (UnsentSms.appointment_id == updated_appointment.id) & (UnsentSms.sms_type_id == 2)).first()
-        unsent_day_before_sms = UnsentSms.query.filter(
-            (UnsentSms.appointment_id == updated_appointment.id) & (UnsentSms.sms_type_id == 3)).first()
+        if updated_appointment.now_sms:
+            user = User.query.filter(User.id == current_user.id).first()
+            client = Client.query.filter(Client.id == updated_appointment.client_id).first()
+            if client.sms_template:
+                sms_template = SmsTemplate.query.filter(SmsTemplate.id == client.sms_template_id).first()
+            else:
+                sms_template = SmsTemplate.query.filter(SmsTemplate.id == user.sms_template_id).first()
 
-        if now_sms and not unsent_now_sms:
-            new_now_sms = UnsentSms(appointment=updated_appointment, sms_type_id=1)
-            db.session.add(new_now_sms)
-        elif unsent_now_sms and not now_sms:
-            db.session.delete(unsent_now_sms)
+            sms_text = sms_template.template.replace('{ime_stranke}', client.name)
+            sms_text = sms_text.replace('{čas_termina}',
+                                        updated_appointment.time_of_appointment.strftime('%d/%m/%Y ob: %H:%M'))
+            twilio.message(sms_text, to=client.phone)
 
-        if same_day_sms and not unsent_same_day_sms:
-            new_same_day_sms = UnsentSms(appointment=updated_appointment, sms_type_id=2)
-            db.session.add(new_same_day_sms)
-        elif not same_day_sms and unsent_same_day_sms:
-            db.session.delete(unsent_same_day_sms)
+            new_sent_sms = SentSms(
+                appointment_id=updated_appointment.id,
+                sms_type_id=1,
+                sms_text=sms_text,
+                sent_at_datetime=datetime.now()
+            )
+            db.session.add(new_sent_sms)
+            updated_appointment.now_sms = 2
 
-        if yesterday_sms and not unsent_same_day_sms:
-            new_yesterday_sms = UnsentSms(appointment=updated_appointment, sms_type_id=3)
-            db.session.add(new_yesterday_sms)
-        elif not yesterday_sms and unsent_day_before_sms:
-            db.session.delete(unsent_day_before_sms)
         db.session.commit()
 
         return redirect(url_for('appointments_bp.appointments'))
@@ -265,9 +279,8 @@ def update_appointment_post(appointment_id):
 @login_required
 def an_appointment(appointment_id):
     appointment = Appointment.query.filter(Appointment.id == appointment_id).first()
-    unsent_sms = UnsentSms.query.filter(UnsentSms.appointment_id == appointment.id).all()
     sent_sms = SentSms.query.filter(SentSms.appointment_id == appointment.id).all()
-    return render_template('an_appointment.html', appointment=appointment, sent_sms=sent_sms, unsent_sms=unsent_sms)
+    return render_template('an_appointment.html', appointment=appointment, sent_sms=sent_sms)
 
 
 @appointments_bp.route('/delete_appointment/<appointment_id>', methods=['GET'])

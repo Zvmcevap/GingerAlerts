@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block stylesheet %}
+        <link rel="stylesheet" href="{{ url_for('.static', filename='sent_text.css') }}">
+{% endblock %}
+{% block navigation %}
+    {% if current_user.is_authenticated %}
+        <div class="buttons are-medium gumbi-navigacija mb-5">
+            <a href="{{ url_for('appointments_bp.appointments') }}"
+               class="button is-link is-outlined is-rounded">Termini</a>
+            <a href="{{ url_for('calendar_bp.calendar') }}"
+               class="button is-link is-outlined is-rounded">Koledar</a>
+            <a href="{{ url_for('clients_bp.clients') }}"
+               class="button is-link is-outlined is-rounded">Stranke</a>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="column is-4 is-offset-4">
+        <div class="box">
+            <h3 class="title has-text-centered">Poslano Sporočilo</h3>
+            <div class="field">
+                <label class="label">Ime stranke:</label>
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth"
+                       href="{{ url_for('clients_bp.a_client',client_id = appointment.client.id) }}">
+                        <span class="icon"><i class="fas fa-user"></i></span>
+                        <span>{{ appointment.client.name }}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Čas termina:</label>
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth">
+                        <span class="icon"><i class="fas fa-calendar"></i></span>
+                        <span>{{ appointment.time_of_appointment.strftime('%d/%m/%Y') }}</span>
+                        <span class="icon"><i class="fas fa-clock"></i></span>
+                        <span>{{ appointment.time_of_appointment.strftime('%H:%M') }}</span>
+                    </a>
+                </div>
+            </div>
+            {% if sent_sms.sms_type_id == 1 %}
+                <div class="field">
+                    <label class="label">Takojšnji SMS</label>
+                    <div class="control is-expanded">
+                        <a class="button is-fullwidth is-success is-outlined">
+                            <span class="icon"><i class="fas fa-clock"></i></span>
+                            <span>{{ sent_sms.sent_at_datetime.strftime('Poslano: %d/%m/%Y ob %H:%M') }}</span>
+                        </a>
+                    </div>
+                </div>
+            {% elif sent_sms.sms_type_id == 2 %}
+                <div class="field">
+                    <label class="label">SMS na dan termina</label>
+                    <div class="control is-expanded">
+                        <a class="button is-fullwidth is-success is-outlined">
+                            <span class="icon"><i class="fas fa-clock"></i></span>
+                            <span>{{ sent_sms.sent_at_datetime.strftime('Poslano: %d/%m/%Y ob %H:%M') }}</span>
+                        </a>
+                    </div>
+                </div>
+            {% elif sent_sms.sms_type_id == 3 %}
+                <div class="field">
+                    <label class="label">SMS dan pred terminom</label>
+                    <div class="control is-expanded">
+                        <a class="button is-fullwidth is-success is-outlined">
+                            <span class="icon"><i class="fas fa-clock"></i></span>
+                            <span>{{ sent_sms.sent_at_datetime.strftime('Poslano: %d/%m/%Y ob %H:%M') }}</span>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="field">
+                <label class="label">Besedilo Sporočila</label>
+                <div class="control">
+                    <a class="button is-multiline is-success is-light"
+                       href="{{ url_for('home_bp.change_sms_template', client_id=client.id) }}">
+                        <span>{{ sent_sms.sms_text }}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control is-expanded">
+                    <a class="button" href="{{ url_for('home_bp.index') }}">Nazaj</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

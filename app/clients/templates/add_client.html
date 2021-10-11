@@ -27,7 +27,7 @@
         {% endif %}
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
-                    <div class="notification is-danger">
+                    <div class="notification is-link">
                         {{ messages[0] }}
                     </div>
                 {% endif %}
@@ -45,14 +45,14 @@
                                 <a class="button is-static">+386</a>
                             </p>
                             {% if client_form.phone.errors %}
-                                {{ client_form.phone(class="input is-danger") }}
+                                {{ client_form.phone(class="input is-link") }}
                             {% else %}
                                 {{ client_form.phone(class="input") }}
                             {% endif %}
                         </div>
                         {% if client_form.phone.errors %}
                             {% for error in client_form.phone.errors %}
-                                <p class="help is-danger">{{ error }}</p>
+                                <p class="help is-link">{{ error }}</p>
                             {% endfor %}
                         {% endif %}
                     </div>
