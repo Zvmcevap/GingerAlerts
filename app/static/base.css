@@ -20,7 +20,7 @@
     max-width: 35rem;
     margin: auto;
 }
-
+/*
 @media only screen and (max-width: 1000px) {
     .hero-body{
         padding: 10px;
@@ -29,7 +29,7 @@
         width: 5rem;
     }
 }
-
+*/
  /* Tooltip container */
 .tooltip {
   position: relative;

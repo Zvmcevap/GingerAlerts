@@ -139,9 +139,9 @@ def add_appointment_post(client_id):
     app_date = appointment_form.date_of_appointment.data
     app_time = appointment_form.time_of_appointment.data
 
-    now_sms = appointment_form.now_sms.data
-    same_day_sms = appointment_form.same_day_sms.data
-    yesterday_sms = appointment_form.day_before_sms.data
+    now_sms = int(appointment_form.now_sms.data)
+    same_day_sms = int(appointment_form.same_day_sms.data)
+    yesterday_sms = int(appointment_form.day_before_sms.data)
 
     app_datetime = datetime.combine(app_date, app_time)
 
@@ -159,24 +159,26 @@ def add_appointment_post(client_id):
         if new_appointment.now_sms:
             user = User.query.filter(User.id == current_user.id).first()
             client = Client.query.filter(Client.id == new_appointment.client_id).first()
-            if client.sms_template:
-                sms_template = SmsTemplate.query.filter(SmsTemplate.id == client.sms_template_id).first()
-            else:
-                sms_template = SmsTemplate.query.filter(SmsTemplate.id == user.sms_template_id).first()
 
-            sms_text = sms_template.template.replace('{ime_stranke}', client.name)
-            sms_text = sms_text.replace('{čas_termina}',
-                                        new_appointment.time_of_appointment.strftime('%d/%m/%Y ob: %H:%M'))
-            twilio.message(sms_text, to=client.phone)
+            if user.send_SMS:
+                if client.sms_template:
+                    sms_template = SmsTemplate.query.filter(SmsTemplate.id == client.sms_template_id).first()
+                else:
+                    sms_template = SmsTemplate.query.filter(SmsTemplate.id == user.sms_template_id).first()
 
-            new_sent_sms = SentSms(
-                appointment_id=new_appointment.id,
-                sms_type_id=1,
-                sms_text=sms_text,
-                sent_at_datetime=datetime.now()
-            )
-            db.session.add(new_sent_sms)
-            new_appointment.now_sms = 2
+                sms_text = sms_template.template.replace('{ime_stranke}', client.name)
+                sms_text = sms_text.replace('{čas_termina}',
+                                            new_appointment.time_of_appointment.strftime('%d/%m/%Y ob: %H:%M'))
+                twilio.message(sms_text, to=client.phone)
+
+                new_sent_sms = SentSms(
+                    appointment_id=new_appointment.id,
+                    sms_type_id=1,
+                    sms_text=sms_text,
+                    sent_at_datetime=datetime.now()
+                )
+                db.session.add(new_sent_sms)
+                new_appointment.now_sms = 2
 
         db.session.commit()
 
@@ -230,9 +232,9 @@ def update_appointment_post(appointment_id):
     app_date = appointment_form.date_of_appointment.data
     app_time = appointment_form.time_of_appointment.data
 
-    now_sms = appointment_form.now_sms.data
-    same_day_sms = appointment_form.same_day_sms.data
-    yesterday_sms = appointment_form.day_before_sms.data
+    now_sms = int(appointment_form.now_sms.data)
+    same_day_sms = int(appointment_form.same_day_sms.data)
+    yesterday_sms = int(appointment_form.day_before_sms.data)
 
     app_datetime = datetime.combine(app_date, app_time)
 
@@ -247,25 +249,26 @@ def update_appointment_post(appointment_id):
 
         if updated_appointment.now_sms:
             user = User.query.filter(User.id == current_user.id).first()
-            client = Client.query.filter(Client.id == updated_appointment.client_id).first()
-            if client.sms_template:
-                sms_template = SmsTemplate.query.filter(SmsTemplate.id == client.sms_template_id).first()
-            else:
-                sms_template = SmsTemplate.query.filter(SmsTemplate.id == user.sms_template_id).first()
+            if user.send_SMS:
+                client = Client.query.filter(Client.id == updated_appointment.client_id).first()
+                if client.sms_template:
+                    sms_template = SmsTemplate.query.filter(SmsTemplate.id == client.sms_template_id).first()
+                else:
+                    sms_template = SmsTemplate.query.filter(SmsTemplate.id == user.sms_template_id).first()
 
-            sms_text = sms_template.template.replace('{ime_stranke}', client.name)
-            sms_text = sms_text.replace('{čas_termina}',
-                                        updated_appointment.time_of_appointment.strftime('%d/%m/%Y ob: %H:%M'))
-            twilio.message(sms_text, to=client.phone)
+                sms_text = sms_template.template.replace('{ime_stranke}', client.name)
+                sms_text = sms_text.replace('{čas_termina}',
+                                            updated_appointment.time_of_appointment.strftime('%d/%m/%Y ob: %H:%M'))
+                twilio.message(sms_text, to=client.phone)
 
-            new_sent_sms = SentSms(
-                appointment_id=updated_appointment.id,
-                sms_type_id=1,
-                sms_text=sms_text,
-                sent_at_datetime=datetime.now()
-            )
-            db.session.add(new_sent_sms)
-            updated_appointment.now_sms = 2
+                new_sent_sms = SentSms(
+                    appointment_id=updated_appointment.id,
+                    sms_type_id=1,
+                    sms_text=sms_text,
+                    sent_at_datetime=datetime.now()
+                )
+                db.session.add(new_sent_sms)
+                updated_appointment.now_sms = 2
 
         db.session.commit()
 

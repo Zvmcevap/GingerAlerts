@@ -4,7 +4,7 @@
 {% endblock %}
 {% block navigation %}
     {% if current_user.is_authenticated %}
-        <div class="buttons are-medium gumbi-navigacija mb-5">
+        <div class="buttons  gumbi-navigacija mb-5">
             <a href="{{ url_for('appointments_bp.appointments') }}"
                class="button is-link is-rounded">Termini</a>
             <a href="{{ url_for('calendar_bp.calendar') }}"
@@ -17,7 +17,7 @@
 {% block content %}
     {% from "_appointment_timeline_item.html" import appointment_timeline_item %}
     {% from "_appointment_past_timeline_item.html" import appointment_past_timeline_item %}
-    <div class="container is-max-desktop">
+    <div class="container ">
         <div class="tabs is-toggle is-fullwidth" id="tabs">
             <ul>
                 <li class="is-active" data-tab="1">

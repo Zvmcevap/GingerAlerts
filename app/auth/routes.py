@@ -117,14 +117,17 @@ def profile():
 @auth_bp.route('/delete_profile')
 @login_required
 def delete_profile():
+    user = User.query.filter(User.id == current_user.id)
     appointments = db.session.query(Appointment).join(Client).filter(Client.user_id == current_user.id).all()
     clients = Client.query.filter(Client.user_id == current_user.id).all()
+    sms_templates = SmsTemplate.query.filter(SmsTemplate.id == user.sms_template_id).first()
 
     for appointment in appointments:
         db.session.delete(appointment)
     for client in clients:
         db.session.delete(client)
-    User.query.filter(User.id == current_user.id).delete()
+    db.session.delete(user)
+    db.session.delete(sms_templates)
     db.session.commit()
     logout_user()
     return redirect(url_for('home_bp.index'))
