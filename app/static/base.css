@@ -4,7 +4,6 @@
     right: 3rem;
     -webkit-backface-visibility: hidden;
     z-index: 1000;
-    width: 100%;
 }
 
 .navbar, .navbar-end, .navbar-menu, .navbar-start {
@@ -30,7 +29,6 @@
         bottom: 3rem;
         -webkit-backface-visibility: hidden;
         z-index: 1000;
-        width: 100%;
         background-attachment: fixed !important;
     }
 }
