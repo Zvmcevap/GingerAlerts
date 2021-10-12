@@ -27,7 +27,7 @@
     .buttons.dodaj {
         position: fixed;
         bottom: 3rem;
-        right: 2rem;
+        left: 2rem;
         -webkit-backface-visibility: hidden;
         z-index: 1000;
         background-attachment: fixed !important;
