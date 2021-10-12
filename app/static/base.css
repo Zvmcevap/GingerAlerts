@@ -2,6 +2,8 @@
     position: fixed;
     bottom: 3rem;
     right: 3rem;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translate3d(0,0,0);
 }
 
 .navbar, .navbar-end, .navbar-menu, .navbar-start {
