@@ -3,6 +3,7 @@
     bottom: 3rem;
     right: 3rem;
     -webkit-backface-visibility: hidden;
+    background-attachment: fixed !important;
     z-index: 1000;
 }
 
@@ -31,7 +32,7 @@
     .buttons.dodaj {
         position: fixed;
         bottom: 3rem;
-        left: 3rem;
+        right: 2rem;
         -webkit-backface-visibility: hidden;
         z-index: 1000;
         background-attachment: fixed !important;

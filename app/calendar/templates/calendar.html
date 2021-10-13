@@ -23,7 +23,7 @@
     <div class="calendar events-display" id="events-display"></div>
 
     {% if current_user.is_authenticated %}
-        <div class="buttons has-addons is-bottom dodaj">
+        <div class="buttons has-addons dodaj">
             <a class="button is-link is-rounded"
                href="{{ url_for('appointments_bp.add_appointment') }}">
                 <span class="icon"><i class="fas fa-clock"></i></span>

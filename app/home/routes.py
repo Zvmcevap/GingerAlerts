@@ -15,14 +15,9 @@ home_bp = Blueprint('home_bp', __name__,
 
 @home_bp.route('/')
 def index():
-    user = None
-    users_list = None
-    if hasattr(current_user, 'id'):
-        user = User.query.filter(User.id == current_user.id).first()
-        if user.admin:
-            users_list = User.query.all()
+    user = User.query.filter(User.id == current_user.id).first()
 
-    return render_template('index.html', user=user, users_list=users_list)
+    return render_template('index.html', user=user)
 
 
 @home_bp.route('/change_sms_template', defaults={'client_id': None}, methods=['GET'])
