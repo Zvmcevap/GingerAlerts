@@ -124,13 +124,15 @@ def update_client_post(client_id):
 @login_required
 def a_client(client_id):
     client = Client.query.filter(Client.id == client_id).first()
-    sms_template = db.session.query(SmsTemplate).join(Client).filter(Client.sms_template_id == SmsTemplate.id).first()
-    unique_sms = True
 
-    if not sms_template:
+    if client.sms_template_id:
+        sms_template = SmsTemplate.query.filter(client.sms_template_id == SmsTemplate.id).first()
+        unique_sms = True
+
+    else:
+        user = User.query.filter(User.id == current_user.id).first()
         unique_sms = False
-        sms_template = db.session.query(SmsTemplate).join(User).filter(
-            current_user.sms_template_id == SmsTemplate.id).first()
+        sms_template = SmsTemplate.query.filter(user.sms_template_id == SmsTemplate.id).first()
 
     appointment_list = Appointment.query.filter(Appointment.client == client).order_by(
         Appointment.time_of_appointment).all()

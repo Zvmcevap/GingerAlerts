@@ -256,7 +256,6 @@ def update_appointment_post(appointment_id):
             user = User.query.filter(User.id == current_user.id).first()
             if user.send_SMS:
                 try:
-
                     client = Client.query.filter(Client.id == updated_appointment.client_id).first()
                     if client.sms_template:
                         sms_template = SmsTemplate.query.filter(SmsTemplate.id == client.sms_template_id).first()
@@ -292,8 +291,17 @@ def update_appointment_post(appointment_id):
 @login_required
 def an_appointment(appointment_id):
     appointment = Appointment.query.filter(Appointment.id == appointment_id).first()
-    sent_sms = SentSms.query.filter(SentSms.appointment_id == appointment.id).all()
-    return render_template('an_appointment.html', appointment=appointment, sent_sms=sent_sms)
+    sent_now_sms = SentSms.query.filter((SentSms.appointment_id == appointment.id) & (SentSms.sms_type_id == 1)).first()
+    sent_same_day_sms = SentSms.query.filter(
+        (SentSms.appointment_id == appointment.id) & (SentSms.sms_type_id == 2)).first()
+    sent_day_before_sms = SentSms.query.filter(
+        (SentSms.appointment_id == appointment.id) & (SentSms.sms_type_id == 3)).first()
+
+    return render_template('an_appointment.html', appointment=appointment,
+                           sent_now_sms=sent_now_sms,
+                           sent_same_day_sms=sent_same_day_sms,
+                           sent_day_before_sms=sent_day_before_sms
+                           )
 
 
 @appointments_bp.route('/delete_appointment/<appointment_id>', methods=['GET'])

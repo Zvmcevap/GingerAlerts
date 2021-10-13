@@ -44,7 +44,7 @@
             <div class="field">
                 <label class="label">Takojšnji SMS</label>
                 <div class="control is-expanded">
-                    <a class="button is-fullwidth is-success is-outlined">
+                    <a href="{{ url_for('home_bp.sent_sms', sms_id=sent_now_sms.id) }}" class="button is-fullwidth is-success is-outlined">
                         <span class="icon"><i class="fas fa-check"></i></span>
                         <span>Sporočilo je bilo poslano</span>
                     </a>
@@ -75,7 +75,8 @@
             <div class="field">
                 <label class="label">SMS obvestilo na dan termina</label>
                 <div class="control is-expanded">
-                    <a class="button is-fullwidth is-success is-outlined">
+                    <a class="button is-fullwidth is-success is-outlined"
+                    href="{{ url_for('home_bp.sent_sms', sms_id=sent_same_day_sms.id) }}">
                         <span class="icon"><i class="fas fa-check"></i></span>
                         <span>Sporočilo je bilo poslano</span>
                     </a>
@@ -106,7 +107,8 @@
             <div class="field">
                 <label class="label">SMS obvestilo dan pred terminom</label>
                 <div class="control is-expanded">
-                    <a class="button is-fullwidth is-success is-outlined">
+                    <a class="button is-fullwidth is-success is-outlined"
+                    href="{{ url_for('home_bp.sent_sms', sms_id=sent_day_before_sms.id) }}">
                         <span class="icon"><i class="fas fa-check"></i></span>
                         <span>Sporočilo je bilo poslano</span>
                     </a>
