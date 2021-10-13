@@ -18,9 +18,6 @@
     <h2 class="subtitle has-text-centered">
         Spletna aplikacija za pošiljanje sms sporočil, vsem ki so pozabljivi.
     </h2>
-
-
-
     {% if user %}
         {% if not user.send_SMS %}
             <article class="message is-warning">
@@ -41,7 +38,7 @@
                 <div class="card">
                     <header class="card-header">
                         <p class="card-header-title">
-                            <span class="icon"><i class="fas fa-info" aria-hidden="true"></i></span>
+                            <span class="icon"><i class="fas fa-info-circle" aria-hidden="true"></i></span>
                             <span>Splošne Informacije</span>
                         </p>
                     </header>
@@ -100,38 +97,19 @@
                 </a>
             </div>
         {% endif %}
-        {% if user.admin %}
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>id</th>
-                    <th>username</th>
-                    <th>email</th>
-                    <th>SMS enabled</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for user in users_list %}
-                    <tr>
-                        <td>{{ user.id }}</td>
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.email }}</td>
-                        {% if user.send_SMS %}
-                            <td><a class="is-success is-outlined"
-                                   href="{{ url_for('auth_bp.disapprove_sms', user_id = user.id) }}"><span class="icon"><i
-                                    class="fas fa-check"></i>
-                            </span><span>DA</span></a></td>
-                        {% else %}
-                            <td><a class="is-warning is-outlined"
-                                   href="{{ url_for('auth_bp.approve_sms', user_id = user.id) }}"><span class="icon"><i
-                                    class="fas fa-times"></i>
-                            </span><span>NE</span></a></td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
+    {% else %}
+        <article class="message is-info">
+            <div class="message-header">
+                <p><span class="icon"><i class="fas fa-info-circle"
+                                         aria-hidden="true"></i></span><span>Potrebna Registracija</span></p>
+            </div>
+            <div class="message-body">
+                Za uporabo te spletne strani se morate <a href="{{ 'auth_bp.signup' }}">registrirati.</a>
+                Če ste se že, se lahko vpišete <a
+                    href="{{ 'auth_bp.login' }}">tukaj.</a>
+                <p class="help">Brez nč ni nč... vse deluje prek uporabnikovega profila.</p>
+            </div>
+        </article>
     {% endif %}
 
 {% endblock %}

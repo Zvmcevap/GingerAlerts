@@ -3,7 +3,9 @@
     bottom: 3rem;
     right: 3rem;
     -webkit-backface-visibility: hidden;
+    background-attachment: fixed !important;
     z-index: 1000;
+    width: 21rem;
 }
 
 .navbar, .navbar-end, .navbar-menu, .navbar-start {
@@ -31,10 +33,11 @@
     .buttons.dodaj {
         position: fixed;
         bottom: 3rem;
-        left: 3rem;
+        left:1rem;
         -webkit-backface-visibility: hidden;
         z-index: 1000;
         background-attachment: fixed !important;
+        width: 21rem;
     }
 }
 
@@ -98,7 +101,7 @@
 }
 
 .card-header {
-    background-color: #446878;
+    background-color: #13445A;
 }
 
 .card-header-title {

@@ -23,7 +23,7 @@
                 </a>
                 {% if current_user.id == 1 %}
                     <a class="navbar-item" href="/admin">
-                    Admin
+                        Admin
                     </a>
                 {% endif %}
             </div>
@@ -54,59 +54,61 @@
             {% endblock %}
         </div>
     </div>
-</section>
-<footer class="footer is-info has-background-success">
-    <div class="content has-text-centered has-text-white">
-        <h1 class="has-text-white">Ginger Alerts</h1>
-        <div class="columns">
-            <div class="column">
-                <h6 class="has-text-white">Zakaj to obstaja</h6>
-                <p class="has-text-center">
-                    Spletna stran je bila narejena za 2 človeka, da ne bosta potrebovala več ročno pošiljati sporočil
-                    svojim strankam, v upanju, da se spotoma, ponesreči, mogoče, tudi jaz naučim kaj o izdelovanju
-                    in postavljanju spletnih aplikacij na erm.. splet.
-                </p>
-            </div>
-            <div class="column has-text-left ml-6">
-                <h6 class="has-text-white">Različni Kontakti</h6>
-                <ul>
-                    <li><a href="https://github.com/Zvmcevap">
-                        <span class="icon has-text-white-bis"><i class="fab fa-github"></i></span>
-                        <span class="has-text-white-bis">Github Račun</span>
-                    </a></li>
-                    <li><a href="https://steamcommunity.com/id/bnzpnc">
-                        <span class="icon has-text-white-bis"><i class="fab fa-steam"></i></span>
-                        <span class="has-text-white-bis">Račun na vodno-paro</span>
-                    </a></li>
-                    <li><a href="https://www.instagram.com/beno.zupanc/">
-                        <span class="icon has-text-white-bis"><i class="fab fa-instagram"></i></span>
-                        <span class="has-text-white-bis">Instagram Račun</span>
-                    </a></li>
-                    <li><a href="https://www.facebook.com/beno.zupanc/">
-                        <span class="icon has-text-white-bis"><i class="fab fa-facebook-f"></i></span>
-                        <span class="has-text-white-bis">"Facebooks"</span>
-                    </a></li>
-                </ul>
-            </div>
-            <div class="column">
-                <h6 class="has-text-white">Vaše mnenje</h6>
-                <p class="has-text-center">
-                    Vse pritožbe, pohvale, želje in sanje lahko oddaš na enega od kontaktnih linkov.</p>
-                <p>
-                    V slučaju, da hočeš tudi TI pošiljati sms-e iz te spletne strani mi javi, pa če bom takrat dosti pod
-                    gasom ti verjetno odobrim.
-                </p>
-            </div>
-            <div class="column ml-6">
-                <div class="control mr-6">
-                    <a class="logo" href="{{ url_for('home_bp.index') }}">
-                        <img src="/app/static/GALogoLargeWhite.svg" width="500" height="500">
-                    </a>
+    <footer class="footer is-info has-background-success">
+        <div class="content has-text-centered has-text-white">
+            <h1 class="has-text-white">Ginger Alerts</h1>
+            <div class="columns">
+                <div class="column">
+                    <h6 class="has-text-white">Zakaj to obstaja</h6>
+                    <p class="has-text-center">
+                        Spletna stran je bila narejena za 2 človeka, da ne bosta potrebovala več ročno pošiljati
+                        sporočil
+                        svojim strankam, v upanju, da se spotoma, ponesreči, mogoče, tudi jaz naučim kaj o izdelovanju
+                        in postavljanju spletnih aplikacij na erm.. splet.
+                    </p>
+                </div>
+                <div class="column has-text-left ml-6">
+                    <h6 class="has-text-white">Različni Kontakti</h6>
+                    <ul>
+                        <li><a href="https://github.com/Zvmcevap">
+                            <span class="icon has-text-white-bis"><i class="fab fa-github"></i></span>
+                            <span class="has-text-white-bis">Github Račun</span>
+                        </a></li>
+                        <li><a href="https://steamcommunity.com/id/bnzpnc">
+                            <span class="icon has-text-white-bis"><i class="fab fa-steam"></i></span>
+                            <span class="has-text-white-bis">Račun na vodno-paro</span>
+                        </a></li>
+                        <li><a href="https://www.instagram.com/beno.zupanc/">
+                            <span class="icon has-text-white-bis"><i class="fab fa-instagram"></i></span>
+                            <span class="has-text-white-bis">Instagram Račun</span>
+                        </a></li>
+                        <li><a href="https://www.facebook.com/beno.zupanc/">
+                            <span class="icon has-text-white-bis"><i class="fab fa-facebook-f"></i></span>
+                            <span class="has-text-white-bis">"Facebooks"</span>
+                        </a></li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h6 class="has-text-white">Vaše mnenje</h6>
+                    <p class="has-text-center">
+                        Vse pritožbe, pohvale, želje in sanje lahko oddaš na enega od kontaktnih linkov.</p>
+                    <p>
+                        V slučaju, da hočeš tudi TI pošiljati sms-e iz te spletne strani mi javi, pa če bom takrat dosti
+                        pod
+                        gasom ti verjetno odobrim.
+                    </p>
+                </div>
+                <div class="column ml-6">
+                    <div class="control mr-6">
+                        <a class="logo" href="{{ url_for('home_bp.index') }}">
+                            <img src="/app/static/GALogoLargeWhite.svg" width="500" height="500">
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
+</section>
 </body>
 {% block scripts %}
     <script src="/app/static/base.js"></script>
