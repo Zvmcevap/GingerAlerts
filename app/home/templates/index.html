@@ -104,9 +104,9 @@
                                          aria-hidden="true"></i></span><span>Potrebna Registracija</span></p>
             </div>
             <div class="message-body">
-                Za uporabo te spletne strani se morate <a href="{{ 'auth_bp.signup' }}">registrirati.</a>
+                Za uporabo te spletne strani se morate <a href="{{ url_for('auth_bp.signup') }}">registrirati.</a>
                 Če ste se že, se lahko vpišete <a
-                    href="{{ 'auth_bp.login' }}">tukaj.</a>
+                    href="{{ url_for('auth_bp.login') }}">tukaj.</a>
                 <p class="help">Brez nč ni nč... vse deluje prek uporabnikovega profila.</p>
             </div>
         </article>
