@@ -2,9 +2,9 @@ from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from app.models import User, Client, SmsTemplate, SentSms, Appointment
 from app.forms import SmsTemplateForm
-from app import db, twilio
+from app import db
 from sqlalchemy import func
-from datetime import datetime, timedelta
+
 
 home_bp = Blueprint('home_bp', __name__,
                     template_folder='templates',
@@ -15,8 +15,10 @@ home_bp = Blueprint('home_bp', __name__,
 
 @home_bp.route('/')
 def index():
-    if hasattr(current_user.id):
+    if current_user.is_authenticated:
         user = User.query.filter(User.id == current_user.id).first()
+    else:
+        user = None
 
     return render_template('index.html', user=user)
 
