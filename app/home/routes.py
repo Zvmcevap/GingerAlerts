@@ -15,7 +15,8 @@ home_bp = Blueprint('home_bp', __name__,
 
 @home_bp.route('/')
 def index():
-    user = User.query.filter(User.id == current_user.id).first()
+    if hasattr(current_user.id):
+        user = User.query.filter(User.id == current_user.id).first()
 
     return render_template('index.html', user=user)
 
