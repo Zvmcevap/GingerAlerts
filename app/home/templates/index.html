@@ -97,6 +97,19 @@
                 </a>
             </div>
         {% endif %}
+    {% else %}
+        <article class="message">
+            <div class="message-header">
+                <span class="icon"><i class="fas fa-info" aria-hidden="true"></i></span>
+                <span>Potrebna Registracija</span>
+            </div>
+            <div class="message-body">
+                Za uporabo te spletne strani se morate <a href="{{ 'auth_bp.signup' }}">registrirati.</a>
+                Če ste se že, se lahko vpišete <a
+                    href="{{ 'auth_bp.login' }}">tukaj.</a>
+                <p class="help">Brez nč ni nč... vse deluje prek uporabniškega profila.</p>
+            </div>
+        </article>
     {% endif %}
 
 {% endblock %}
