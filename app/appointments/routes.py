@@ -158,31 +158,32 @@ def add_appointment_post(client_id):
         db.session.add(new_appointment)
 
         if new_appointment.now_sms:
-            try:
-                user = User.query.filter(User.id == current_user.id).first()
-                client = Client.query.filter(Client.id == new_appointment.client_id).first()
-                if client.sms_template:
-                    sms_template = SmsTemplate.query.filter(SmsTemplate.id == client.sms_template_id).first()
-                else:
-                    sms_template = SmsTemplate.query.filter(SmsTemplate.id == user.sms_template_id).first()
+            user = User.query.filter(User.id == current_user.id).first()
+            if user.send_SMS:
+                try:
+                    client = Client.query.filter(Client.id == new_appointment.client_id).first()
+                    if client.sms_template:
+                        sms_template = SmsTemplate.query.filter(SmsTemplate.id == client.sms_template_id).first()
+                    else:
+                        sms_template = SmsTemplate.query.filter(SmsTemplate.id == user.sms_template_id).first()
 
-                sms_text = sms_template.template.replace('{ime_stranke}', client.name)
-                sms_text = sms_text.replace('{čas_termina}',
-                                            new_appointment.time_of_appointment.strftime('%d.%m.%Y ob: %H:%M'))
+                    sms_text = sms_template.template.replace('{ime_stranke}', client.name)
+                    sms_text = sms_text.replace('{čas_termina}',
+                                                new_appointment.time_of_appointment.strftime('%d.%m.%Y ob: %H:%M'))
 
-                twilio.message(sms_text, to=client.phone)
+                    twilio.message(sms_text, to=client.phone)
 
-                new_sent_sms = SentSms(
-                    appointment_id=new_appointment.id,
-                    sms_type_id=1,
-                    sms_text=sms_text,
-                    sent_at_datetime=datetime.now()
-                )
-                db.session.add(new_sent_sms)
-                new_appointment.now_sms = 2
+                    new_sent_sms = SentSms(
+                        appointment_id=new_appointment.id,
+                        sms_type_id=1,
+                        sms_text=sms_text,
+                        sent_at_datetime=datetime.now()
+                    )
+                    db.session.add(new_sent_sms)
+                    new_appointment.now_sms = 2
 
-            except TwilioRestException:
-                print('Slaba Telefonska')
+                except TwilioRestException:
+                    print('Slaba Telefonska')
 
         db.session.commit()
 
@@ -252,30 +253,32 @@ def update_appointment_post(appointment_id):
         updated_appointment.day_before_sms = yesterday_sms
 
         if updated_appointment.now_sms:
-            try:
-                user = User.query.filter(User.id == current_user.id).first()
-                client = Client.query.filter(Client.id == updated_appointment.client_id).first()
-                if client.sms_template:
-                    sms_template = SmsTemplate.query.filter(SmsTemplate.id == client.sms_template_id).first()
-                else:
-                    sms_template = SmsTemplate.query.filter(SmsTemplate.id == user.sms_template_id).first()
+            user = User.query.filter(User.id == current_user.id).first()
+            if user.send_SMS:
+                try:
 
-                sms_text = sms_template.template.replace('{ime_stranke}', client.name)
-                sms_text = sms_text.replace('{čas_termina}',
-                                            updated_appointment.time_of_appointment.strftime('%d.%m.%Y ob: %H:%M'))
-                twilio.message(sms_text, to=client.phone)
+                    client = Client.query.filter(Client.id == updated_appointment.client_id).first()
+                    if client.sms_template:
+                        sms_template = SmsTemplate.query.filter(SmsTemplate.id == client.sms_template_id).first()
+                    else:
+                        sms_template = SmsTemplate.query.filter(SmsTemplate.id == user.sms_template_id).first()
 
-                new_sent_sms = SentSms(
-                    appointment_id=updated_appointment.id,
-                    sms_type_id=1,
-                    sms_text=sms_text,
-                    sent_at_datetime=datetime.now()
-                )
-                db.session.add(new_sent_sms)
-                updated_appointment.now_sms = 2
+                    sms_text = sms_template.template.replace('{ime_stranke}', client.name)
+                    sms_text = sms_text.replace('{čas_termina}',
+                                                updated_appointment.time_of_appointment.strftime('%d.%m.%Y ob: %H:%M'))
+                    twilio.message(sms_text, to=client.phone)
 
-            except TwilioRestException:
-                print('Slaba Telefonska')
+                    new_sent_sms = SentSms(
+                        appointment_id=updated_appointment.id,
+                        sms_type_id=1,
+                        sms_text=sms_text,
+                        sent_at_datetime=datetime.now()
+                    )
+                    db.session.add(new_sent_sms)
+                    updated_appointment.now_sms = 2
+
+                except TwilioRestException:
+                    print('Slaba Telefonska')
 
         db.session.commit()
 
