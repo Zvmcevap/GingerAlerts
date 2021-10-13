@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from datetime import datetime
 from werkzeug.security import generate_password_hash
 from flask_twilio import Twilio
+from flask_admin import Admin
 import config
 import os
 import logging
@@ -14,6 +15,7 @@ from logging.handlers import RotatingFileHandler
 db = SQLAlchemy()
 migrate = Migrate()
 twilio = Twilio()
+admin = Admin()
 
 
 def create_app():
@@ -23,12 +25,11 @@ def create_app():
 
     with app.app_context():
         # Create database from models
-        from .models import User, SmsType, SmsTemplate
+        from .models import User, SmsType, SmsTemplate, Client, SentSms, Appointment, MyModelView
         db.init_app(app)
-        db.app = app
         migrate.init_app(app, db)
         twilio.init_app(app)
-        twilio.app = app
+        admin.init_app(app)
 
         # set up LoginManager to manage ..erm.. logins
         login_manager = LoginManager()
@@ -58,6 +59,14 @@ def create_app():
         # Create database start Scheduler
         db.create_all()
 
+        # Create Admin views
+        admin.add_view(MyModelView(User, db.session))
+        admin.add_view(MyModelView(Client, db.session))
+        admin.add_view(MyModelView(Appointment, db.session))
+        admin.add_view(MyModelView(SentSms, db.session))
+        admin.add_view(MyModelView(SmsTemplate, db.session))
+        admin.add_view(MyModelView(SmsType, db.session))
+
         # Add the 3 types of SMS to the smstypes table
         if not SmsTemplate.query.all():
             default_template = SmsTemplate(
@@ -69,10 +78,10 @@ def create_app():
         if not User.query.all():
             time_of_creation = datetime.now()
             new_user = User(
-                email='zupanc.beno@gmail.com',
-                name='Beno',
+                email=os.environ.get('ADMIN_EMAIL'),
+                name=os.environ.get('ADMIN_NAME'),
                 created_at=time_of_creation,
-                password=generate_password_hash('TermeCatez', method='sha256'),
+                password=generate_password_hash(os.environ.get('ADMIN_PASSWORD'), method='sha256'),
                 admin=True,
                 send_SMS=True
             )

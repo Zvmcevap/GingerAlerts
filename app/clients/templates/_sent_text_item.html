@@ -1,19 +1,15 @@
 {% macro sent_text_item(sent_text) %}
     <div class="field has-addons has-addons-centered">
         <div class="control is-overlay">
-            <a class="button is-small is-link is-outlined"
-               href="{{ url_for('appointments_bp.an_appointment', appointment_id = sent_text.appointment_id) }}">
-                <span>Termin:</span>
-                <span class="icon"><i class="fas fa-calendar"></i></span>
-                <span>{{ sent_text.appointment.time_of_appointment.strftime('%d/%m/%Y') }}</span>
-                <span class="icon"><i class="fas fa-clock"></i></span>
-                <span>{{ sent_text.appointment.time_of_appointment.strftime('%H:%M') }}</span>
+            <a class="button is-small is-success is-outlined"
+               href="{{ url_for('clients_bp.a_client', client_id = sent_text.appointment.client.id) }}">
+                <span class="icon"><i class="fas fa-user"></i></span>
+                <span>{{ sent_text.appointment.client.name }}</span>
             </a>
         </div>
         <div class="control is-overlay">
-            <a class="button is-small is-link is-outlined"
+            <a class="button is-small is-success is-outlined"
                href="{{ url_for('home_bp.sent_sms', sms_id = sent_text.id) }}">
-                <span>SMS poslan ob:</span>
                 <span class="icon"><i class="fas fa-calendar"></i></span>
                 <span>{{ sent_text.sent_at_datetime.strftime('%d/%m/%Y') }}</span>
                 <span class="icon"><i class="fas fa-clock"></i></span>

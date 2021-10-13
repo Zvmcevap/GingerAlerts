@@ -1,6 +1,7 @@
 .control-name-and-tel {
-    max-width: 14rem;
+    width: 12rem;
     justify-content: left;
+    overflow-x: hidden;
 }
 
 .dropdown {
@@ -16,15 +17,15 @@
 }
 
 .button.is-multiline {
-  min-height: 2.25em;
-  white-space: unset;
-  height: auto;
-  flex-direction: column;
+    min-height: 2.25em;
+    white-space: unset;
+    height: auto;
+    flex-direction: column;
 }
 
 /** This isn't the actual suggested CSS - but it is just a quick fix to replicate the functionality**/
 .button.is-multiline .icon {
-  margin: 0! important;
+    margin: 0 ! important;
 }
 
 .block {

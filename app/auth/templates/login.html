@@ -4,29 +4,27 @@
     {% from "_input_text.html" import input_text %}
 
     <div class="column is-4 is-offset-4">
-        <div class="box">
-            <h3 class="title has-text-centered">Vpis</h3>
-            {% with messages = get_flashed_messages(category_filter=['invalid_login_details']) %}
-                {% if messages %}
-                    <div class="notification is-link">
-                        {{ messages[0] }}
-                    </div>
-                {% endif %}
-            {% endwith %}
-            <form method="POST" action="/login">
-                {{ login_form.hidden_tag() }}
-                <div class="field">
-                    {{ input_text(login_form.name_email) }}
+        <h3 class="title has-text-centered">Vpis</h3>
+        {% with messages = get_flashed_messages(category_filter=['invalid_login_details']) %}
+            {% if messages %}
+                <div class="notification is-link">
+                    {{ messages[0] }}
                 </div>
-                <div class="field">
-                    {{ input_text(login_form.password) }}
-                </div>
-                <div class="field">
-                    {{ login_form.remember(class="checkbox") }}
-                    {{ login_form.remember.label(class="checkbox") }}
-                </div>
-                {{ login_form.submit(class="button is-block is-info is-large is-fullwidth") }}
-            </form>
-        </div>
+            {% endif %}
+        {% endwith %}
+        <form method="POST" action="/login">
+            {{ login_form.hidden_tag() }}
+            <div class="field">
+                {{ input_text(login_form.name_email) }}
+            </div>
+            <div class="field">
+                {{ input_text(login_form.password) }}
+            </div>
+            <div class="field">
+                {{ login_form.remember(class="checkbox") }}
+                {{ login_form.remember.label(class="checkbox") }}
+            </div>
+            {{ login_form.submit(class="button is-block is-info is-large is-fullwidth") }}
+        </form>
     </div>
 {% endblock %}

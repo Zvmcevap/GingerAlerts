@@ -19,60 +19,58 @@
 {% block content %}
     {% from "_input_text.html" import input_text %}
     <div class="column is-4 is-offset-4">
-        <div class="box">
-            {% if appointment %}
-                <h3 class="title has-text-centered">Uredi Termin</h3>
-            {% else %}
-                <h3 class="title has-text-centered">Nov Termin</h3>
+        {% if appointment %}
+            <h3 class="title has-text-centered">Uredi Termin</h3>
+        {% else %}
+            <h3 class="title has-text-centered">Nov Termin</h3>
+        {% endif %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="notification is-link">
+                    {{ messages[0] }}
+                </div>
             {% endif %}
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="notification is-link">
-                        {{ messages[0] }}
-                    </div>
-                {% endif %}
-            {% endwith %}
-            <form method="POST" action="{% if appointment %}/update_appointment/
+        {% endwith %}
+        <form method="POST" action="{% if appointment %}/update_appointment/
                 {{ appointment.id }}{% else %}/add_appointment{% endif %}" autocomplete="off">
-                {{ appointment_form.hidden_tag() }}
-                <div class="field">
-                    {{ appointment_form.client_name.label(class="label") }}
-                    <div class="control">
-                        {{ appointment_form.client_name(class="input selectbox", style="width: 100%") }}
-                    </div>
+            {{ appointment_form.hidden_tag() }}
+            <div class="field">
+                {{ appointment_form.client_name.label(class="label") }}
+                <div class="control">
+                    {{ appointment_form.client_name(class="input selectbox", style="width: 100%") }}
                 </div>
-                <div class="field has-addons datetimefield">
-                    <div class="control">
-                        {{ appointment_form.date_of_appointment.label(class="label") }}
-                        {{ appointment_form.date_of_appointment(class="input date is-medium") }}
-                    </div>
-                    <div class="control">
-                        {{ appointment_form.time_of_appointment.label(class="label") }}
-                        {{ appointment_form.time_of_appointment(class="input datetime is-medium") }}
-                    </div>
+            </div>
+            <div class="field has-addons datetimefield">
+                <div class="control">
+                    {{ appointment_form.date_of_appointment.label(class="label") }}
+                    {{ appointment_form.date_of_appointment(class="input date is-medium") }}
                 </div>
-                <div class="field">
-                    {{ appointment_form.now_sms(class="checkbox") }}
-                    {{ appointment_form.now_sms.label(class="checkbox") }}
+                <div class="control">
+                    {{ appointment_form.time_of_appointment.label(class="label") }}
+                    {{ appointment_form.time_of_appointment(class="input datetime is-medium") }}
                 </div>
-                <div class="field">
-                    {{ appointment_form.same_day_sms(class="checkbox") }}
-                    {{ appointment_form.same_day_sms.label(class="checkbox") }}
+            </div>
+            <div class="field">
+                {{ appointment_form.now_sms(class="checkbox") }}
+                {{ appointment_form.now_sms.label(class="checkbox") }}
+            </div>
+            <div class="field">
+                {{ appointment_form.same_day_sms(class="checkbox") }}
+                {{ appointment_form.same_day_sms.label(class="checkbox") }}
+            </div>
+            <div class="field">
+                {{ appointment_form.day_before_sms(class="checkbox") }}
+                {{ appointment_form.day_before_sms.label(class="checkbox") }}
+            </div>
+            <div class="field is-grouped">
+                <div class="control is-expanded">
+                    {{ appointment_form.submit(class="button is-success is-fullwidth") }}
                 </div>
-                <div class="field">
-                    {{ appointment_form.day_before_sms(class="checkbox") }}
-                    {{ appointment_form.day_before_sms.label(class="checkbox") }}
+                <div class="control">
+                    <a class="button" href="{{ url_for('appointments_bp.appointments') }}">Prekliči</a>
                 </div>
-                <div class="field is-grouped">
-                    <div class="control is-expanded">
-                        {{ appointment_form.submit(class="button is-success is-fullwidth") }}
-                    </div>
-                    <div class="control">
-                        <a class="button" href="{{ url_for('appointments_bp.appointments') }}">Prekliči</a>
-                    </div>
-                </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 {% endblock %}
 {% block scripts %}

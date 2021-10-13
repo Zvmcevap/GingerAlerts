@@ -8,8 +8,8 @@
           </span>
             </a>
         </div>
-        <div class="control is-expanded is-overlay control-name-and-tel">
-            <a class="button is-outlined is-fullwidth is-small control-name-and-tel"
+        <div class="control is-overlay control-name-and-tel">
+            <a class="button is-outlined is-small control-name-and-tel"
                href="{{ url_for('clients_bp.a_client', client_id=client.id) }}">
                 <span class="icon"><i class="fas fa-user"></i></span>
                 <span>{{ client.name }} {{ client.phone }}</span>
