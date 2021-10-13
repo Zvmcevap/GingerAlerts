@@ -1,7 +1,7 @@
 .dodaj {
     position: fixed;
     bottom: 3rem;
-    right: 3rem;
+    right: 1rem;
     -webkit-backface-visibility: hidden;
     background-attachment: fixed !important;
     z-index: 1000;
