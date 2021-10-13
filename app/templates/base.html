@@ -19,7 +19,7 @@
         <nav class="navbar is-mobile" role="navigation">
             <div class="navbar-brand">
                     <a class="logo" href="{{ url_for('home_bp.index') }}">
-                        <img rel="icon" src="/app/static/GALogoLarge.svg" width="200" height="200">
+                        <img rel="icon" src="/app/static/GALogoLarge.svg" width="200" height="150">
                     </a>
             </div>
             <div class="navbar-end is-active is-mobile">
@@ -48,26 +48,10 @@
             {% block content %}
             {% endblock %}
         </div>
-        {% if current_user.is_authenticated %}
-            <div class="buttons has-addons is-bottom dodaj">
-                <a class="button is-link is-rounded"
-                   href="{{ url_for('appointments_bp.add_appointment') }}">
-                    <span class="icon"><i class="fas fa-clock"></i></span>
-                    <span>Nov Termin</span>
-                    <span class="icon"><i class="fas fa-plus"></i></span>
-                </a>
-                <a class="button is-link is-rounded" href="{{ url_for('clients_bp.add_client') }}">
-                    <span class="icon"><i class="fas fa-plus"></i></span>
-                    <span>Nova Stranka</span>
-                    <span class="icon"><i class="fas fa-user"></i></span>
-                </a>
-            </div>
-        {% endif %}
     </div>
 </section>
 </body>
 <footer class="footer">
-    <hr>
     <div class="content has-text-centered">
         <h1>Ginger Alerts</h1>
         <div class="columns">

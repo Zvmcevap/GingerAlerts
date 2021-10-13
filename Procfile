@@ -1,1 +1,1 @@
-web: flask db upgrade; gunicorn ginger-alerts:app
+web: flask db upgrade; gunicorn wsgi:app

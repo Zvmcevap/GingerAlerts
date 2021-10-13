@@ -5,7 +5,7 @@
 {% endblock %}
 {% block navigation %}
     {% if current_user.is_authenticated %}
-        <div class="buttons are-medium gumbi-navigacija mb-5">
+        <div class="buttons is-info gumbi-navigacija mb-5">
             <a href="{{ url_for('appointments_bp.appointments') }}"
                class="button is-link is-outlined is-rounded">Termini</a>
             <a href="{{ url_for('calendar_bp.calendar') }}"
@@ -17,7 +17,7 @@
 {% endblock %}
 {% block content %}
     {% from "_client_list_item.html" import client_list_item %}
-    <div class="container is-max-desktop">
+    <div class="container ">
         {% if client_list|length > 0 %}
             {% for client in client_list %}
                 {{ client_list_item(client) }}
@@ -34,4 +34,19 @@
             </div>
         {% endif %}
     </div>
+    {% if current_user.is_authenticated %}
+        <div class="buttons has-addons is-bottom dodaj">
+            <a class="button is-link is-rounded"
+               href="{{ url_for('appointments_bp.add_appointment') }}">
+                <span class="icon"><i class="fas fa-clock"></i></span>
+                <span>Nov Termin</span>
+                <span class="icon"><i class="fas fa-plus"></i></span>
+            </a>
+            <a class="button is-link is-rounded" href="{{ url_for('clients_bp.add_client') }}">
+                <span class="icon"><i class="fas fa-plus"></i></span>
+                <span>Nova Stranka</span>
+                <span class="icon"><i class="fas fa-user"></i></span>
+            </a>
+        </div>
+    {% endif %}
 {% endblock %}

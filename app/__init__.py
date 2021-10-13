@@ -61,7 +61,7 @@ def create_app():
         # Add the 3 types of SMS to the smstypes table
         if not SmsTemplate.query.all():
             default_template = SmsTemplate(
-                template='Živijo {ime_stranke}! {čas_termina} bla bla bla, test test, Lep pozdrav {moje_ime}'
+                template='Živijo {ime_stranke}! {čas_termina} imate termin, Lep pozdrav {moje_ime}.'
             )
             db.session.add(default_template)
             db.session.commit()
