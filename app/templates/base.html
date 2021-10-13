@@ -18,9 +18,14 @@
     <div class="hero-head">
         <nav class="navbar is-mobile" role="navigation">
             <div class="navbar-brand">
-                    <a class="logo" href="{{ url_for('home_bp.index') }}">
-                        <img rel="icon" src="/app/static/GALogoLarge.svg" width="200" height="200">
+                <a class="logo" href="{{ url_for('home_bp.index') }}">
+                    <img rel="icon" src="/app/static/GALogoLarge.svg" width="200">
+                </a>
+                {% if current_user.id == 1 %}
+                    <a class="navbar-item" href="/admin">
+                    Admin
                     </a>
+                {% endif %}
             </div>
             <div class="navbar-end is-active is-mobile">
                 {% if not current_user.is_authenticated %}
@@ -48,29 +53,14 @@
             {% block content %}
             {% endblock %}
         </div>
-        {% if current_user.is_authenticated %}
-            <div class="buttons has-addons is-bottom dodaj">
-                <a class="button is-link is-rounded"
-                   href="{{ url_for('appointments_bp.add_appointment') }}">
-                    <span class="icon"><i class="fas fa-clock"></i></span>
-                    <span>Nov Termin</span>
-                </a>
-                <a class="button is-link is-rounded" href="{{ url_for('clients_bp.add_client') }}">
-                    <span>Nova Stranka</span>
-                    <span class="icon"><i class="fas fa-user"></i></span>
-                </a>
-            </div>
-        {% endif %}
     </div>
 </section>
-</body>
-<footer class="footer">
-    <hr>
-    <div class="content has-text-centered">
-        <h1>Ginger Alerts</h1>
+<footer class="footer is-info has-background-success">
+    <div class="content has-text-centered has-text-white">
+        <h1 class="has-text-white">Ginger Alerts</h1>
         <div class="columns">
             <div class="column">
-                <h6>Zakaj to obstaja</h6>
+                <h6 class="has-text-white">Zakaj to obstaja</h6>
                 <p class="has-text-center">
                     Spletna stran je bila narejena za 2 človeka, da ne bosta potrebovala več ročno pošiljati sporočil
                     svojim strankam, v upanju, da se spotoma, ponesreči, mogoče, tudi jaz naučim kaj o izdelovanju
@@ -78,28 +68,28 @@
                 </p>
             </div>
             <div class="column has-text-left ml-6">
-                <h6>Različni Kontakti</h6>
+                <h6 class="has-text-white">Različni Kontakti</h6>
                 <ul>
                     <li><a href="https://github.com/Zvmcevap">
-                        <span class="icon has-text-info"><i class="fab fa-github"></i></span>
-                        <span class="has-text-info">Github Račun</span>
+                        <span class="icon has-text-white-bis"><i class="fab fa-github"></i></span>
+                        <span class="has-text-white-bis">Github Račun</span>
                     </a></li>
                     <li><a href="https://steamcommunity.com/id/bnzpnc">
-                        <span class="icon has-text-info"><i class="fab fa-steam"></i></span>
-                        <span class="has-text-info">Račun na vodno-paro</span>
+                        <span class="icon has-text-white-bis"><i class="fab fa-steam"></i></span>
+                        <span class="has-text-white-bis">Račun na vodno-paro</span>
                     </a></li>
                     <li><a href="https://www.instagram.com/beno.zupanc/">
-                        <span class="icon has-text-info"><i class="fab fa-instagram"></i></span>
-                        <span class="has-text-info">Instagram Račun</span>
+                        <span class="icon has-text-white-bis"><i class="fab fa-instagram"></i></span>
+                        <span class="has-text-white-bis">Instagram Račun</span>
                     </a></li>
                     <li><a href="https://www.facebook.com/beno.zupanc/">
-                        <span class="icon has-text-info"><i class="fab fa-facebook-f"></i></span>
-                        <span class="has-text-info">"Facebooks"</span>
+                        <span class="icon has-text-white-bis"><i class="fab fa-facebook-f"></i></span>
+                        <span class="has-text-white-bis">"Facebooks"</span>
                     </a></li>
                 </ul>
             </div>
             <div class="column">
-                <h6>Vaše mnenje</h6>
+                <h6 class="has-text-white">Vaše mnenje</h6>
                 <p class="has-text-center">
                     Vse pritožbe, pohvale, želje in sanje lahko oddaš na enega od kontaktnih linkov.</p>
                 <p>
@@ -110,13 +100,14 @@
             <div class="column ml-6">
                 <div class="control mr-6">
                     <a class="logo" href="{{ url_for('home_bp.index') }}">
-                        <img src="/app/static/GALogoLarge.svg" width="500" height="500">
+                        <img src="/app/static/GALogoLargeWhite.svg" width="500" height="500">
                     </a>
                 </div>
             </div>
         </div>
     </div>
 </footer>
+</body>
 {% block scripts %}
     <script src="/app/static/base.js"></script>
 {% endblock %}

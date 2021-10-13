@@ -1,6 +1,7 @@
 from app import db
 from datetime import datetime
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
+from flask_admin.contrib.sqla import ModelView
 
 
 class User(UserMixin, db.Model):
@@ -91,3 +92,12 @@ class SmsTemplate(db.Model):
 
     users = db.relationship('User', back_populates='sms_template')
     clients = db.relationship('Client', back_populates='sms_template')
+
+
+class MyModelView(ModelView):
+    def is_accessible(self):
+        user = User.query.filter(User.id == current_user.id).first()
+        if user.admin:
+            return True
+        else:
+            return False

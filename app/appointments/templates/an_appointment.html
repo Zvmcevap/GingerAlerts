@@ -6,7 +6,7 @@
 {% endblock %}
 {% block navigation %}
     {% if current_user.is_authenticated %}
-        <div class="buttons  gumbi-navigacija mb-5">
+        <div class="buttons is-info gumbi-navigacija mb-5">
             <a href="{{ url_for('appointments_bp.appointments') }}"
                class="button is-link is-outlined is-rounded">Termini</a>
             <a href="{{ url_for('calendar_bp.calendar') }}"
@@ -18,137 +18,137 @@
 {% endblock %}
 {% block content %}
     <div class="column is-4 is-offset-4">
-        <div class="box">
-            <h3 class="title has-text-centered">Termin</h3>
+        <h3 class="title has-text-centered">Termin</h3>
+        <div class="field">
+            <label class="label">Ime stranke:</label>
+            <div class="control is-expanded">
+                <a class="button is-fullwidth"
+                   href="{{ url_for('clients_bp.a_client',client_id = appointment.client.id) }}">
+                    <span class="icon"><i class="fas fa-user"></i></span>
+                    <span>{{ appointment.client.name }}</span>
+                </a>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Čas termina:</label>
+            <div class="control is-expanded">
+                <a class="button is-fullwidth">
+                    <span class="icon"><i class="fas fa-calendar"></i></span>
+                    <span>{{ appointment.time_of_appointment.strftime('%d/%m/%Y') }}</span>
+                    <span class="icon"><i class="fas fa-clock"></i></span>
+                    <span>{{ appointment.time_of_appointment.strftime('%H:%M') }}</span>
+                </a>
+            </div>
+        </div>
+        {% if appointment.now_sms == 2 %}
             <div class="field">
-                <label class="label">Ime stranke:</label>
+                <label class="label">Takojšnji SMS</label>
                 <div class="control is-expanded">
-                    <a class="button is-fullwidth"
-                       href="{{ url_for('clients_bp.a_client',client_id = appointment.client.id) }}">
-                        <span class="icon"><i class="fas fa-user"></i></span>
-                        <span>{{ appointment.client.name }}</span>
+                    <a href="{{ url_for('home_bp.sent_sms', sms_id=sent_now_sms.id) }}" class="button is-fullwidth is-success is-outlined">
+                        <span class="icon"><i class="fas fa-check"></i></span>
+                        <span>Sporočilo je bilo poslano</span>
                     </a>
                 </div>
             </div>
+        {% elif appointment.now_sms == 1 %}
             <div class="field">
-                <label class="label">Čas termina:</label>
+                <label class="label">Takojšnji SMS</label>
                 <div class="control is-expanded">
-                    <a class="button is-fullwidth">
-                        <span class="icon"><i class="fas fa-calendar"></i></span>
-                        <span>{{ appointment.time_of_appointment.strftime('%d/%m/%Y') }}</span>
-                        <span class="icon"><i class="fas fa-clock"></i></span>
-                        <span>{{ appointment.time_of_appointment.strftime('%H:%M') }}</span>
+                    <a class="button is-fullwidth is-link is-outlined">
+                        <span class="icon"><i class="fas fa-times"></i></span>
+                        <span>Sporočilo še ni poslano</span>
                     </a>
                 </div>
             </div>
-            {% if appointment.now_sms == 2 %}
-                <div class="field">
-                    <label class="label">Takojšnji SMS</label>
-                    <div class="control is-expanded">
-                        <a class="button is-fullwidth is-success is-outlined">
-                            <span class="icon"><i class="fas fa-check"></i></span>
-                            <span>Sporočilo je bilo poslano</span>
-                        </a>
-                    </div>
-                </div>
-            {% elif appointment.now_sms == 1 %}
-                <div class="field">
-                    <label class="label">Takojšnji SMS</label>
-                    <div class="control is-expanded">
-                        <a class="button is-fullwidth is-link is-outlined">
-                            <span class="icon"><i class="fas fa-times"></i></span>
-                            <span>Sporočilo še ni poslano</span>
-                        </a>
-                    </div>
-                </div>
-            {% elif appointment.now_sms == 0 %}
-                <div class="field">
-                    <label class="label">Takojšnji SMS</label>
-                    <div class="control is-expanded">
-                        <a class="button is-fullwidth is-grey is-outlined">
-                            <span class="icon"><i class="fas fa-circle"></i></span>
-                            <span>Sporočilo se ne pošlje</span>
-                        </a>
-                    </div>
-                </div>
-            {% endif %}
-            {% if appointment.same_day_sms == 2 %}
-                <div class="field">
-                    <label class="label">SMS obvestilo na dan termina</label>
-                    <div class="control is-expanded">
-                        <a class="button is-fullwidth is-success is-outlined">
-                            <span class="icon"><i class="fas fa-check"></i></span>
-                            <span>Sporočilo je bilo poslano</span>
-                        </a>
-                    </div>
-                </div>
-            {% elif appointment.same_day_sms == 1 %}
-                <div class="field">
-                    <label class="label">SMS obvestilo na dan termina</label>
-                    <div class="control is-expanded">
-                        <a class="button is-fullwidth is-link is-outlined">
-                            <span class="icon"><i class="fas fa-times"></i></span>
-                            <span>Sporočilo še ni poslano</span>
-                        </a>
-                    </div>
-                </div>
-            {% elif appointment.same_day_sms == 0 %}
-                <div class="field">
-                    <label class="label">SMS obvestilo na dan termina</label>
-                    <div class="control is-expanded">
-                        <a class="button is-fullwidth is-grey is-outlined">
-                            <span class="icon"><i class="fas fa-circle"></i></span>
-                            <span>Sporočilo se ne pošlje</span>
-                        </a>
-                    </div>
-                </div>
-            {% endif %}
-            {% if appointment.day_before_sms == 2 %}
-                <div class="field">
-                    <label class="label">SMS obvestilo dan pred terminom</label>
-                    <div class="control is-expanded">
-                        <a class="button is-fullwidth is-success is-outlined">
-                            <span class="icon"><i class="fas fa-check"></i></span>
-                            <span>Sporočilo je bilo poslano</span>
-                        </a>
-                    </div>
-                </div>
-            {% elif appointment.day_before_sms == 1 %}
-                <div class="field">
-                    <label class="label">SMS obvestilo dan pred terminom</label>
-                    <div class="control is-expanded">
-                        <a class="button is-fullwidth is-link is-outlined">
-                            <span class="icon"><i class="fas fa-times"></i></span>
-                            <span>Sporočilo še ni poslano</span>
-                        </a>
-                    </div>
-                </div>
-            {% elif appointment.day_before_sms == 0 %}
-                <div class="field">
-                    <label class="label">SMS obvestilo dan pred terminom</label>
-                    <div class="control is-expanded">
-                        <a class="button is-fullwidth is-grey is-outlined">
-                            <span class="icon"><i class="fas fa-circle"></i></span>
-                            <span>Sporočilo se ne pošlje</span>
-                        </a>
-                    </div>
-                </div>
-            {% endif %}
-            <div class="field is-grouped">
+        {% elif appointment.now_sms == 0 %}
+            <div class="field">
+                <label class="label">Takojšnji SMS</label>
                 <div class="control is-expanded">
-                    <a class="button is-success is-fullwidth"
-                       href="{{ url_for('appointments_bp.update_appointment', appointment_id=appointment.id) }}">Uredi
-                        Termin</a>
+                    <a class="button is-fullwidth is-grey is-outlined">
+                        <span class="icon"><i class="fas fa-circle"></i></span>
+                        <span>Sporočilo se ne pošlje</span>
+                    </a>
                 </div>
-                <div class="control">
-                    <a class="button is-link"
-                       href="{{ url_for('appointments_bp.delete_appointment', appointment_id=appointment.id) }}"
-                       onclick="return confirm('As zihr?');">
-                        <span class="icon"><i class="far fa-trash-alt"></i></span></a>
+            </div>
+        {% endif %}
+        {% if appointment.same_day_sms == 2 %}
+            <div class="field">
+                <label class="label">SMS obvestilo na dan termina</label>
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth is-success is-outlined"
+                    href="{{ url_for('home_bp.sent_sms', sms_id=sent_same_day_sms.id) }}">
+                        <span class="icon"><i class="fas fa-check"></i></span>
+                        <span>Sporočilo je bilo poslano</span>
+                    </a>
                 </div>
-                <div class="control">
-                    <a class="button" href="{{ url_for('appointments_bp.appointments') }}">Nazaj</a>
+            </div>
+        {% elif appointment.same_day_sms == 1 %}
+            <div class="field">
+                <label class="label">SMS obvestilo na dan termina</label>
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth is-link is-outlined">
+                        <span class="icon"><i class="fas fa-times"></i></span>
+                        <span>Sporočilo še ni poslano</span>
+                    </a>
                 </div>
+            </div>
+        {% elif appointment.same_day_sms == 0 %}
+            <div class="field">
+                <label class="label">SMS obvestilo na dan termina</label>
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth is-grey is-outlined">
+                        <span class="icon"><i class="fas fa-circle"></i></span>
+                        <span>Sporočilo se ne pošlje</span>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+        {% if appointment.day_before_sms == 2 %}
+            <div class="field">
+                <label class="label">SMS obvestilo dan pred terminom</label>
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth is-success is-outlined"
+                    href="{{ url_for('home_bp.sent_sms', sms_id=sent_day_before_sms.id) }}">
+                        <span class="icon"><i class="fas fa-check"></i></span>
+                        <span>Sporočilo je bilo poslano</span>
+                    </a>
+                </div>
+            </div>
+        {% elif appointment.day_before_sms == 1 %}
+            <div class="field">
+                <label class="label">SMS obvestilo dan pred terminom</label>
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth is-link is-outlined">
+                        <span class="icon"><i class="fas fa-times"></i></span>
+                        <span>Sporočilo še ni poslano</span>
+                    </a>
+                </div>
+            </div>
+        {% elif appointment.day_before_sms == 0 %}
+            <div class="field">
+                <label class="label">SMS obvestilo dan pred terminom</label>
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth is-grey is-outlined">
+                        <span class="icon"><i class="fas fa-circle"></i></span>
+                        <span>Sporočilo se ne pošlje</span>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+        <div class="field is-grouped">
+            <div class="control is-expanded">
+                <a class="button is-success is-fullwidth"
+                   href="{{ url_for('appointments_bp.update_appointment', appointment_id=appointment.id) }}">Uredi
+                    Termin</a>
+            </div>
+            <div class="control">
+                <a class="button is-link"
+                   href="{{ url_for('appointments_bp.delete_appointment', appointment_id=appointment.id) }}"
+                   onclick="return confirm('As zihr?');">
+                    <span class="icon"><i class="far fa-trash-alt"></i></span></a>
+            </div>
+            <div class="control">
+                <a class="button" href="{{ url_for('appointments_bp.appointments') }}">Nazaj</a>
             </div>
         </div>
     </div>

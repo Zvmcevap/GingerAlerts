@@ -704,7 +704,7 @@
 }
 
 .timeline-content {
-    min-width: 23rem;
+    min-width: 19rem;
     width: 100%;
 }
 
@@ -727,7 +727,6 @@
 
 .block {
     text-align: center;
-    min-width: 29rem;
 }
 
 .tabs.is-toggle li.is-active a {

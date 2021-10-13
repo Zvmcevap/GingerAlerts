@@ -5,7 +5,7 @@
 {% endblock %}
 {% block navigation %}
     {% if current_user.is_authenticated %}
-        <div class="buttons  gumbi-navigacija mb-5">
+        <div class="buttons is-info gumbi-navigacija mb-5">
             <a href="{{ url_for('appointments_bp.appointments') }}"
                class="button is-link is-outlined is-rounded">Termini</a>
             <a href="{{ url_for('calendar_bp.calendar') }}"
@@ -18,86 +18,84 @@
 {% block content %}
     {% from "_input_text.html" import input_text %}
     <div class="column is-4 is-offset-4">
-        <div class="box">
-            <h3 class="title has-text-centered">SMS Sporočilo</h3>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="notification is-link">
-                        {{ messages[0] }}
-                    </div>
-                {% endif %}
-            {% endwith %}
-            <form method="POST" action="/change_sms_template" autocomplete="off">
-                {{ sms_template_form.hidden_tag() }}
-                <div class="field">
-                    {{ sms_template_form.client.label(class="label") }}
-                    <div class="field green-group"{% if client %} hidden{% endif %}>
-                        <div class="field has-addons">
-                            <div class="control is-expanded">
-                                <button type="button" id="zelengumb" class="button is-fullwidth is-info is-outlined">
-                                    Standardni SMS za vse stranke
-                                </button>
-                            </div>
-                            <div class="control">
-                                <a class="button is-success is-outlined"
-                                   href="{{ url_for('home_bp.reset_sms_template') }}"
-                                   onclick="return confirm('Ponastavi Standardni SMS nazaj na tovarniške nastavitve? :)');">
-                                    <span class="icon"><i class="fas fa-undo"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                        <p class="help is-link">Klikni za dodelitev SMS-a specifičnim strankam.</p>
-                    </div>
-                    <div class="field blue-group" {% if not client %} hidden{% endif %}>
-                        <button type="button" id="modergumb" class="button is-link is-fullwidth is-outlined">
-                            SMS za izbrane stranke
-                        </button>
-                        <p class="help is-info">Klikni za spremembo Standardnega SMS-a za vse stranke.</p>
-                    </div>
-                    <div class="control is-expanded blue-group"{% if not client %} hidden{% endif %}>
-                        {{ sms_template_form.client(class="input selectbox-multi", style="width: 100%") }}
-                    </div>
+        <h3 class="title has-text-centered">SMS Sporočilo</h3>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="notification is-link">
+                    {{ messages[0] }}
                 </div>
-                <div class="field">
-                    {{ sms_template_form.template.label(class="label") }}
-                    <div class="control">
-                        {{ sms_template_form.template(class="textarea") }}
-                    </div>
-                </div>
-                <div class="field">
-                    <label for="buttons" class="label">Klikni da vstaviš v besedilo:</label>
-                    <div class="field is-grouped">
+            {% endif %}
+        {% endwith %}
+        <form method="POST" action="/change_sms_template" autocomplete="off">
+            {{ sms_template_form.hidden_tag() }}
+            <div class="field">
+                {{ sms_template_form.client.label(class="label") }}
+                <div class="field green-group"{% if client %} hidden{% endif %}>
+                    <div class="field has-addons">
                         <div class="control is-expanded">
-                            <button type="button" id="ime-stranke" class="button is-info is-fullwidth is-outlined">
-                                <span>{ime_stranke}</span>
+                            <button type="button" id="zelengumb" class="button is-fullwidth is-info is-outlined">
+                                Standardni SMS za vse stranke
                             </button>
                         </div>
-                        <div class="control is-expanded">
-                            <button type="button" id="cas-termina" class="button is-info is-fullwidth is-outlined">
-                                <span>{čas_termina}</span>
-                            </button>
+                        <div class="control">
+                            <a class="button is-success is-outlined"
+                               href="{{ url_for('home_bp.reset_sms_template') }}"
+                               onclick="return confirm('Ponastavi Standardni SMS nazaj na tovarniške nastavitve? :)');">
+                                <span class="icon"><i class="fas fa-undo"></i></span>
+                            </a>
                         </div>
                     </div>
-                    <p class="help is-link">Mora biti napisano točno tako kot je, da se lahko imena strank in časi
-                        terminov dinamično spreminjajo. </p>
-                    <p class="help is-link"> V čas termnina je vključen datum in ura, a la: "(jutri/danes) 15.5.2020 ob
-                        16:30". </p>
+                    <p class="help is-link">Klikni za dodelitev SMS-a specifičnim strankam.</p>
                 </div>
+                <div class="field blue-group" {% if not client %} hidden{% endif %}>
+                    <button type="button" id="modergumb" class="button is-link is-fullwidth is-outlined">
+                        SMS za izbrane stranke
+                    </button>
+                    <p class="help is-info">Klikni za spremembo Standardnega SMS-a za vse stranke.</p>
+                </div>
+                <div class="control is-expanded blue-group"{% if not client %} hidden{% endif %}>
+                    {{ sms_template_form.client(class="input selectbox-multi", style="width: 100%") }}
+                </div>
+            </div>
+            <div class="field">
+                {{ sms_template_form.template.label(class="label") }}
+                <div class="control">
+                    {{ sms_template_form.template(class="textarea") }}
+                </div>
+            </div>
+            <div class="field">
+                <label for="buttons" class="label">Klikni da vstaviš v besedilo:</label>
                 <div class="field is-grouped">
                     <div class="control is-expanded">
-                        {{ sms_template_form.submit(class="button is-info is-fullwidth") }}
+                        <button type="button" id="ime-stranke" class="button is-info is-fullwidth is-outlined">
+                            <span>{ime_stranke}</span>
+                        </button>
                     </div>
-                    <div class="control">
-                        <a class="button" href="{{ url_for('clients_bp.clients') }}">Prekliči</a>
+                    <div class="control is-expanded">
+                        <button type="button" id="cas-termina" class="button is-info is-fullwidth is-outlined">
+                            <span>{čas_termina}</span>
+                        </button>
                     </div>
                 </div>
-                <hr>
-                <p class="help">P.S. Jutri/danes ne bodo v oklepajih... hotel sem samo pokazat da bodo vključeni
-                    v besedilo ko bo to primerno...</p>
-                <p class="help">P.P.S. Tud slash-a ne bo med jutri in danes... V glavnem če ti kej ni jasn poklič al
-                    neki..</p>
-            </form>
-        </div>
+                <p class="help is-link">Mora biti napisano točno tako kot je, da se lahko imena strank in časi
+                    terminov dinamično spreminjajo. </p>
+                <p class="help is-link"> V čas termnina je vključen datum in ura, a la: "(jutri/danes) 15.5.2020 ob
+                    16:30". </p>
+            </div>
+            <div class="field is-grouped">
+                <div class="control is-expanded">
+                    {{ sms_template_form.submit(class="button is-info is-fullwidth") }}
+                </div>
+                <div class="control">
+                    <a class="button" href="{{ url_for('clients_bp.clients') }}">Prekliči</a>
+                </div>
+            </div>
+            <hr>
+            <p class="help">P.S. Jutri/danes ne bodo v oklepajih... hotel sem samo pokazat da bodo vključeni
+                v besedilo ko bo to primerno...</p>
+            <p class="help">P.P.S. Tud slash-a ne bo med jutri in danes... V glavnem če ti kej ni jasn poklič al
+                neki..</p>
+        </form>
     </div>
 {% endblock %}
 

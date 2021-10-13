@@ -3,48 +3,46 @@
 {% block content %}
     {% from "_input_text.html" import input_text %}
     <div class="column is-4 is-offset-4">
-        <div class="box">
-            {% if update %}
-                <h3 class="title has-text-centered">Spremeni ime ali email</h3>
-            {% else %}
-                <h3 class="title has-text-centered">Registracija</h3>
+        {% if update %}
+            <h3 class="title has-text-centered">Spremeni ime ali email</h3>
+        {% else %}
+            <h3 class="title has-text-centered">Registracija</h3>
+        {% endif %}
+        {% with messages = get_flashed_messages(category_filter=['name_not_unique']) %}
+            {% if messages %}
+                <div class="notification is-link">
+                    {{ messages[0] }} Go to <a href="{{ url_for('auth_bp.login') }}">Login instead?</a>.
+                </div>
             {% endif %}
-            {% with messages = get_flashed_messages(category_filter=['name_not_unique']) %}
-                {% if messages %}
-                    <div class="notification is-link">
-                        {{ messages[0] }} Go to <a href="{{ url_for('auth_bp.login') }}">Login instead?</a>.
-                    </div>
-                {% endif %}
-            {% endwith %}
-            <form action="{% if update %}/update_profile{% else %}/signup{% endif %}" method="POST">
-                {{ register_form.hidden_tag() }}
+        {% endwith %}
+        <form action="{% if update %}/update_profile{% else %}/signup{% endif %}" method="POST">
+            {{ register_form.hidden_tag() }}
+            <div class="field">
+                {{ input_text(register_form.email) }}
+            </div>
+            <div class="field">
+                {{ input_text(register_form.name) }}
+            </div>
+            {% if not update %}
                 <div class="field">
-                    {{ input_text(register_form.email) }}
+                    {{ input_text(register_form.password) }}
                 </div>
                 <div class="field">
-                    {{ input_text(register_form.name) }}
+                    {{ register_form.remember(class="checkbox") }}
+                    {{ register_form.remember.label(class="checkbox") }}
                 </div>
-                {% if not update %}
-                    <div class="field">
-                        {{ input_text(register_form.password) }}
+                {{ register_form.recaptcha }}
+                {{ register_form.submit(class="button is-block is-info is-large is-fullwidth") }}
+            {% else %}
+                <div class="field is-grouped">
+                    <div class="control is-expanded">
+                        {{ register_form.submit(class="button is-success is-fullwidth") }}
                     </div>
-                    <div class="field">
-                        {{ register_form.remember(class="checkbox") }}
-                        {{ register_form.remember.label(class="checkbox") }}
+                    <div class="control">
+                        <a class="button" href="{{ url_for('auth_bp.profile') }}">Prekliči</a>
                     </div>
-                    {{ register_form.recaptcha }}
-                    {{ register_form.submit(class="button is-block is-info is-large is-fullwidth") }}
-                {% else %}
-                    <div class="field is-grouped">
-                        <div class="control is-expanded">
-                            {{ register_form.submit(class="button is-success is-fullwidth") }}
-                        </div>
-                        <div class="control">
-                            <a class="button" href="{{ url_for('auth_bp.profile') }}">Prekliči</a>
-                        </div>
-                    </div>
-                {% endif %}
-            </form>
-        </div>
+                </div>
+            {% endif %}
+        </form>
     </div>
 {% endblock %}

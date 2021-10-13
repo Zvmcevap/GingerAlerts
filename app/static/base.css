@@ -1,7 +1,7 @@
-.buttons.dodaj {
+.dodaj {
     position: fixed;
     bottom: 3rem;
-    right: 2rem;
+    right: 3rem;
     -webkit-backface-visibility: hidden;
     z-index: 1000;
 }
@@ -24,10 +24,14 @@
 }
 
 @media only screen and (max-width: 1000px) {
+    .hero-body {
+        padding-top: 0px;
+    }
+
     .buttons.dodaj {
         position: fixed;
         bottom: 3rem;
-        left: 2rem;
+        left: 3rem;
         -webkit-backface-visibility: hidden;
         z-index: 1000;
         background-attachment: fixed !important;
@@ -100,3 +104,4 @@
 .card-header-title {
     color: white;
 }
+

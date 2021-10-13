@@ -10,12 +10,6 @@
                 <span>{{ appointment.time_of_appointment.strftime('%H:%M') }}</span>
             </a>
         </div>
-        <div class="control is-expanded is-overlay control-name-and-tel">
-            <a class="button is-rounded is-outlined is-fullwidth is-small control-name-and-tel"
-               href="{{ url_for('appointments_bp.an_appointment',appointment_id = appointment.id) }}">
-                <span>SMSi:</span>
-            </a>
-        </div>
         <div class="control tooltip">
             {% if appointment.now_sms == 2 %}
 
