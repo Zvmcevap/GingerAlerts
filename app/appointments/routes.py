@@ -151,9 +151,9 @@ def add_appointment_post(client_id):
         client = Client.query.filter(Client.id == client_id).first()
         new_appointment = Appointment(client=client,
                                       time_of_appointment=app_datetime,
-                                      now_sms=now_sms,
-                                      same_day_sms=same_day_sms,
-                                      day_before_sms=yesterday_sms  # Yes, yes I know... naming things.....
+                                      now_sms=int(now_sms),
+                                      same_day_sms=int(same_day_sms),
+                                      day_before_sms=int(yesterday_sms)
                                       )
         db.session.add(new_appointment)
 
@@ -248,9 +248,9 @@ def update_appointment_post(appointment_id):
         client = Client.query.filter(Client.id == client_id).first()
         update_appointment.client = client
         updated_appointment.time_of_appointment = app_datetime
-        updated_appointment.now_sms = now_sms
-        updated_appointment.same_day_sms = same_day_sms
-        updated_appointment.day_before_sms = yesterday_sms
+        updated_appointment.now_sms = int(now_sms)
+        updated_appointment.same_day_sms = int(same_day_sms)
+        updated_appointment.day_before_sms = int(yesterday_sms)
 
         if updated_appointment.now_sms:
             user = User.query.filter(User.id == current_user.id).first()

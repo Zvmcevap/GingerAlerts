@@ -20,110 +20,111 @@
 {% block content %}
     {% from "_sent_text_item.html" import sent_text_item %}
     <div class="column is-4 is-offset-4">
-    <h3 class="title has-text-centered">Profil</h3>
-    <div class="field">
-        <label class="label">Ime:</label>
-        <div class="control is-expanded">
-            <a class="button is-fullwidth">
-                <span class="icon"><i class="fas fa-user"></i></span>
-                <span>{{ current_user.name }}</span>
-            </a>
-        </div>
-    </div>
-    <div class="field">
-        <label class="label">Email:</label>
-        <div class="control is-expanded">
-            <a class="button is-fullwidth">
-                <span class="icon"><i class="fas fa-envelope"></i></span>
-                <span>{{ current_user.email }}</span>
-            </a>
-        </div>
-    </div>
-
-    <div class="field">
-        <label class="label">Možnost pošiljanja SMSa strankam:</label>
-        <div class="control is-expanded">
-            {% if current_user.send_SMS %}
-                <a class="button is-fullwidth is-success is-outlined">
-                    <span class="icon"><i class="fas fa-check"></i></span>
-                    <span>Ti lahk</span>
-                </a>
-            {% else %}
-                <a class="button is-fullwidth is-link is-outlined">
-                    <span class="icon"><i class="fas fa-times"></i></span>
-                    <span>Noup! Ne moreš :(</span>
-                </a>
-            {% endif %}
-        </div>
-    </div>
-    <div class="field">
-        <label class="label">Standardni SMS:</label>
-        <div class="field has-addons">
+        <h3 class="title has-text-centered">Profil</h3>
+        <div class="field">
+            <label class="label">Ime:</label>
             <div class="control is-expanded">
-                <a class="button is-fullwidth is-outlined">
-                    <span class="icon"><i class="fas fa-envelope"></i></span>
-                    <span>Besedilo</span>
-                </a>
-            </div>
-            <div class="control">
-                <a class="button is-info is-outlined"
-                   href="{{ url_for('home_bp.reset_sms_template') }}"
-                   onclick="return confirm('Ponastavi Standardni SMS nazaj na tovarniške nastavitve? :)');">
-                    <span class="icon"><i class="fas fa-undo"></i></span>
+                <a class="button is-fullwidth">
+                    <span class="icon"><i class="fas fa-user"></i></span>
+                    <span>{{ current_user.name }}</span>
                 </a>
             </div>
         </div>
-        <a class="button is-multiline is-success is-light"
-           href="{{ url_for('home_bp.change_sms_template') }}">
-            <span>{{ sms_template.template }}</span>
-        </a>
-        <p class="help is-info">Klikni da urediš.</p>
-    </div>
-    <hr>
-    <div class="field is-grouped">
-        <div class="control is-expanded">
-            <a class="button is-success is-fullwidth"
-               href="{{ url_for('auth_bp.update_profile') }}">
-                <span>Spremeni Ime/Email</span>
-                <span class="icon">
+        <div class="field">
+            <label class="label">Email:</label>
+            <div class="control is-expanded">
+                <a class="button is-fullwidth">
+                    <span class="icon"><i class="fas fa-envelope"></i></span>
+                    <span>{{ current_user.email }}</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Možnost pošiljanja SMSa strankam:</label>
+            <div class="control is-expanded">
+                {% if current_user.send_SMS %}
+                    <a class="button is-fullwidth is-success is-outlined">
+                        <span class="icon"><i class="fas fa-check"></i></span>
+                        <span>Ti lahk</span>
+                    </a>
+                {% else %}
+                    <a class="button is-fullwidth is-link is-outlined">
+                        <span class="icon"><i class="fas fa-times"></i></span>
+                        <span>Noup! Ne moreš :(</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Standardni SMS:</label>
+            <div class="field has-addons">
+                <div class="control is-expanded">
+                    <a class="button is-fullwidth is-outlined">
+                        <span class="icon"><i class="fas fa-envelope"></i></span>
+                        <span>Besedilo</span>
+                    </a>
+                </div>
+                <div class="control">
+                    <a class="button is-info is-outlined"
+                       href="{{ url_for('home_bp.reset_sms_template') }}"
+                       onclick="return confirm('Ponastavi Standardni SMS nazaj na tovarniške nastavitve? :)');">
+                        <span class="icon"><i class="fas fa-undo"></i></span>
+                    </a>
+                </div>
+            </div>
+            <a class="button is-multiline is-success is-light"
+               href="{{ url_for('home_bp.change_sms_template') }}">
+                <span>{{ sms_template.template }}</span>
+            </a>
+            <p class="help is-info">Klikni da urediš.</p>
+        </div>
+        <hr>
+        <div class="field is-grouped">
+            <div class="control is-expanded">
+                <a class="button is-success is-fullwidth"
+                   href="{{ url_for('auth_bp.update_profile') }}">
+                    <span>Spremeni Ime/Email</span>
+                    <span class="icon">
                             <i class="fas fa-edit"></i>
                         </span></a>
-        </div>
-        <div class="control is-expanded">
-            <a class="button is-fullwidth"
-               href="{{ url_for('auth_bp.change_password') }}">
-                <span>Spremeni Geslo</span>
-                <span class="icon">
+            </div>
+            <div class="control is-expanded">
+                <a class="button is-fullwidth"
+                   href="{{ url_for('auth_bp.change_password') }}">
+                    <span>Spremeni Geslo</span>
+                    <span class="icon">
                             <i class="fas fa-lock"></i>
                         </span></a>
+            </div>
         </div>
-    </div>
-    <hr>
-    <div class="control">
-        <a class="button is-fullwidth is-link is-expanded"
-           href="{{ url_for('auth_bp.delete_profile') }}"
-           onclick="return confirm(
+        <hr>
+        <div class="control">
+            <a class="button is-fullwidth is-link is-expanded"
+               href="{{ url_for('auth_bp.delete_profile') }}"
+               onclick="return confirm(
                            'Če se izbrišeš bodo izbrisani tudi vsi tvoji podatki, nismo mi fejsbuk alo. Si šur?');">
-            <span>Izbriši Profil</span>
-            <span class="icon"><i class="far fa-trash-alt"></i></span>
-        </a>
-    </div>
-    {% if sent_texts %}
-        <div class="field is-expanded">
-            <div class="control is-expanded">
-                <button class="button is-fullwidth" id="button-toggle-texts">
-                    <span>Poslani SMS-i</span>
-                    <span class="icon is-small"><i class="fas fa-angle-down"></i></span>
-                </button>
-            </div>
-            <div class="field" id="dropdown-texts" hidden>
-                <hr>
-                {% for text in sent_texts %}
-                    {{ sent_text_item(text) }}
-                {% endfor %}
-            </div>
+                <span>Izbriši Profil</span>
+                <span class="icon"><i class="far fa-trash-alt"></i></span>
+            </a>
         </div>
-    {% endif %}
+        {% if sent_texts %}
+            <div class="field is-expanded">
+                <div class="control is-expanded">
+                    <button class="button is-fullwidth" id="button-toggle-texts">
+                        <span>Poslani SMS-i</span>
+                        <span class="icon is-small"><i class="fas fa-angle-down"></i></span>
+                    </button>
+                </div>
+                <div class="field" id="dropdown-texts" hidden>
+                    <hr>
+                    {% for text in sent_texts %}
+                        {{ sent_text_item(text) }}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block scripts %}
