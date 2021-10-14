@@ -65,7 +65,7 @@ class Appointment(db.Model):
 class SentSms(db.Model):
     __tablename__ = 'sentsmses'
     id = db.Column(db.Integer, primary_key=True)
-    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False)
+    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=True)
     sms_type_id = db.Column(db.Integer, db.ForeignKey('smstypes.id'), nullable=False)
     sent_at_datetime = db.Column(db.DateTime, default=datetime.now(), index=True)
     sms_text = db.Column(db.Text, nullable=False)
