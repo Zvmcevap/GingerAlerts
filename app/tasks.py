@@ -70,3 +70,6 @@ def send_daily():
                     print('Slaba Telefonska')
 
     db.session.commit()
+
+
+send_daily()
