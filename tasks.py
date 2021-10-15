@@ -5,7 +5,9 @@ from sqlalchemy import func
 from twilio.base.exceptions import TwilioRestException
 
 
+print('Starting le file')
 def send_daily():
+    print('Starting send_daily()')
     today = datetime.now()
     tomorrow = datetime.now() + timedelta(days=1)
     print(today.date(), tomorrow.date())
@@ -16,6 +18,7 @@ def send_daily():
     print(todays_appointments)
     if todays_appointments:
         for appointment in todays_appointments:
+            print(f'appointment: {appointment}')
             user = User.query.filter(User.id == client.user_id).first()
             client = Client.query.filter(Client.id == appointment.client_id).first()
             if user.send_SMS:
@@ -71,3 +74,6 @@ def send_daily():
                     print('Slaba Telefonska')
 
     db.session.commit()
+
+if __name__ == '__main__':
+    send_daily()
