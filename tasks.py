@@ -8,7 +8,7 @@ from twilio.base.exceptions import TwilioRestException
 
 print('Starting le file')
 def send_daily():
-    with current_app:
+    with current_app.app_context():
         print('Starting send_daily()')
         today = datetime.now()
         tomorrow = datetime.now() + timedelta(days=1)
