@@ -56,6 +56,9 @@ def create_app():
         from app.appointments.routes import appointments_bp
         app.register_blueprint(appointments_bp)
 
+        from app.tasks.tasks import tasks_bp
+        app.register_blueprint(tasks_bp)
+
         # Create database start Scheduler
         db.create_all()
 
