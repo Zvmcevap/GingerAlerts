@@ -27,8 +27,10 @@ def create_app():
         # Create database from models
         from .models import User, SmsType, SmsTemplate, Client, SentSms, Appointment, MyModelView
         db.init_app(app)
+        db.app = app
         migrate.init_app(app, db)
         twilio.init_app(app)
+        twilio.app = app
         admin.init_app(app)
 
         # set up LoginManager to manage ..erm.. logins
@@ -55,6 +57,9 @@ def create_app():
 
         from app.appointments.routes import appointments_bp
         app.register_blueprint(appointments_bp)
+
+        from app.tasks.tasks import tasks_bp
+        app.register_blueprint(tasks_bp)
 
         # Create database start Scheduler
         db.create_all()
@@ -108,7 +113,6 @@ def create_app():
             db.session.commit()
 
         if not app.debug and not app.testing:
-            # ...
 
             if app.config['LOG_TO_STDOUT']:
                 stream_handler = logging.StreamHandler()
