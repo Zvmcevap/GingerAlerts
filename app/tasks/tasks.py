@@ -10,18 +10,14 @@ tasks_bp = Blueprint('tasks_bp', __name__)
 
 @tasks_bp.cli.command('send_daily')
 def send_daily():
-    print('Starting send_daily()')
     today = datetime.now()
     tomorrow = datetime.now() + timedelta(days=1)
-    print(today.date(), tomorrow.date())
     todays_appointments = Appointment.query.filter(
         (func.date(Appointment.time_of_appointment) == today.date()) & (Appointment.same_day_sms == 1)).all()
     tomorrows_appointments = Appointment.query.filter(
         (func.date(Appointment.time_of_appointment) == tomorrow.date()) & (Appointment.day_before_sms == 1)).all()
-    print(todays_appointments)
     if todays_appointments:
         for appointment in todays_appointments:
-            print(f'appointment: {appointment}')
             client = Client.query.filter(Client.id == appointment.client_id).first()
             user = User.query.filter(User.id == client.user_id).first()
             if user.send_SMS:
@@ -47,12 +43,10 @@ def send_daily():
                     appointment.same_day_sms = 2
                 except TwilioRestException:
                     print('Slaba Telefonska')
-    print(tomorrows_appointments)
     if tomorrows_appointments:
         for appointment in tomorrows_appointments:
             client = Client.query.filter(Client.id == appointment.client_id).first()
             user = User.query.filter(User.id == client.user_id).first()
-            print(user.send_SMS)
             if user.send_SMS:
                 if client.sms_template_id:
                     sms_template = SmsTemplate.query.filter(SmsTemplate.id == client.sms_template_id).first()
