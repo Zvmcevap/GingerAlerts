@@ -1,6 +1,6 @@
 # GingerAlerts
 
-### An SMS alert system for my sister-in-law and her coworker
+### An SMS alert system
 
 
 A learning activity for making and deploying a web application
